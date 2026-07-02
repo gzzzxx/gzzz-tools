@@ -99,7 +99,7 @@ npm run dev          # 访问 http://localhost:1000
 
 <div align="center">
 
-如果这个项目对你有帮助，欢迎 ⭐ **Star** 支持一下！ 
+如果这个项目对你有帮助，欢迎 ⭐ **Star** 支持一下！
 
 **Made with ❤️ by gzzz-tools Contributors**
 
