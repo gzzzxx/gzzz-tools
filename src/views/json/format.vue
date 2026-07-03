@@ -28,27 +28,14 @@
   >
 
     <div class="json-grid">
-      <CardPane
-        class="json-card"
-        :title="t('formatPage.section.source')"
-        header-mobile-padding="6px 12px"
-      >
-        <el-input
+      <CardPane class="json-card">
+        <ToolTextarea
           v-model="text"
-          type="textarea"
-          :rows="14"
-          resize="none"
-          spellcheck="false"
           :placeholder="t('formatPage.input.placeholder')"
-          class="json-textarea"
         />
       </CardPane>
 
-      <CardPane
-        class="json-card"
-        :title="t('formatPage.section.result')"
-        header-mobile-padding="6px 12px"
-      >
+      <CardPane class="json-card">
         <div class="json-card__body">
           <JsonEditorVue
             id="json-editor-result"
@@ -140,32 +127,8 @@ const editorClass = computed(() =>
    flex:1 + min-height:0 down the chain so it actually grows.
    min-height:0 on the inner textarea so flex shrinking works
    (browsers default to min-height:auto, which prevents
-   shrinking below content size). */
-.json-textarea,
-.json-textarea :deep(.el-textarea) {
-  display: flex;
-  flex: 1;
-  min-height: 0;
-}
-.json-textarea :deep(textarea) {
-  flex: 1;
-  min-height: 0;
-  border: none !important;
-  border-radius: 0;
-  padding: 14px 16px;
-  font-family: 'Fira Code', 'Cascadia Code', Consolas, Menlo, monospace;
-  font-size: 13px;
-  line-height: 1.55;
-  resize: none;
-  background: transparent;
-  color: var(--it-text-primary);
-}
-.json-textarea :deep(textarea):focus {
-  box-shadow: none;
-}
-.json-textarea :deep(.el-textarea__inner) {
-  box-shadow: none !important;
-}
+   shrinking below content size). 23 行重复块已抽到
+   ~/components/tools/ToolTextarea.vue 组件, 父 scoped 不需要再写一份。 */
 
 /* Right card: force the json-editor-vue wrapper to fill the
    card body. vanilla-jsoneditor renders into a div with class

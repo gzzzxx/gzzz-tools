@@ -76,14 +76,10 @@
             {{ t('contrastPage.action.clear') }}
           </el-button>
         </template>
-        <el-input
+        <ToolTextarea
           v-model="form.prev"
-          type="textarea"
           :rows="10"
-          resize="none"
-          spellcheck="false"
           :placeholder="t('contrastPage.input.placeholder.prev')"
-          class="contrast-textarea"
         />
       </CardPane>
 
@@ -93,14 +89,10 @@
             {{ t('contrastPage.action.clear') }}
           </el-button>
         </template>
-        <el-input
+        <ToolTextarea
           v-model="form.current"
-          type="textarea"
           :rows="10"
-          resize="none"
-          spellcheck="false"
           :placeholder="t('contrastPage.input.placeholder.current')"
-          class="contrast-textarea"
         />
       </CardPane>
     </div>
@@ -270,38 +262,10 @@ watch(
    :title="..."> / <CardPane class="contrast-result" :title="...">
    自动套用相同样式, 父 scoped 不用再写一份。 */
 
-/* Pierce el-input's wrapper to make the textarea fill the card.
-   Same recipe as sql.vue / xml.vue / json.vue — el-input sets an
-   inline height on .el-textarea; we override that with flex:1 +
-   min-height:0 down the chain. The min-height:0 on the inner
-   textarea is load-bearing: browsers default to min-height:auto
-   on flex items, which would prevent the textarea from shrinking
-   below its content size and break the fill-the-card behavior. */
-.contrast-textarea,
-.contrast-textarea :deep(.el-textarea) {
-  display: flex;
-  flex: 1;
-  min-height: 0;
-}
-.contrast-textarea :deep(textarea) {
-  flex: 1;
-  min-height: 0;
-  border: none !important;
-  border-radius: 0;
-  padding: 14px 16px;
-  font-family: 'Fira Code', 'Cascadia Code', Consolas, Menlo, monospace;
-  font-size: 13px;
-  line-height: 1.55;
-  resize: none;
-  background: transparent;
-  color: var(--it-text-primary);
-}
-.contrast-textarea :deep(textarea):focus {
-  box-shadow: none;
-}
-.contrast-textarea :deep(.el-textarea__inner) {
-  box-shadow: none !important;
-}
+/* .contrast-textarea 23 行重复块已抽到 ~/components/tools/ToolTextarea.vue
+   组件 (display: flex / font / padding / border / box-shadow 等
+   fill-the-card + monospace 样式)。模板里 <ToolTextarea v-model="..."
+   :rows="10"> 自动套用相同样式, 父 scoped 不用再写一份。 */
 
 /* Result card — full-width strip below the input grid. 容器 / header
    / title 已抽到 <CardPane>, 这里只保留特异值:

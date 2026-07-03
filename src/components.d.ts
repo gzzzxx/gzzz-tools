@@ -49,5 +49,6 @@ declare module 'vue' {
     ThemeToggle: typeof import('./components/ThemeToggle.vue')['default']
     ToolCard: typeof import('./components/cards/ToolCard.vue')['default']
     ToolPage: typeof import('./components/tools/ToolPage.vue')['default']
+    ToolTextarea: typeof import('./components/tools/ToolTextarea.vue')['default']
   }
 }

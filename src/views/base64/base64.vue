@@ -49,14 +49,10 @@
             {{ t('base64Page.action.clear') }}
           </el-button>
         </template>
-        <el-input
+        <ToolTextarea
           v-model="form.data"
-          type="textarea"
           :rows="10"
-          resize="none"
-          spellcheck="false"
           :placeholder="t('base64Page.input.placeholder')"
-          class="base64-textarea"
         />
       </CardPane>
 
@@ -72,15 +68,11 @@
             {{ t('base64Page.action.copy') }}
           </el-button>
         </template>
-        <el-input
+        <ToolTextarea
           v-model="form.result"
-          type="textarea"
           :rows="10"
-          resize="none"
-          spellcheck="false"
-          disabled
+          :disabled="true"
           :placeholder="t('base64Page.result.placeholder')"
-          class="base64-textarea"
         />
       </CardPane>
     </div>
@@ -447,33 +439,11 @@ const tableDemoData: TableDemo[] = [
    .card-pane__actions)。模板里 <CardPane class="base64-card" :title="...">
    自动套用相同样式, 父 scoped 不用再写一份。 */
 
-/* Pierce el-input to make the textarea fill the card. Same recipe
-   as sql.vue / xml.vue / json.vue. */
-.base64-textarea,
-.base64-textarea :deep(.el-textarea) {
-  display: flex;
-  flex: 1;
-  min-height: 0;
-}
-.base64-textarea :deep(textarea) {
-  flex: 1;
-  min-height: 0;
-  border: none !important;
-  border-radius: 0;
-  padding: 14px 16px;
-  font-family: 'Fira Code', 'Cascadia Code', Consolas, Menlo, monospace;
-  font-size: 13px;
-  line-height: 1.55;
-  resize: none;
-  background: transparent;
-  color: var(--it-text-primary);
-}
-.base64-textarea :deep(textarea):focus {
-  box-shadow: none;
-}
-.base64-textarea :deep(.el-textarea__inner) {
-  box-shadow: none !important;
-}
+/* .base64-textarea 23 行重复块 (display: flex / font / padding /
+   border / box-shadow 等 fill-the-card + monospace 样式) 已抽到
+   ~/components/tools/ToolTextarea.vue 组件。模板里
+   <ToolTextarea v-model="..." :rows="10"> 自动套用相同样式,
+   父 scoped 不用再写一份。 */
 
 /* ====================================================================
    Reference card — full-width strip below the input grid. Holds the

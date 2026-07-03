@@ -36,14 +36,9 @@
             {{ t('sqlPage.action.clear') }}
           </el-button>
         </template>
-        <el-input
+        <ToolTextarea
           v-model="form.data"
-          type="textarea"
-          :rows="14"
-          resize="none"
-          spellcheck="false"
           :placeholder="t('sqlPage.input.placeholder')"
-          class="sql-textarea"
         />
       </CardPane>
 
@@ -59,15 +54,10 @@
             {{ t('sqlPage.action.copy') }}
           </el-button>
         </template>
-        <el-input
+        <ToolTextarea
           v-model="form.result"
-          type="textarea"
-          :rows="14"
-          resize="none"
-          spellcheck="false"
-          disabled
+          :disabled="true"
           :placeholder="t('sqlPage.result.placeholder')"
-          class="sql-textarea"
         />
       </CardPane>
     </div>
@@ -239,37 +229,9 @@ watch(() => form.data, autoFormat)
    模板里 <CardPane class="sql-card" :title="..."> 自动套用相同样式,
    父 scoped 不用再写一份。 */
 
-/* Push the textarea to fill the rest of the card. el-input
-   wraps the textarea in .el-textarea with inline height — we
-   pierce through to make it actually grow. min-height:0 on
-   the inner textarea so flex shrinking works (browsers
-   default to min-height:auto, which prevents shrinking below
-   content size and breaks the fill-the-card behavior). */
-.sql-textarea,
-.sql-textarea :deep(.el-textarea) {
-  display: flex;
-  flex: 1;
-  min-height: 0;
-}
-.sql-textarea :deep(textarea) {
-  flex: 1;
-  min-height: 0;
-  border: none !important;
-  border-radius: 0;
-  padding: 14px 16px;
-  font-family: 'Fira Code', 'Cascadia Code', Consolas, Menlo, monospace;
-  font-size: 13px;
-  line-height: 1.55;
-  resize: none;
-  background: transparent;
-  color: var(--it-text-primary);
-}
-.sql-textarea :deep(textarea):focus {
-  box-shadow: none;
-}
-.sql-textarea :deep(.el-textarea__inner) {
-  box-shadow: none !important;
-}
+/* 23 行 .sql-textarea 重复块 (display: flex / font / padding /
+   border / box-shadow 等 fill-the-card + monospace 样式) 已抽到
+   ~/components/tools/ToolTextarea.vue 组件, 父 scoped 不需要再写一份。 */
 
 /* Arrow badge removed — matches the JSON formatter's equal-
    width "no arrow" style. */

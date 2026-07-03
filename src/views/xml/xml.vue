@@ -55,14 +55,9 @@
             {{ t('xmlPage.action.clear') }}
           </el-button>
         </template>
-        <el-input
+        <ToolTextarea
           v-model="form.data"
-          type="textarea"
-          :rows="14"
-          resize="none"
-          spellcheck="false"
           :placeholder="t('xmlPage.input.placeholder')"
-          class="xml-textarea"
         />
       </CardPane>
 
@@ -79,15 +74,10 @@
             {{ t('xmlPage.action.copy') }}
           </el-button>
         </template>
-        <el-input
+        <ToolTextarea
           v-model="form.result"
-          type="textarea"
-          :rows="14"
-          resize="none"
-          spellcheck="false"
-          disabled
+          :disabled="true"
           :placeholder="t('xmlPage.result.placeholder')"
-          class="xml-textarea"
         />
       </CardPane>
     </div>
@@ -261,38 +251,9 @@ watch([() => form.data, indent], () => autoFormat(form.data), { flush: 'post' })
   width: 130px;
 }
 
-/* Push the textarea to fill the rest of the card. el-input
-   wraps the textarea in .el-textarea with inline height — we
-   pierce through to make it actually grow. The inner textarea
-   also gets a min-height:0 so flex shrinking works (browsers
-   default to min-height:auto on flex items, which prevents
-   them from shrinking below their content size and breaks
-   the fill-the-card behavior we want here). */
-.xml-textarea,
-.xml-textarea :deep(.el-textarea) {
-  display: flex;
-  flex: 1;
-  min-height: 0;
-}
-.xml-textarea :deep(textarea) {
-  flex: 1;
-  min-height: 0;
-  border: none !important;
-  border-radius: 0;
-  padding: 14px 16px;
-  font-family: 'Fira Code', 'Cascadia Code', Consolas, Menlo, monospace;
-  font-size: 13px;
-  line-height: 1.55;
-  resize: none;
-  background: transparent;
-  color: var(--it-text-primary);
-}
-.xml-textarea :deep(textarea):focus {
-  box-shadow: none;
-}
-.xml-textarea :deep(.el-textarea__inner) {
-  box-shadow: none !important;
-}
+/* 23 行 .xml-textarea 重复块 (display: flex / font / padding /
+   border / box-shadow 等 fill-the-card + monospace 样式) 已抽到
+   ~/components/tools/ToolTextarea.vue 组件, 父 scoped 不需要再写一份。 */
 
 /* Top toolbar. Button horizontal padding tightened from the
    Element Plus default 15px to 10px — for 2-3 char labels the
