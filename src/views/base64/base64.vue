@@ -43,15 +43,12 @@
     </div>
 
     <div class="base64-grid">
-      <section class="base64-card">
-        <header class="base64-card__header">
-          <span class="base64-card__title">{{ t('base64Page.section.source') }}</span>
-          <div class="base64-card__actions">
-            <el-button size="small" :icon="Delete" link @click="clear">
-              {{ t('base64Page.action.clear') }}
-            </el-button>
-          </div>
-        </header>
+      <CardPane class="base64-card" :title="t('base64Page.section.source')">
+        <template #actions>
+          <el-button size="small" :icon="Delete" link @click="clear">
+            {{ t('base64Page.action.clear') }}
+          </el-button>
+        </template>
         <el-input
           v-model="form.data"
           type="textarea"
@@ -61,23 +58,20 @@
           :placeholder="t('base64Page.input.placeholder')"
           class="base64-textarea"
         />
-      </section>
+      </CardPane>
 
-      <section class="base64-card">
-        <header class="base64-card__header">
-          <span class="base64-card__title">{{ t('base64Page.section.result') }}</span>
-          <div class="base64-card__actions">
-            <el-button
-              size="small"
-              :icon="DocumentCopy"
-              link
-              :disabled="!form.result"
-              @click="copyData"
-            >
-              {{ t('base64Page.action.copy') }}
-            </el-button>
-          </div>
-        </header>
+      <CardPane class="base64-card" :title="t('base64Page.section.result')">
+        <template #actions>
+          <el-button
+            size="small"
+            :icon="DocumentCopy"
+            link
+            :disabled="!form.result"
+            @click="copyData"
+          >
+            {{ t('base64Page.action.copy') }}
+          </el-button>
+        </template>
         <el-input
           v-model="form.result"
           type="textarea"
@@ -88,15 +82,10 @@
           :placeholder="t('base64Page.result.placeholder')"
           class="base64-textarea"
         />
-      </section>
+      </CardPane>
     </div>
 
-    <section class="base64-reference">
-      <header class="base64-reference__header">
-        <span class="base64-reference__title">
-          {{ t('base64Page.reference.title') }}
-        </span>
-      </header>
+    <CardPane class="base64-reference" :title="t('base64Page.reference.title')">
       <div class="base64-reference__body">
         <p class="base64-reference__para">
           <span class="base64-reference__term">Base64 </span>
@@ -236,7 +225,7 @@
           <el-table-column prop="27" min-width="50px" />
         </el-table>
       </div>
-    </section>
+    </CardPane>
   </ToolPage>
 </template>
 
@@ -452,37 +441,11 @@ const tableDemoData: TableDemo[] = [
   }
 }
 
-/* Card + header — identical pattern to .sql-card / .xml-card.
-   Plain section (not el-card) so we keep full control over border
-   + radius, and so the textarea's flex-grow isn't fighting an
-   extra wrapper. */
-.base64-card {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--it-bg-elevated);
-  border: 1px solid var(--it-border);
-  border-radius: 4px;
-  overflow: hidden;
-}
-.base64-card__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 8px 16px;
-  border-bottom: 1px solid var(--it-border);
-  background-color: var(--it-bg-elevated);
-}
-.base64-card__title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--it-text-primary);
-}
-.base64-card__actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+/* .base64-card / .base64-card__header / .base64-card__title /
+   .base64-card__actions 块已抽到 ~/components/tools/CardPane.vue
+   组件 (全局 .card-pane / .card-pane__header / .card-pane__title /
+   .card-pane__actions)。模板里 <CardPane class="base64-card" :title="...">
+   自动套用相同样式, 父 scoped 不用再写一份。 */
 
 /* Pierce el-input to make the textarea fill the card. Same recipe
    as sql.vue / xml.vue / json.vue. */
@@ -518,26 +481,15 @@ const tableDemoData: TableDemo[] = [
    table + the 27-column "Man" demo table. overflow-x:auto on the
    body so the demo table can scroll horizontally on narrow screens
    instead of breaking the page layout.
+
+   容器 / header / title 已抽到 <CardPane>, 这里只保留 .base64-reference
+   的特异值 (margin-top: 16px, 与 input grid 隔一行) + body 内部样式
+   (padding / 字体 / overflow / 段落 typography)。
    ==================================================================== */
 .base64-reference {
   margin-top: 16px;
-  background-color: var(--it-bg-elevated);
-  border: 1px solid var(--it-border);
-  border-radius: 4px;
-  overflow: hidden;
 }
-.base64-reference__header {
-  display: flex;
-  align-items: center;
-  padding: 8px 16px;
-  border-bottom: 1px solid var(--it-border);
-  background-color: var(--it-bg-elevated);
-}
-.base64-reference__title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--it-text-primary);
-}
+
 .base64-reference__body {
   padding: 16px 20px 20px;
   font-size: 14px;
@@ -601,8 +553,8 @@ const tableDemoData: TableDemo[] = [
 
 @media (max-width: 600px) {
   // .base64-page padding + .base64-title font-size 已由全局 _tool-page.scss 提供
-  .base64-card__header { padding: 10px 12px; }
-  .base64-reference__header { padding: 10px 12px; }
+  // .base64-card__header / .base64-reference__header 移动端 padding 10 12
+  //   已由 <CardPane> 组件全局 .card-pane__header 默认提供
   .base64-reference__body { padding: 12px 14px 16px; }
 }
 </style>

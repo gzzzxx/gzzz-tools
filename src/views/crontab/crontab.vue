@@ -21,7 +21,7 @@
 
     <div class="crontab-row">
       <!-- ============== Left: input + description + toggles ============== -->
-      <div class="c-card">
+      <CardPane class="c-card" body-padding="20px 24px">
         <div class="c-card__input-wrap">
           <input
             v-model="cron"
@@ -57,10 +57,10 @@
             <el-switch v-model="cronstrueConfig.dayOfWeekStartIndexZero" />
           </div>
         </div>
-      </div>
+      </CardPane>
 
       <!-- ============== Right: diagram + symbol table ============== -->
-      <div class="c-card">
+      <CardPane class="c-card" body-padding="20px 24px">
         <pre class="c-card__diagram">{{ diagramText }}</pre>
 
         <div class="c-card__divider" />
@@ -99,7 +99,7 @@
             <div>{{ t('crontabPage.symbol.equivalent') }}: <strong>{{ row.equivalent }}</strong></div>
           </div>
         </div>
-      </div>
+      </CardPane>
     </div>
   </ToolPage>
 </template>
@@ -245,17 +245,10 @@ const diagramText = computed(() => {
   --tool-page-subtitle-mb: 20px;
 }
 
-/* c-card — direct port of it-tools' CCard.vue: white bg + 1px
-   border + 4px radius + 20/24 padding. Plain div (not el-card) so
-   we keep our own border + radius; --it-bg-elevated / --it-border
-   carry the light/dark split. */
-.c-card {
-  background-color: var(--it-bg-elevated);
-  border: 1px solid var(--it-border);
-  border-radius: 4px;
-  padding: 20px 24px;
-  box-sizing: border-box;
-}
+/* c-card 容器 — 背景 / 边框 / 圆角 / 20-24 padding 已抽到
+   ~/components/tools/CardPane.vue 组件 (bodyPadding="20px 24px"),
+   这里不需要再写一份。c-card 只保留特异样式 (没有任何 — 现在它
+   是个普通 CardPane 实例, 由 CardPane 自身 + body 内容决定高度)。 */
 
 /* ====================================================================
    Two-card row — left input card + right diagram/table card. The

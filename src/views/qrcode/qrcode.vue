@@ -27,7 +27,7 @@
 
     <div class="qr-row">
       <!-- ============== Left: input + options ============== -->
-      <div class="q-card">
+      <CardPane class="q-card" body-padding="20px 24px">
         <label class="q-label">{{ t('qrcodePage.input.label') }}</label>
         <el-input
           v-model="text"
@@ -75,10 +75,10 @@
             <el-color-picker v-model="bg" />
           </div>
         </div>
-      </div>
+      </CardPane>
 
       <!-- ============== Right: preview + actions ============== -->
-      <div class="q-card q-card--preview">
+      <CardPane class="q-card q-card--preview" body-padding="20px 24px">
         <div class="q-preview-wrap">
           <canvas v-show="hasContent" ref="canvasRef" class="q-canvas" />
           <div v-if="!hasContent" class="q-empty">
@@ -106,7 +106,7 @@
             {{ t('qrcodePage.action.copy') }}
           </el-button>
         </div>
-      </div>
+      </CardPane>
     </div>
   </ToolPage>
 </template>
@@ -260,16 +260,10 @@ async function copyImage() {
   }
 }
 
-/* q-card — same role as crontab.vue's .c-card: elevated bg +
-   1px border + 4px radius + generous padding. Plain div (not
-   el-card) to keep full control over the border + radius tokens. */
-.q-card {
-  background-color: var(--it-bg-elevated);
-  border: 1px solid var(--it-border);
-  border-radius: 4px;
-  padding: 20px 24px;
-  box-sizing: border-box;
-}
+/* q-card 容器 — 背景 / 边框 / 圆角 / 20-24 padding 已抽到
+   ~/components/tools/CardPane.vue 组件 (bodyPadding="20px 24px"),
+   这里不需要再写一份。.q-card 只保留特异样式 (无 — 之前也没有
+   .q-card 自身的特异样式, 全部样式来自 .q-card > 内部元素)。 */
 
 /* Left card */
 .q-label {

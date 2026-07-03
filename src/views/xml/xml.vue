@@ -41,23 +41,20 @@
 
     <div class="xml-grid">
       <!-- ============== Source card ============== -->
-      <section class="xml-card">
-        <header class="xml-card__header">
-          <span class="xml-card__title">{{ t('xmlPage.section.source') }}</span>
-          <div class="xml-card__actions">
-            <el-select v-model="indent" size="small" class="xml-card__indent">
-              <el-option
-                v-for="o in indentOptions"
-                :key="o.value"
-                :label="o.label"
-                :value="o.value"
-              />
-            </el-select>
-            <el-button size="small" :icon="Delete" link @click="clear">
-              {{ t('xmlPage.action.clear') }}
-            </el-button>
-          </div>
-        </header>
+      <CardPane class="xml-card" :title="t('xmlPage.section.source')">
+        <template #actions>
+          <el-select v-model="indent" size="small" class="xml-card__indent">
+            <el-option
+              v-for="o in indentOptions"
+              :key="o.value"
+              :label="o.label"
+              :value="o.value"
+            />
+          </el-select>
+          <el-button size="small" :icon="Delete" link @click="clear">
+            {{ t('xmlPage.action.clear') }}
+          </el-button>
+        </template>
         <el-input
           v-model="form.data"
           type="textarea"
@@ -67,25 +64,21 @@
           :placeholder="t('xmlPage.input.placeholder')"
           class="xml-textarea"
         />
-      </section>
+      </CardPane>
 
-      <!-- Arrow badge -->
       <!-- ============== Result card ============== -->
-      <section class="xml-card">
-        <header class="xml-card__header">
-          <span class="xml-card__title">{{ t('xmlPage.section.result') }}</span>
-          <div class="xml-card__actions">
-            <el-button
-              size="small"
-              :icon="DocumentCopy"
-              link
-              :disabled="!form.result"
-              @click="copyData"
-            >
-              {{ t('xmlPage.action.copy') }}
-            </el-button>
-          </div>
-        </header>
+      <CardPane class="xml-card" :title="t('xmlPage.section.result')">
+        <template #actions>
+          <el-button
+            size="small"
+            :icon="DocumentCopy"
+            link
+            :disabled="!form.result"
+            @click="copyData"
+          >
+            {{ t('xmlPage.action.copy') }}
+          </el-button>
+        </template>
         <el-input
           v-model="form.result"
           type="textarea"
@@ -96,7 +89,7 @@
           :placeholder="t('xmlPage.result.placeholder')"
           class="xml-textarea"
         />
-      </section>
+      </CardPane>
     </div>
   </ToolPage>
 </template>
@@ -256,35 +249,15 @@ watch([() => form.data, indent], () => autoFormat(form.data), { flush: 'post' })
 /* xml-card — same role as crontab.vue's .c-card: elevated bg +
    1px border + 4px radius. Plain section (not el-card) so we
    keep full control over the border + radius. */
-.xml-card {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--it-bg-elevated);
-  border: 1px solid var(--it-border);
-  border-radius: 4px;
-  overflow: hidden;
-}
 
-.xml-card__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 8px 16px;
-  border-bottom: 1px solid var(--it-border);
-  background-color: var(--it-bg-elevated);
-}
-.xml-card__title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--it-text-primary);
-}
-.xml-card__actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+/* .xml-card / .xml-card__header / .xml-card__title / .xml-card__actions
+   块已抽到 ~/components/tools/CardPane.vue 组件 (全局 .card-pane /
+   .card-pane__header / .card-pane__title / .card-pane__actions)。
+   模板里 <CardPane class="xml-card" :title="..."> 自动套用相同样式,
+   父 scoped 不用再写一份。 */
+
 .xml-card__indent {
+  /* Indent select 宽度 — 130px 保持原值, 移动端在 @media (max-width: 600px) 里改 110px。 */
   width: 130px;
 }
 
@@ -341,7 +314,7 @@ watch([() => form.data, indent], () => autoFormat(form.data), { flush: 'post' })
 
 @media (max-width: 600px) {
   // .xml-page padding + .xml-title font-size 已由全局 _tool-page.scss 提供
-  .xml-card__header { padding: 10px 12px; }
+  // .xml-card__header 移动端 padding 10 12 已由 <CardPane> 组件默认提供
   .xml-card__indent { width: 110px; }
   .xml-toolbar { gap: 12px; }
 }

@@ -70,17 +70,12 @@
     </div>
 
     <div class="contrast-grid">
-      <section class="contrast-card">
-        <header class="contrast-card__header">
-          <span class="contrast-card__title">
-            {{ t('contrastPage.section.prev') }}
-          </span>
-          <div class="contrast-card__actions">
-            <el-button size="small" :icon="Delete" link @click="form.prev = ''">
-              {{ t('contrastPage.action.clear') }}
-            </el-button>
-          </div>
-        </header>
+      <CardPane class="contrast-card" :title="t('contrastPage.section.prev')">
+        <template #actions>
+          <el-button size="small" :icon="Delete" link @click="form.prev = ''">
+            {{ t('contrastPage.action.clear') }}
+          </el-button>
+        </template>
         <el-input
           v-model="form.prev"
           type="textarea"
@@ -90,19 +85,14 @@
           :placeholder="t('contrastPage.input.placeholder.prev')"
           class="contrast-textarea"
         />
-      </section>
+      </CardPane>
 
-      <section class="contrast-card">
-        <header class="contrast-card__header">
-          <span class="contrast-card__title">
-            {{ t('contrastPage.section.current') }}
-          </span>
-          <div class="contrast-card__actions">
-            <el-button size="small" :icon="Delete" link @click="form.current = ''">
-              {{ t('contrastPage.action.clear') }}
-            </el-button>
-          </div>
-        </header>
+      <CardPane class="contrast-card" :title="t('contrastPage.section.current')">
+        <template #actions>
+          <el-button size="small" :icon="Delete" link @click="form.current = ''">
+            {{ t('contrastPage.action.clear') }}
+          </el-button>
+        </template>
         <el-input
           v-model="form.current"
           type="textarea"
@@ -112,15 +102,10 @@
           :placeholder="t('contrastPage.input.placeholder.current')"
           class="contrast-textarea"
         />
-      </section>
+      </CardPane>
     </div>
 
-    <section class="contrast-result">
-      <header class="contrast-result__header">
-        <span class="contrast-result__title">
-          {{ t('contrastPage.section.result') }}
-        </span>
-      </header>
+    <CardPane class="contrast-result" :title="t('contrastPage.section.result')">
       <Diff
         id="diff"
         :mode="form.mode"
@@ -130,7 +115,7 @@
         :current="form.current"
         :folding="form.folding"
       />
-    </section>
+    </CardPane>
   </ToolPage>
 </template>
 
@@ -276,25 +261,14 @@ watch(
   border-radius: 4px;
   overflow: hidden;
 }
-.contrast-card__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 8px 16px;
-  border-bottom: 1px solid var(--it-border);
-  background-color: var(--it-bg-elevated);
-}
-.contrast-card__title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--it-text-primary);
-}
-.contrast-card__actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+
+/* .contrast-card / .contrast-card__header / .contrast-card__title /
+   .contrast-card__actions / .contrast-result / .contrast-result__header
+   / .contrast-result__title 块已抽到 ~/components/tools/CardPane.vue
+   组件 (全局 .card-pane / .card-pane__header / .card-pane__title /
+   .card-pane__actions)。模板里 <CardPane class="contrast-card"
+   :title="..."> / <CardPane class="contrast-result" :title="...">
+   自动套用相同样式, 父 scoped 不用再写一份。 */
 
 /* Pierce el-input's wrapper to make the textarea fill the card.
    Same recipe as sql.vue / xml.vue / json.vue — el-input sets an
@@ -329,31 +303,14 @@ watch(
   box-shadow: none !important;
 }
 
-/* Result card — full-width strip below the input grid. The vue-diff
-   component renders inside with its own theme-aware background, so
-   we don't set a body background here (it would just be painted
-   over by .vue-diff-theme-*). The header mirrors the input cards'
-   so the page reads as one consistent family. */
+/* Result card — full-width strip below the input grid. 容器 / header
+   / title 已抽到 <CardPane>, 这里只保留特异值:
+     - margin-top: 16px (与 input grid 隔一行)
+     - vue-diff 内部样式覆盖 (去除默认 border-radius 让主题背景充满 card) */
 .contrast-result {
   margin-top: 16px;
-  background-color: var(--it-bg-elevated);
-  border: 1px solid var(--it-border);
-  border-radius: 4px;
-  overflow: hidden;
 }
-.contrast-result__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 16px;
-  border-bottom: 1px solid var(--it-border);
-  background-color: var(--it-bg-elevated);
-}
-.contrast-result__title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--it-text-primary);
-}
+
 /* vue-diff renders its viewer as the inner element; remove the
    wrapper's default top border-radius so the theme background flows
    edge-to-edge inside the card. */
@@ -363,9 +320,9 @@ watch(
 
 @media (max-width: 600px) {
   // .contrast-page padding + .contrast-title font-size 已由全局 _tool-page.scss 提供
+  // .contrast-card__header / .contrast-result__header 移动端 padding 10 12 已由
+  //   <CardPane> 组件全局 .card-pane__header 默认提供
   .contrast-toolbar { gap: 12px; padding: 10px 12px; }
   .contrast-toolbar__select { width: 120px; }
-  .contrast-card__header,
-  .contrast-result__header { padding: 10px 12px; }
 }
 </style>

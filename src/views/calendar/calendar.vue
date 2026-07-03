@@ -27,7 +27,7 @@
     :subtitle="t('tools.calendar.desc')"
   >
 
-    <section class="calendar-card">
+    <CardPane class="calendar-card">
       <el-calendar>
         <template #date-cell="{ data }">
           <div>
@@ -41,7 +41,7 @@
           </div>
         </template>
       </el-calendar>
-    </section>
+    </CardPane>
   </ToolPage>
 </template>
 
@@ -110,13 +110,9 @@ function solarToLunar(slotData: { day: string }) {
 /* Calendar card — el-calendar fills the card. Border + radius +
    elevated bg matches the c-card / sql-card / xml-card family. The
    calendar's own header sits on the elevated bg so we don't need
-   to wrap it in a separate header strip. */
-.calendar-card {
-  background-color: var(--it-bg-elevated);
-  border: 1px solid var(--it-border);
-  border-radius: 4px;
-  overflow: hidden;
-}
+   to wrap it in a separate header strip. 容器 / 背景 / 边框 / 圆角
+   / overflow 已抽到 ~/components/tools/CardPane.vue 组件 (全局
+   .card-pane), 这里不需要再写一份。 */
 
 /* ====================================================================
    Per-cell layout — solar day number on top, lunar info below.

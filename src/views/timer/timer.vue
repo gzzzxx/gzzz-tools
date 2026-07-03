@@ -45,7 +45,7 @@
     </div>
 
     <!-- =================== Stopwatch =================== -->
-    <div v-if="mode === 'stopwatch'" class="t-card">
+    <CardPane v-if="mode === 'stopwatch'" class="t-card" body-padding="32px 24px" body-mobile-padding="20px 16px">
       <div class="t-display">
         <span class="t-display__time">{{ formatElapsed(sw.elapsedMs) }}</span>
         <span class="t-display__unit">{{ t('timerPage.unit.cs') }}</span>
@@ -78,10 +78,10 @@
           <span class="t-mono">{{ formatElapsed(lap.totalMs) }}</span>
         </div>
       </div>
-    </div>
+    </CardPane>
 
     <!-- =================== Countdown =================== -->
-    <div v-else class="t-card">
+    <CardPane v-else class="t-card" body-padding="32px 24px" body-mobile-padding="20px 16px">
       <template v-if="cd.phase === 'idle' || cd.phase === 'paused'">
         <div class="t-presets">
           <button
@@ -135,7 +135,7 @@
           {{ t('timerPage.action.reset') }}
         </el-button>
       </div>
-    </div>
+    </CardPane>
   </ToolPage>
 </template>
 
@@ -433,14 +433,12 @@ onBeforeUnmount(() => {
   font-weight: 600;
 }
 
-/* t-card — same role as crontab.vue's .c-card: white/elevated bg,
-   1px border, 4px radius, generous padding. */
+/* t-card 容器 — 背景 / 边框 / 圆角 / box-sizing 已抽到
+   ~/components/tools/CardPane.vue 组件, 这里只保留 timer 特有
+   的居中布局 (max-width: 600px + margin: 0 auto)。body padding
+   由 <CardPane body-padding="32px 24px" body-mobile-padding="20px 16px">
+   传 prop 提供。 */
 .t-card {
-  background-color: var(--it-bg-elevated);
-  border: 1px solid var(--it-border);
-  border-radius: 4px;
-  padding: 32px 24px;
-  box-sizing: border-box;
   max-width: 600px;
   margin: 0 auto;
 }
@@ -578,7 +576,7 @@ onBeforeUnmount(() => {
 /* Mobile */
 @media (max-width: 600px) {
   /* .timer-tool padding + .title font-size 已由全局 _tool-page.scss 提供 */
-  .t-card { padding: 20px 16px; }
+  /* .t-card 移动端 padding 20 16 已由 <CardPane bodyMobilePadding="20px 16px"> 提供 */
   .t-display__time { font-size: 44px; letter-spacing: 1px; }
   .t-tab { padding: 8px 16px; font-size: 14px; }
   .t-lap-row { grid-template-columns: 28px 1fr 1fr; gap: 8px; font-size: 12px; }

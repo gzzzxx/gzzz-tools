@@ -28,10 +28,11 @@
   >
 
     <div class="json-grid">
-      <section class="json-card">
-        <header class="json-card__header">
-          <span class="json-card__title">{{ t('formatPage.section.source') }}</span>
-        </header>
+      <CardPane
+        class="json-card"
+        :title="t('formatPage.section.source')"
+        header-mobile-padding="6px 12px"
+      >
         <el-input
           v-model="text"
           type="textarea"
@@ -41,12 +42,13 @@
           :placeholder="t('formatPage.input.placeholder')"
           class="json-textarea"
         />
-      </section>
+      </CardPane>
 
-      <section class="json-card">
-        <header class="json-card__header">
-          <span class="json-card__title">{{ t('formatPage.section.result') }}</span>
-        </header>
+      <CardPane
+        class="json-card"
+        :title="t('formatPage.section.result')"
+        header-mobile-padding="6px 12px"
+      >
         <div class="json-card__body">
           <JsonEditorVue
             id="json-editor-result"
@@ -60,7 +62,7 @@
             :askToFormat="false"
           />
         </div>
-      </section>
+      </CardPane>
     </div>
   </ToolPage>
 </template>
@@ -125,28 +127,12 @@ const editorClass = computed(() =>
   }
 }
 
-.json-card {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--it-bg-elevated);
-  border: 1px solid var(--it-border);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.json-card__header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 16px;
-  border-bottom: 1px solid var(--it-border);
-  background-color: var(--it-bg-elevated);
-}
-.json-card__title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--it-text-primary);
-}
+/* .json-card / .json-card__header / .json-card__title 块已抽到
+   ~/components/tools/CardPane.vue 组件 (全局 .card-pane /
+   .card-pane__header / .card-pane__title)。模板里 <CardPane class="json-card"
+   :title="..." header-mobile-padding="6px 12px"> 自动套用相同样式,
+   父 scoped 不用再写一份。移动端 padding 6 12 是 json 特例 (其他
+   工具都是 10 12), 通过 headerMobilePadding prop 传入。 */
 
 /* Left card: fill the card body with the el-input textarea. Same
    pierce-through pattern as sql.vue / xml.vue — el-input wraps
@@ -203,6 +189,6 @@ const editorClass = computed(() =>
 
 @media (max-width: 600px) {
   // .json-page padding + .json-title font-size 已由全局 _tool-page.scss 提供
-  .json-card__header { padding: 6px 12px; }
+  // .json-card__header 移动端 padding 6 12 已由 <CardPane header-mobile-padding="6px 12px"> prop 传入
 }
 </style>

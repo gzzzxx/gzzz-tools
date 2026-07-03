@@ -30,15 +30,12 @@
     </div>
 
     <div class="sql-grid">
-      <section class="sql-card">
-        <header class="sql-card__header">
-          <span class="sql-card__title">{{ t('sqlPage.section.source') }}</span>
-          <div class="sql-card__actions">
-            <el-button size="small" :icon="Delete" link @click="clear">
-              {{ t('sqlPage.action.clear') }}
-            </el-button>
-          </div>
-        </header>
+      <CardPane class="sql-card" :title="t('sqlPage.section.source')">
+        <template #actions>
+          <el-button size="small" :icon="Delete" link @click="clear">
+            {{ t('sqlPage.action.clear') }}
+          </el-button>
+        </template>
         <el-input
           v-model="form.data"
           type="textarea"
@@ -48,23 +45,20 @@
           :placeholder="t('sqlPage.input.placeholder')"
           class="sql-textarea"
         />
-      </section>
+      </CardPane>
 
-      <section class="sql-card">
-        <header class="sql-card__header">
-          <span class="sql-card__title">{{ t('sqlPage.section.result') }}</span>
-          <div class="sql-card__actions">
-            <el-button
-              size="small"
-              :icon="DocumentCopy"
-              link
-              :disabled="!form.result"
-              @click="copyData"
-            >
-              {{ t('sqlPage.action.copy') }}
-            </el-button>
-          </div>
-        </header>
+      <CardPane class="sql-card" :title="t('sqlPage.section.result')">
+        <template #actions>
+          <el-button
+            size="small"
+            :icon="DocumentCopy"
+            link
+            :disabled="!form.result"
+            @click="copyData"
+          >
+            {{ t('sqlPage.action.copy') }}
+          </el-button>
+        </template>
         <el-input
           v-model="form.result"
           type="textarea"
@@ -75,7 +69,7 @@
           :placeholder="t('sqlPage.result.placeholder')"
           class="sql-textarea"
         />
-      </section>
+      </CardPane>
     </div>
   </ToolPage>
 </template>
@@ -239,35 +233,11 @@ watch(() => form.data, autoFormat)
   }
 }
 
-/* sql-card — same role as crontab.vue's .c-card. */
-.sql-card {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--it-bg-elevated);
-  border: 1px solid var(--it-border);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.sql-card__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 8px 16px;
-  border-bottom: 1px solid var(--it-border);
-  background-color: var(--it-bg-elevated);
-}
-.sql-card__title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--it-text-primary);
-}
-.sql-card__actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+/* .sql-card / .sql-card__header / .sql-card__title / .sql-card__actions
+   块已抽到 ~/components/tools/CardPane.vue 组件 (全局 .card-pane /
+   .card-pane__header / .card-pane__title / .card-pane__actions)。
+   模板里 <CardPane class="sql-card" :title="..."> 自动套用相同样式,
+   父 scoped 不用再写一份。 */
 
 /* Push the textarea to fill the rest of the card. el-input
    wraps the textarea in .el-textarea with inline height — we
@@ -306,7 +276,9 @@ watch(() => form.data, autoFormat)
 
 @media (max-width: 600px) {
   // .sql-page padding + .sql-title font-size 已由全局 _tool-page.scss 提供
-  .sql-card__header { padding: 10px 12px; }
+  // .sql-card__header 移动端 padding 10 12 已由 <CardPane> 组件
+  //   headerMobilePadding="10px 12px" 默认值提供 — 不再需要在
+  //   caller scoped 块里写一份冗余规则 (抽 CardPane 之前是必要的)
   .sql-toolbar { gap: 12px; }
 }
 </style>

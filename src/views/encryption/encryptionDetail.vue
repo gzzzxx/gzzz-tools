@@ -34,8 +34,7 @@
     <!-- ============== Form (3fr 1fr, stack ≤992px) ============== -->
     <div class="enc-grid">
       <!-- ===== Left card: content + key + IV + result ===== -->
-      <section class="enc-card enc-card--main">
-        <div class="enc-card__body">
+      <CardPane class="enc-card enc-card--main" body-padding="20px">
           <div class="enc-field">
             <label class="enc-field__label">
               {{ t('encryptionPage.field.data') }}
@@ -86,12 +85,10 @@
               class="enc-field__textarea"
             />
           </div>
-        </div>
-      </section>
+      </CardPane>
 
       <!-- ===== Right card: 4 config selects + 4 buttons ===== -->
-      <section class="enc-card enc-card--config">
-        <div class="enc-card__body">
+      <CardPane class="enc-card enc-card--config" body-padding="20px">
           <div class="enc-field">
             <label class="enc-field__label">
               {{ t('encryptionPage.field.dataType') }}
@@ -193,14 +190,13 @@
               {{ t('encryptionPage.action.clear') }}
             </el-button>
           </div>
-        </div>
-      </section>
+      </CardPane>
     </div>
 
     <!-- ============== Info blocks (no card headers — intro prose
          stands on its own, no need for a separate section title) ============== -->
     <section class="enc-info">
-      <div class="enc-info__card">
+      <CardPane class="enc-info__card" body-padding="20px">
         <div class="enc-info__body">
           <p class="enc-info__para">
             <strong>算法介绍</strong>
@@ -228,9 +224,9 @@
             SM4.0中的指令长度被提升到大于64K（即64×1024）的水平，这是SM 3.0规格（渲染指令长度允许大于512）的128倍。
           </p>
         </div>
-      </div>
+      </CardPane>
 
-      <div class="enc-info__card">
+      <CardPane class="enc-info__card" body-padding="20px">
         <div class="enc-info__body">
           <p class="enc-info__para">
             <strong>相关概念</strong>
@@ -270,7 +266,7 @@
             SM4无线局域网标准的分组数据算法。对称加密，密钥长度和分组长度均为128位。
           </p>
         </div>
-      </div>
+      </CardPane>
     </section>
   </div>
 </template>
@@ -356,26 +352,13 @@ function clear() {
   }
 }
 
-/* Card — same chrome family as sql-card / xml-card / c-card /
-   base64-card (elevated bg + 1px border + 4px radius). No header
-   strip — the form fields' own labels carry the chrome role, and
-   the info blocks' prose stands on its own without a separate
-   title bar. Plain section (not el-card) so we keep full control
-   over border + radius. */
-.enc-card {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--it-bg-elevated);
-  border: 1px solid var(--it-border);
-  border-radius: 4px;
-  overflow: hidden;
-}
-.enc-card__body {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
+/* Card 容器 / header / title / actions 块已抽到 ~/components/tools/CardPane.vue
+   组件 (全局 .card-pane / .card-pane__header / .card-pane__title /
+   .card-pane__actions)。模板里 <CardPane class="enc-card" body-padding="20px">
+   自动套用相同样式 + 20px body padding (caller 通过 prop 传)。
+
+   .enc-card 内的 field 布局 (label + control, 14px gap) 由 .enc-field 控制 —
+   这是 encryptionDetail 特有的字段布局, 不在 <CardPane> 通用范围。 */
 
 /* ====================================================================
    Field — replaces el-form-item. Custom label above the control so
