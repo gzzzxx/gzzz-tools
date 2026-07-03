@@ -19,9 +19,9 @@
   - Crack time is informational only: guesses ≈ 10^entropy / rate.
 -->
 <template>
-  <div class="pwd-tool">
-    <h2 class="title">{{ t('tools.passwordStrength.name') }}</h2>
-    <div class="subtitle">{{ t('tools.passwordStrength.desc') }}</div>
+  <div class="tool-page pwd-tool">
+    <h2 class="tool-page__title title">{{ t('tools.passwordStrength.name') }}</h2>
+    <div class="tool-page__subtitle subtitle">{{ t('tools.passwordStrength.desc') }}</div>
 
     <el-card class="input-card">
       <label class="pwd-label">{{ t('passwordStrengthPage.input.label') }}</label>
@@ -306,26 +306,20 @@ const rules = computed<Rule[]>(() => {
 </script>
 
 <style scoped>
-/* Page wrapper */
+/* Page wrapper — 外壳的 background/border-radius/box-shadow、标题副标题
+   的字体、@media (max-width: 600px) 的 padding + title font-size
+   已抽到 ~/styles/_tool-page.scss (全局 .tool-page / .tool-page__title /
+   .tool-page__subtitle)。这里只保留 pwd-tool 特有的 max-width / margin
+   (40px 比标准 20px 大一圈, 给工具多一点垂直呼吸) / desktop padding /
+   subtitle margin-bottom (24px)。 */
 .pwd-tool {
   max-width: 800px;
   margin: 40px auto;
   padding: 24px 12px;
-  background: var(--ep-bg-color);
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
-.title {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: bold;
-}
 .subtitle {
-  text-align: center;
-  color: #888;
   margin-bottom: 24px;
-  font-size: 1rem;
 }
 
 .pwd-label {
@@ -432,8 +426,7 @@ const rules = computed<Rule[]>(() => {
 }
 
 @media (max-width: 600px) {
-  .pwd-tool { padding: 8px 2px; }
-  .title { font-size: 1.5rem; }
+  /* .pwd-tool padding + .title font-size 已由全局 _tool-page.scss 提供 */
   .stat__value { font-size: 18px; }
 }
 </style>

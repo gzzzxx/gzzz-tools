@@ -14,9 +14,9 @@
   category so /format /sql /xml all feel like one family.
 -->
 <template>
-  <div class="sql-page">
-    <h2 class="sql-title">{{ t('tools.sql.name') }}</h2>
-    <div class="sql-subtitle">{{ t('tools.sql.desc') }}</div>
+  <div class="tool-page sql-page">
+    <h2 class="tool-page__title sql-title">{{ t('tools.sql.name') }}</h2>
+    <div class="tool-page__subtitle sql-subtitle">{{ t('tools.sql.desc') }}</div>
 
     <div class="sql-toolbar">
       <el-button type="primary" :icon="MagicStick" @click="format">
@@ -178,7 +178,13 @@ watch(() => form.data, autoFormat)
    horizontal two-pane tool, viewport-fixed so the page never
    triggers a page-level scrollbar (height = 100vh - header -
    page margins, with overflow:hidden to clip inner overflow).
-   flex-direction: column lets .sql-grid grow with flex:1. */
+   flex-direction: column lets .sql-grid grow with flex:1.
+   外壳的 background/border-radius/box-shadow、标题副标题的字体、
+   @media (max-width: 600px) 的 padding + title font-size
+   已抽到 ~/styles/_tool-page.scss (全局 .tool-page / .tool-page__title /
+   .tool-page__subtitle)。这里只保留 sql 特有的 height (viewport-fixed) /
+   flex / overflow / max-width / margin / padding /
+   subtitle margin-bottom (20px)。 */
 .sql-page {
   max-width: 1600px;
   height: calc(100vh - 88px);
@@ -188,21 +194,10 @@ watch(() => form.data, autoFormat)
   flex-direction: column;
   box-sizing: border-box;
   overflow: hidden;
-  background: var(--ep-bg-color);
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
-.sql-title {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: bold;
-}
 .sql-subtitle {
-  text-align: center;
-  color: #888;
   margin-bottom: 20px;
-  font-size: 1rem;
 }
 
 /* Top toolbar. Button horizontal padding tightened from the
@@ -308,8 +303,7 @@ watch(() => form.data, autoFormat)
    width "no arrow" style. */
 
 @media (max-width: 600px) {
-  .sql-page { padding: 8px 2px; }
-  .sql-title { font-size: 1.5rem; }
+  // .sql-page padding + .sql-title font-size 已由全局 _tool-page.scss 提供
   .sql-card__header { padding: 10px 12px; }
   .sql-toolbar { gap: 12px; }
 }

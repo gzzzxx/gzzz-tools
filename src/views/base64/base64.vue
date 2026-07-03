@@ -27,9 +27,9 @@
   placeholders, section titles) get proper i18n keys.
 -->
 <template>
-  <div class="base64-page">
-    <h2 class="base64-title">{{ t('tools.base64.name') }}</h2>
-    <div class="base64-subtitle">{{ t('tools.base64.desc') }}</div>
+  <div class="tool-page base64-page">
+    <h2 class="tool-page__title base64-title">{{ t('tools.base64.name') }}</h2>
+    <div class="tool-page__subtitle base64-subtitle">{{ t('tools.base64.desc') }}</div>
 
     <div class="base64-toolbar">
       <el-button type="primary" :icon="SwitchFilled" @click="encode">
@@ -405,27 +405,21 @@ const tableDemoData: TableDemo[] = [
 /* Outer wrapper — same shape as sql.vue / xml.vue: wide (1600px)
    centered shell with a soft drop shadow. The reference card
    below has a 27-column demo table, so the wider shell keeps it
-   from being squeezed into horizontal scroll on desktop. */
+   from being squeezed into horizontal scroll on desktop.
+   外壳的 background/border-radius/box-shadow、标题副标题的字体、
+   @media (max-width: 600px) 的 padding + title font-size
+   已抽到 ~/styles/_tool-page.scss (全局 .tool-page / .tool-page__title /
+   .tool-page__subtitle)。这里只保留 base64 特有的 max-width /
+   margin (16px, 比标准的 20px 更贴近边缘) / desktop padding /
+   subtitle margin-bottom (20px)。 */
 .base64-page {
   max-width: 1600px;
   margin: 16px auto;
   padding: 20px 16px;
-  background: var(--ep-bg-color);
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  box-sizing: border-box;
 }
 
-.base64-title {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: bold;
-}
 .base64-subtitle {
-  text-align: center;
-  color: #888;
   margin-bottom: 20px;
-  font-size: 1rem;
 }
 
 /* Top toolbar — primary transform actions live here so they're
@@ -606,8 +600,7 @@ const tableDemoData: TableDemo[] = [
 }
 
 @media (max-width: 600px) {
-  .base64-page { padding: 8px 2px; }
-  .base64-title { font-size: 1.5rem; }
+  // .base64-page padding + .base64-title font-size 已由全局 _tool-page.scss 提供
   .base64-card__header { padding: 10px 12px; }
   .base64-reference__header { padding: 10px 12px; }
   .base64-reference__body { padding: 12px 14px 16px; }

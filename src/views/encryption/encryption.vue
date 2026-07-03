@@ -19,9 +19,9 @@
   scoped to style only — the user asked to preserve functionality.
 -->
 <template>
-  <div class="encryption-page">
-    <h2 class="encryption-title">{{ title }}</h2>
-    <div class="encryption-subtitle">{{ subtitle }}</div>
+  <div class="tool-page encryption-page">
+    <h2 class="tool-page__title encryption-title">{{ title }}</h2>
+    <div class="tool-page__subtitle encryption-subtitle">{{ subtitle }}</div>
 
     <div class="encryption-tabs">
       <el-tabs v-model="activeName" class="encryption-tabs__nav" @tab-click="handleClick">
@@ -65,27 +65,22 @@ const handleClick = (tab: { props: { label: string } }) => {
 <style lang="scss" scoped>
 /* Outer wrapper — same shell family as the other dev tools. 1400px
    (slightly narrower than sql.vue's 1600px) since the form has a
-   3:1 column ratio and the narrower side doesn't need full 1600. */
+   3:1 column ratio and the narrower side doesn't need full 1600.
+   外壳的 background/border-radius/box-shadow、标题副标题的字体、
+   @media (max-width: 600px) 的 padding + title font-size
+   已抽到 ~/styles/_tool-page.scss (全局 .tool-page / .tool-page__title /
+   .tool-page__subtitle)。这里只保留 encryption 特有的 max-width (1400px) /
+   margin (20px) / desktop padding (24px 16px) /
+   subtitle margin-bottom (20px)。 */
 .encryption-page {
   max-width: 1400px;
   margin: 20px auto;
   padding: 24px 16px;
-  background: var(--ep-bg-color);
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   box-sizing: border-box;
 }
 
-.encryption-title {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: bold;
-}
 .encryption-subtitle {
-  text-align: center;
-  color: #888;
   margin-bottom: 20px;
-  font-size: 1rem;
 }
 
 /* Tabs — el-tabs defaults to left-aligned; we center the nav row
@@ -109,8 +104,7 @@ const handleClick = (tab: { props: { label: string } }) => {
 }
 
 @media (max-width: 600px) {
-  .encryption-page { padding: 8px 2px; }
-  .encryption-title { font-size: 1.5rem; }
+  // .encryption-page padding + .encryption-title font-size 已由全局 _tool-page.scss 提供
   .encryption-tabs :deep(.ep-tabs__item) {
     padding: 0 12px;
     font-size: 14px;

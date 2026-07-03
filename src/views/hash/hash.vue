@@ -10,9 +10,9 @@
   Auto-recompute on input change — cheap for small text, no debounce.
 -->
 <template>
-  <div class="hash-tool">
-    <h2 class="title">Hash 计算</h2>
-    <div class="subtitle">
+  <div class="tool-page hash-tool">
+    <h2 class="tool-page__title title">Hash 计算</h2>
+    <div class="tool-page__subtitle subtitle">
       输入文本,实时计算 MD5 / SHA-1 / SHA-256 / SHA-384 / SHA-512
     </div>
 
@@ -140,26 +140,18 @@ function copy(key: keyof HashResults) {
 </script>
 
 <style scoped>
+/* 外壳 / 标题 / 副标题 / 移动端 padding 已抽到 ~/styles/_tool-page.scss
+   (全局 .tool-page / .tool-page__title / .tool-page__subtitle),
+   这里只保留 hash 特有的 max-width / margin / desktop padding /
+   subtitle margin-bottom (24px, 比 20px 工具多一行间距)。 */
 .hash-tool {
   max-width: 800px;
   margin: 20px auto;
   padding: 24px 12px;
-  background: var(--ep-bg-color);
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-}
-
-.title {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: bold;
 }
 
 .subtitle {
-  text-align: center;
-  color: #888;
   margin-bottom: 24px;
-  font-size: 1rem;
 }
 
 .input-card {
@@ -231,7 +223,6 @@ function copy(key: keyof HashResults) {
 }
 
 @media (max-width: 600px) {
-  .hash-tool { padding: 8px 2px; }
-  .title { font-size: 1.5rem; }
+  /* .hash-tool padding + .title font-size 已由全局 _tool-page.scss 提供 */
 }
 </style>

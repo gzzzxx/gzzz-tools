@@ -21,9 +21,9 @@
   Monday via dayjs zh-cn locale).
 -->
 <template>
-  <div class="calendar-page">
-    <h2 class="calendar-title">{{ t('tools.calendar.name') }}</h2>
-    <div class="calendar-subtitle">{{ t('tools.calendar.desc') }}</div>
+  <div class="tool-page calendar-page">
+    <h2 class="tool-page__title calendar-title">{{ t('tools.calendar.name') }}</h2>
+    <div class="tool-page__subtitle calendar-subtitle">{{ t('tools.calendar.desc') }}</div>
 
     <section class="calendar-card">
       <el-calendar>
@@ -90,27 +90,21 @@ function solarToLunar(slotData: { day: string }) {
 <style lang="scss" scoped>
 /* Outer wrapper — same shell as crontab.vue (1200px, soft shadow).
    Calendar is a single-panel tool, no need for the 1600px width
-   that the side-by-side formatters use. */
+   that the side-by-side formatters use.
+   外壳的 background/border-radius/box-shadow、标题副标题的字体、
+   @media (max-width: 600px) 的 padding + title font-size
+   已抽到 ~/styles/_tool-page.scss (全局 .tool-page / .tool-page__title /
+   .tool-page__subtitle)。这里只保留 calendar 特有的 max-width (1200px) /
+   margin / padding / subtitle margin-bottom (20px)。 */
 .calendar-page {
   max-width: 1200px;
   margin: 20px auto;
   padding: 24px 16px;
-  background: var(--ep-bg-color);
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   box-sizing: border-box;
 }
 
-.calendar-title {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: bold;
-}
 .calendar-subtitle {
-  text-align: center;
-  color: #888;
   margin-bottom: 20px;
-  font-size: 1rem;
 }
 
 /* Calendar card — el-calendar fills the card. Border + radius +
@@ -174,7 +168,6 @@ function solarToLunar(slotData: { day: string }) {
 }
 
 @media (max-width: 600px) {
-  .calendar-page { padding: 8px 2px; }
-  .calendar-title { font-size: 1.5rem; }
+  // .calendar-page padding + .calendar-title font-size 已由全局 _tool-page.scss 提供
 }
 </style>

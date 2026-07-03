@@ -19,9 +19,9 @@
   loop idle most of the time.
 -->
 <template>
-  <div class="qrcode-tool">
-    <h2 class="title">{{ t('tools.qrcode.name') }}</h2>
-    <div class="subtitle">{{ t('tools.qrcode.desc') }}</div>
+  <div class="tool-page qrcode-tool">
+    <h2 class="tool-page__title title">{{ t('tools.qrcode.name') }}</h2>
+    <div class="tool-page__subtitle subtitle">{{ t('tools.qrcode.desc') }}</div>
 
     <div class="qr-row">
       <!-- ============== Left: input + options ============== -->
@@ -231,26 +231,19 @@ async function copyImage() {
 </script>
 
 <style scoped>
-/* Page wrapper */
+/* Page wrapper — 外壳的 background/border-radius/box-shadow、标题副标题
+   的字体、@media (max-width: 600px) 的 padding + title font-size
+   已抽到 ~/styles/_tool-page.scss (全局 .tool-page / .tool-page__title /
+   .tool-page__subtitle)。这里只保留 qrcode 特有的 max-width /
+   margin / desktop padding / subtitle margin-bottom (20px)。 */
 .qrcode-tool {
   max-width: 1200px;
   margin: 20px auto;
   padding: 24px 12px;
-  background: var(--ep-bg-color);
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
-.title {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: bold;
-}
 .subtitle {
-  text-align: center;
-  color: #888;
   margin-bottom: 20px;
-  font-size: 1rem;
 }
 
 /* Two-card row */
@@ -377,8 +370,7 @@ async function copyImage() {
 }
 
 @media (max-width: 600px) {
-  .qrcode-tool { padding: 8px 2px; }
-  .title { font-size: 1.5rem; }
+  /* .qrcode-tool padding + .title font-size 已由全局 _tool-page.scss 提供 */
   .q-card { padding: 16px 14px; }
   .q-form-row__label { flex: 0 0 70px; font-size: 12px; }
   .q-preview-wrap { min-height: 220px; }

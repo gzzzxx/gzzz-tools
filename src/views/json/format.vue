@@ -21,9 +21,9 @@
   the editor follows the app's theme toggle.
 -->
 <template>
-  <div class="json-page">
-    <h2 class="json-title">{{ t('tools.format.name') }}</h2>
-    <div class="json-subtitle">{{ t('tools.format.desc') }}</div>
+  <div class="tool-page json-page">
+    <h2 class="tool-page__title json-title">{{ t('tools.format.name') }}</h2>
+    <div class="tool-page__subtitle json-subtitle">{{ t('tools.format.desc') }}</div>
 
     <div class="json-grid">
       <section class="json-card">
@@ -84,7 +84,13 @@ const editorClass = computed(() =>
    for a horizontal two-pane tool, viewport-fixed so the page
    never triggers a page-level scrollbar (height = 100vh -
    header (56) - page margins (16+16), with overflow:hidden to
-   clip inner overflow). */
+   clip inner overflow).
+   外壳的 background/border-radius/box-shadow、标题副标题的字体、
+   @media (max-width: 600px) 的 padding + title font-size
+   已抽到 ~/styles/_tool-page.scss (全局 .tool-page / .tool-page__title /
+   .tool-page__subtitle)。这里只保留 json 特有的 height (viewport-fixed) /
+   flex / overflow (full-viewport 双栏) / max-width / margin / padding /
+   subtitle margin-bottom (20px)。 */
 .json-page {
   max-width: 1600px;
   height: calc(100vh - 88px);
@@ -94,21 +100,10 @@ const editorClass = computed(() =>
   flex-direction: column;
   box-sizing: border-box;
   overflow: hidden;
-  background: var(--ep-bg-color);
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
-.json-title {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: bold;
-}
 .json-subtitle {
-  text-align: center;
-  color: #888;
   margin-bottom: 20px;
-  font-size: 1rem;
 }
 
 /* Two equal-width cards, no arrow. flex:1 + min-height:0 so the
@@ -205,8 +200,7 @@ const editorClass = computed(() =>
 }
 
 @media (max-width: 600px) {
-  .json-page { padding: 8px 2px; }
-  .json-title { font-size: 1.5rem; }
+  // .json-page padding + .json-title font-size 已由全局 _tool-page.scss 提供
   .json-card__header { padding: 6px 12px; }
 }
 </style>

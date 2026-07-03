@@ -15,9 +15,9 @@
   - Reading time: 400 CJK chars/min + 250 EN words/min, weighted.
 -->
 <template>
-  <div class="text-stats-tool">
-    <h2 class="title">{{ t('tools.textStats.name') }}</h2>
-    <div class="subtitle">{{ t('tools.textStats.desc') }}</div>
+  <div class="tool-page text-stats-tool">
+    <h2 class="tool-page__title title">{{ t('tools.textStats.name') }}</h2>
+    <div class="tool-page__subtitle subtitle">{{ t('tools.textStats.desc') }}</div>
 
     <el-card class="input-card">
       <el-input
@@ -227,26 +227,19 @@ function analyze(text: string): Stat {
 </script>
 
 <style scoped>
+/* 外壳 / 标题 / 副标题 / @media (max-width: 600px) 的 padding + title
+   font-size 已抽到 ~/styles/_tool-page.scss (全局 .tool-page /
+   .tool-page__title / .tool-page__subtitle)。这里只保留 text-stats
+   特有的 max-width (1080px) / margin / desktop padding /
+   subtitle margin-bottom (24px)。 */
 .text-stats-tool {
   max-width: 1080px;
   margin: 20px auto;
   padding: 24px 12px;
-  background: var(--ep-bg-color);
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-}
-
-.title {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: bold;
 }
 
 .subtitle {
-  text-align: center;
-  color: #888;
   margin-bottom: 24px;
-  font-size: 1rem;
 }
 
 .input-card {
@@ -337,7 +330,6 @@ function analyze(text: string): Stat {
 }
 
 @media (max-width: 600px) {
-  .text-stats-tool { padding: 8px 2px; }
-  .title { font-size: 1.5rem; }
+  /* .text-stats-tool padding + .title font-size 已由全局 _tool-page.scss 提供 */
 }
 </style>

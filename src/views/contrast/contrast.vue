@@ -21,9 +21,9 @@
   re-write the wrapper className on every (isDark, mode) change.
 -->
 <template>
-  <div class="contrast-page">
-    <h2 class="contrast-title">{{ t('tools.contrast.name') }}</h2>
-    <div class="contrast-subtitle">{{ t('tools.contrast.desc') }}</div>
+  <div class="tool-page contrast-page">
+    <h2 class="tool-page__title contrast-title">{{ t('tools.contrast.name') }}</h2>
+    <div class="tool-page__subtitle contrast-subtitle">{{ t('tools.contrast.desc') }}</div>
 
     <div class="contrast-toolbar">
       <div class="contrast-toolbar__group">
@@ -191,27 +191,21 @@ watch(
    (1600px) centered shell with a soft drop shadow. No fixed height
    here (unlike sql.vue) because the diff result can be tall and
    shouldn't squeeze the two input cards above; the page grows with
-   content and the browser scrolls naturally. */
+   content and the browser scrolls naturally.
+   外壳的 background/border-radius/box-shadow、标题副标题的字体、
+   @media (max-width: 600px) 的 padding + title font-size
+   已抽到 ~/styles/_tool-page.scss (全局 .tool-page / .tool-page__title /
+   .tool-page__subtitle)。这里只保留 contrast 特有的 max-width /
+   margin / padding / subtitle margin-bottom (20px)。 */
 .contrast-page {
   max-width: 1600px;
   margin: 16px auto;
   padding: 20px 16px;
-  background: var(--ep-bg-color);
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   box-sizing: border-box;
 }
 
-.contrast-title {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: bold;
-}
 .contrast-subtitle {
-  text-align: center;
-  color: #888;
   margin-bottom: 20px;
-  font-size: 1rem;
 }
 
 /* Toolbar — page-level settings (language / mode / folding). Sits
@@ -368,8 +362,7 @@ watch(
 }
 
 @media (max-width: 600px) {
-  .contrast-page { padding: 8px 2px; }
-  .contrast-title { font-size: 1.5rem; }
+  // .contrast-page padding + .contrast-title font-size 已由全局 _tool-page.scss 提供
   .contrast-toolbar { gap: 12px; padding: 10px 12px; }
   .contrast-toolbar__select { width: 120px; }
   .contrast-card__header,

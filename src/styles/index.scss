@@ -20,6 +20,11 @@
 @use "./variables" as *;
 // 3. Reusable layout primitives (cards / banner / section title)
 @use "./cards" as *;
+// 4. Tool page shared chrome — see _tool-page.scss for what's covered.
+//    Provides .tool-page / .tool-page__title / .tool-page__subtitle so
+//    every tool view inherits the same shell + heading look without
+//    duplicating the rules in each <style scoped>.
+@use "./tool-page" as *;
 
 // ---------------------------------------------------------------------
 // Global resets

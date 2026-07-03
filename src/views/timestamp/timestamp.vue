@@ -1,7 +1,7 @@
 <template>
-  <div class="timestamp-tool">
-    <h2 class="title">时间戳转换工具</h2>
-    <div class="subtitle">支持秒/毫秒与日期互转，选择或输入任意一项自动同步</div>
+  <div class="tool-page timestamp-tool">
+    <h2 class="tool-page__title title">时间戳转换工具</h2>
+    <div class="tool-page__subtitle subtitle">支持秒/毫秒与日期互转，选择或输入任意一项自动同步</div>
     <el-card class="input-card">
       <el-row :gutter="20" style="margin-bottom: 16px;">
         <el-col :span="24">
@@ -160,24 +160,19 @@ function copyToClipboard(text: string) {
 </script>
 
 <style scoped>
+/* 外壳 / 标题 / 副标题 / @media (max-width: 600px) 的 padding + title
+   font-size 已抽到 ~/styles/_tool-page.scss (全局 .tool-page /
+   .tool-page__title / .tool-page__subtitle)。这里只保留 timestamp
+   特有的 max-width (700px, 最窄的工具) / margin (40px) /
+   desktop padding / subtitle margin-bottom (24px)。 */
 .timestamp-tool {
   max-width: 700px;
   margin: 40px auto;
   padding: 24px 12px;
-  background: var(--ep-bg-color);
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
 }
-.title {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: bold;
-}
+
 .subtitle {
-  text-align: center;
-  color: #888;
   margin-bottom: 24px;
-  font-size: 1rem;
 }
 .input-card {
   margin-bottom: 24px;
@@ -233,9 +228,7 @@ function copyToClipboard(text: string) {
   color: var(--ep-color-primary);
 }
 @media (max-width: 600px) {
-  .timestamp-tool {
-    padding: 8px 2px;
-  }
+  /* .timestamp-tool padding 已由全局 _tool-page.scss 提供 */
   .result-card {
     min-height: 80px;
   }

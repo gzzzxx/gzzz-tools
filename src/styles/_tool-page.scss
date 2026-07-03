@@ -1,0 +1,65 @@
+// =====================================================================
+// _tool-page.scss — 工具页面共享样式 (Step 1 抽取)
+//
+// 仅抽取所有 15 个工具页面 (base64 / json / sql / xml / contrast /
+// encryption / hash / calendar / timer / crontab / password-strength /
+// text-stats / qrcode / timestamp) 中 100% 一致的样式:
+//
+//   - 外壳的 background / border-radius / box-shadow / box-sizing
+//   - 居中大标题的 text-align / font-size / font-weight
+//   - 居中副标题的 text-align / color / font-size
+//   - @media (max-width: 600px) 的 padding: 8px 2px + title font-size: 1.5rem
+//
+// 各页面保留 (不抽到此处, 因为现有页面这些值不一致):
+//
+//   - 外壳的 max-width: 700 / 800 / 1080 / 1200 / 1400 / 1600
+//   - 外壳的 margin: 16px auto / 20px auto / 40px auto
+//   - 外壳的 desktop padding: 20px 16px / 24px 12px / 24px 16px
+//   - 副标题的 margin-bottom: 20px / 24px
+//   - 移动端响应式里针对子组件 (card / toolbar / input 等) 的样式
+//
+// 注意: 标题的 margin 不在这里设 — 让全局 h2 { margin-block-start: 8px;
+// margin-block-end: 8px; } (在 styles/index.scss) 生效。之前所有工具页面
+// 的 scoped .title / .xxx-title 块都没有设 margin, 完全继承自全局 h2 样式。
+//
+// 注意: 副标题的 color 仍然是 #888 (硬编码)。所有 15 个工具页面都是
+// 同一行 color: #888 — 这一致性已经保留, 没有 token 化, 本 Step 不动。
+//
+// 用法: 在模板上叠加全局类, scoped style 删掉对应块即可。例如:
+//
+//   <div class="tool-page base64-page">       ← 加 tool-page
+//     <h2 class="tool-page__title base64-title">...</h2>
+//     <div class="tool-page__subtitle base64-subtitle">...</div>
+//   </div>
+//
+// 全局类用 BEM 长名 (.tool-page / .tool-page__title / .tool-page__subtitle)
+// 避免与 scoped 的 .title / .subtitle (hash.vue 等使用) 冲突。
+// =====================================================================
+
+.tool-page {
+  background: var(--ep-bg-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+}
+
+.tool-page__title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  // margin 不在这里设 — 让全局 h2 { margin-block-start: 8px;
+  // margin-block-end: 8px; } 生效。所有工具页面之前都靠全局 h2
+  // margin-block 撑出标题上下 8px 间距, 这里不能加 margin: 0。
+}
+
+.tool-page__subtitle {
+  text-align: center;
+  color: #888;
+  font-size: 1rem;
+}
+
+// 移动端: 所有 15 个工具页面一致 — padding: 8px 2px + title: 1.5rem
+@media (max-width: 600px) {
+  .tool-page { padding: 8px 2px; }
+  .tool-page__title { font-size: 1.5rem; }
+}

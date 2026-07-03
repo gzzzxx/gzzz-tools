@@ -17,9 +17,9 @@
   see there" split.
 -->
 <template>
-  <div class="xml-page">
-    <h2 class="xml-title">{{ t('tools.xml.name') }}</h2>
-    <div class="xml-subtitle">{{ t('tools.xml.desc') }}</div>
+  <div class="tool-page xml-page">
+    <h2 class="tool-page__title xml-title">{{ t('tools.xml.name') }}</h2>
+    <div class="tool-page__subtitle xml-subtitle">{{ t('tools.xml.desc') }}</div>
 
     <!-- Top action toolbar — sits above the input/output grid so
          the user sees what they can do before diving into either
@@ -209,7 +209,13 @@ watch([() => form.data, indent], () => autoFormat(form.data), { flush: 'post' })
    viewport and triggers a page-level scrollbar:
      height = 100vh - BaseHeader (56px) - top/bottom margin (16+16)
    overflow: hidden + box-sizing: border-box keep any inner
-   overflow confined — textareas scroll internally. */
+   overflow confined — textareas scroll internally.
+   外壳的 background/border-radius/box-shadow、标题副标题的字体、
+   @media (max-width: 600px) 的 padding + title font-size
+   已抽到 ~/styles/_tool-page.scss (全局 .tool-page / .tool-page__title /
+   .tool-page__subtitle)。这里只保留 xml 特有的 height (viewport-fixed) /
+   flex / overflow / max-width / margin / padding /
+   subtitle margin-bottom (20px)。 */
 .xml-page {
   max-width: 1600px;
   height: calc(100vh - 88px);
@@ -219,21 +225,10 @@ watch([() => form.data, indent], () => autoFormat(form.data), { flush: 'post' })
   flex-direction: column;
   box-sizing: border-box;
   overflow: hidden;
-  background: var(--ep-bg-color);
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
-.xml-title {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: bold;
-}
 .xml-subtitle {
-  text-align: center;
-  color: #888;
   margin-bottom: 20px;
-  font-size: 1rem;
 }
 
 /* Two-card row. 1fr 1fr (no center column) matches the JSON
@@ -343,8 +338,7 @@ watch([() => form.data, indent], () => autoFormat(form.data), { flush: 'post' })
 }
 
 @media (max-width: 600px) {
-  .xml-page { padding: 8px 2px; }
-  .xml-title { font-size: 1.5rem; }
+  // .xml-page padding + .xml-title font-size 已由全局 _tool-page.scss 提供
   .xml-card__header { padding: 10px 12px; }
   .xml-card__indent { width: 110px; }
   .xml-toolbar { gap: 12px; }

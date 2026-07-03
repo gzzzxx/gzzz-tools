@@ -18,9 +18,9 @@
   and audible on laptop speakers without being obnoxious.
 -->
 <template>
-  <div class="timer-tool">
-    <h2 class="title">{{ t('tools.timer.name') }}</h2>
-    <div class="subtitle">{{ t('tools.timer.desc') }}</div>
+  <div class="tool-page timer-tool">
+    <h2 class="tool-page__title title">{{ t('tools.timer.name') }}</h2>
+    <div class="tool-page__subtitle subtitle">{{ t('tools.timer.desc') }}</div>
 
     <div class="t-tabs" role="tablist">
       <button
@@ -388,26 +388,20 @@ onBeforeUnmount(() => {
 
 <style scoped>
 /* Page-level wrapper — same look as the other tools in this
-   project (max-width 1200px, soft shadow card on the page bg). */
+   project (max-width 1200px, soft shadow card on the page bg).
+   外壳的 background/border-radius/box-shadow、标题副标题的字体、
+   @media (max-width: 600px) 的 padding + title font-size
+   已抽到 ~/styles/_tool-page.scss (全局 .tool-page / .tool-page__title /
+   .tool-page__subtitle)。这里只保留 timer 特有的 max-width / margin /
+   desktop padding / subtitle margin-bottom (20px)。 */
 .timer-tool {
   max-width: 1200px;
   margin: 20px auto;
   padding: 24px 12px;
-  background: var(--ep-bg-color);
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
-.title {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: bold;
-}
 .subtitle {
-  text-align: center;
-  color: #888;
   margin-bottom: 20px;
-  font-size: 1rem;
 }
 
 /* Mode tabs */
@@ -582,8 +576,7 @@ onBeforeUnmount(() => {
 
 /* Mobile */
 @media (max-width: 600px) {
-  .timer-tool { padding: 8px 2px; }
-  .title { font-size: 1.5rem; }
+  /* .timer-tool padding + .title font-size 已由全局 _tool-page.scss 提供 */
   .t-card { padding: 20px 16px; }
   .t-display__time { font-size: 44px; letter-spacing: 1px; }
   .t-tab { padding: 8px 16px; font-size: 14px; }
