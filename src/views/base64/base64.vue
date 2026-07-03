@@ -27,9 +27,11 @@
   placeholders, section titles) get proper i18n keys.
 -->
 <template>
-  <div class="tool-page base64-page">
-    <h2 class="tool-page__title base64-title">{{ t('tools.base64.name') }}</h2>
-    <div class="tool-page__subtitle base64-subtitle">{{ t('tools.base64.desc') }}</div>
+  <ToolPage
+    class="base64-page"
+    :title="t('tools.base64.name')"
+    :subtitle="t('tools.base64.desc')"
+  >
 
     <div class="base64-toolbar">
       <el-button type="primary" :icon="SwitchFilled" @click="encode">
@@ -235,7 +237,7 @@
         </el-table>
       </div>
     </section>
-  </div>
+  </ToolPage>
 </template>
 
 <script lang="ts" setup>
@@ -406,20 +408,18 @@ const tableDemoData: TableDemo[] = [
    centered shell with a soft drop shadow. The reference card
    below has a 27-column demo table, so the wider shell keeps it
    from being squeezed into horizontal scroll on desktop.
-   外壳的 background/border-radius/box-shadow、标题副标题的字体、
-   @media (max-width: 600px) 的 padding + title font-size
-   已抽到 ~/styles/_tool-page.scss (全局 .tool-page / .tool-page__title /
-   .tool-page__subtitle)。这里只保留 base64 特有的 max-width /
-   margin (16px, 比标准的 20px 更贴近边缘) / desktop padding /
-   subtitle margin-bottom (20px)。 */
+   标题 / 副标题的字体 + 移动端 padding + 外壳 background/border-radius
+   / box-shadow 已抽到 ~/components/tools/ToolPage.vue + ~/styles/_tool-page.scss,
+   这里只保留 base64 特有的 sizing (通过 CSS 变量覆盖默认值):
+     - max-width: 1600px (最宽, 因为有 27 列 demo table)
+     - margin-y: 16px (比标准 20px 更贴近边缘)
+     - padding: 20px 16px
+     - subtitle margin-bottom: 20px */
 .base64-page {
-  max-width: 1600px;
-  margin: 16px auto;
-  padding: 20px 16px;
-}
-
-.base64-subtitle {
-  margin-bottom: 20px;
+  --tool-page-max-width: 1600px;
+  --tool-page-margin-y: 16px;
+  --tool-page-padding: 20px 16px;
+  --tool-page-subtitle-mb: 20px;
 }
 
 /* Top toolbar — primary transform actions live here so they're

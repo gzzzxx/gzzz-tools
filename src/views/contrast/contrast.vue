@@ -21,9 +21,11 @@
   re-write the wrapper className on every (isDark, mode) change.
 -->
 <template>
-  <div class="tool-page contrast-page">
-    <h2 class="tool-page__title contrast-title">{{ t('tools.contrast.name') }}</h2>
-    <div class="tool-page__subtitle contrast-subtitle">{{ t('tools.contrast.desc') }}</div>
+  <ToolPage
+    class="contrast-page"
+    :title="t('tools.contrast.name')"
+    :subtitle="t('tools.contrast.desc')"
+  >
 
     <div class="contrast-toolbar">
       <div class="contrast-toolbar__group">
@@ -129,7 +131,7 @@
         :folding="form.folding"
       />
     </section>
-  </div>
+  </ToolPage>
 </template>
 
 <script lang="ts" setup>
@@ -192,20 +194,18 @@ watch(
    here (unlike sql.vue) because the diff result can be tall and
    shouldn't squeeze the two input cards above; the page grows with
    content and the browser scrolls naturally.
-   外壳的 background/border-radius/box-shadow、标题副标题的字体、
-   @media (max-width: 600px) 的 padding + title font-size
-   已抽到 ~/styles/_tool-page.scss (全局 .tool-page / .tool-page__title /
-   .tool-page__subtitle)。这里只保留 contrast 特有的 max-width /
-   margin / padding / subtitle margin-bottom (20px)。 */
+   标题 / 副标题的字体 + 移动端 padding + 外壳 background/border-radius
+   / box-shadow 已抽到 ~/components/tools/ToolPage.vue + ~/styles/_tool-page.scss,
+   这里只保留 contrast 特有的 sizing (通过 CSS 变量覆盖默认值):
+     - max-width: 1600px
+     - margin-y: 16px
+     - padding: 20px 16px
+     - subtitle margin-bottom: 20px */
 .contrast-page {
-  max-width: 1600px;
-  margin: 16px auto;
-  padding: 20px 16px;
-  box-sizing: border-box;
-}
-
-.contrast-subtitle {
-  margin-bottom: 20px;
+  --tool-page-max-width: 1600px;
+  --tool-page-margin-y: 16px;
+  --tool-page-padding: 20px 16px;
+  --tool-page-subtitle-mb: 20px;
 }
 
 /* Toolbar — page-level settings (language / mode / folding). Sits

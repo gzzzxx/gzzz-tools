@@ -14,9 +14,11 @@
   category so /format /sql /xml all feel like one family.
 -->
 <template>
-  <div class="tool-page sql-page">
-    <h2 class="tool-page__title sql-title">{{ t('tools.sql.name') }}</h2>
-    <div class="tool-page__subtitle sql-subtitle">{{ t('tools.sql.desc') }}</div>
+  <ToolPage
+    class="sql-page"
+    :title="t('tools.sql.name')"
+    :subtitle="t('tools.sql.desc')"
+  >
 
     <div class="sql-toolbar">
       <el-button type="primary" :icon="MagicStick" @click="format">
@@ -75,7 +77,7 @@
         />
       </section>
     </div>
-  </div>
+  </ToolPage>
 </template>
 
 <script lang="ts" setup>
@@ -179,25 +181,25 @@ watch(() => form.data, autoFormat)
    triggers a page-level scrollbar (height = 100vh - header -
    page margins, with overflow:hidden to clip inner overflow).
    flex-direction: column lets .sql-grid grow with flex:1.
-   外壳的 background/border-radius/box-shadow、标题副标题的字体、
-   @media (max-width: 600px) 的 padding + title font-size
-   已抽到 ~/styles/_tool-page.scss (全局 .tool-page / .tool-page__title /
-   .tool-page__subtitle)。这里只保留 sql 特有的 height (viewport-fixed) /
-   flex / overflow / max-width / margin / padding /
-   subtitle margin-bottom (20px)。 */
+   标题 / 副标题的字体 + 移动端 padding + 外壳 background/border-radius
+   / box-shadow 已抽到 ~/components/tools/ToolPage.vue + ~/styles/_tool-page.scss,
+   这里只保留 sql 特有的 sizing (通过 CSS 变量覆盖默认值) +
+   viewport-fixed 全屏双栏 (height / display / flex / overflow):
+     - max-width: 1600px
+     - margin-y: 16px
+     - padding: 20px 16px
+     - subtitle margin-bottom: 20px */
 .sql-page {
-  max-width: 1600px;
+  --tool-page-max-width: 1600px;
+  --tool-page-margin-y: 16px;
+  --tool-page-padding: 20px 16px;
+  --tool-page-subtitle-mb: 20px;
+
+  // viewport-fixed 全屏双栏
   height: calc(100vh - 88px);
-  margin: 16px auto;
-  padding: 20px 16px;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
   overflow: hidden;
-}
-
-.sql-subtitle {
-  margin-bottom: 20px;
 }
 
 /* Top toolbar. Button horizontal padding tightened from the

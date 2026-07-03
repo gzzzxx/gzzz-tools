@@ -19,9 +19,11 @@
   - Crack time is informational only: guesses ≈ 10^entropy / rate.
 -->
 <template>
-  <div class="tool-page pwd-tool">
-    <h2 class="tool-page__title title">{{ t('tools.passwordStrength.name') }}</h2>
-    <div class="tool-page__subtitle subtitle">{{ t('tools.passwordStrength.desc') }}</div>
+  <ToolPage
+    class="pwd-tool"
+    :title="t('tools.passwordStrength.name')"
+    :subtitle="t('tools.passwordStrength.desc')"
+  >
 
     <el-card class="input-card">
       <label class="pwd-label">{{ t('passwordStrengthPage.input.label') }}</label>
@@ -118,7 +120,7 @@
     <div v-else class="empty">
       {{ t('passwordStrengthPage.empty') }}
     </div>
-  </div>
+  </ToolPage>
 </template>
 
 <script setup lang="ts">
@@ -306,20 +308,18 @@ const rules = computed<Rule[]>(() => {
 </script>
 
 <style scoped>
-/* Page wrapper — 外壳的 background/border-radius/box-shadow、标题副标题
-   的字体、@media (max-width: 600px) 的 padding + title font-size
-   已抽到 ~/styles/_tool-page.scss (全局 .tool-page / .tool-page__title /
-   .tool-page__subtitle)。这里只保留 pwd-tool 特有的 max-width / margin
-   (40px 比标准 20px 大一圈, 给工具多一点垂直呼吸) / desktop padding /
-   subtitle margin-bottom (24px)。 */
+/* Page wrapper — 标题 / 副标题的字体 + 移动端 padding + 外壳 background/
+   border-radius / box-shadow 已抽到 ~/components/tools/ToolPage.vue +
+   ~/styles/_tool-page.scss, 这里只保留 pwd-tool 特有的 sizing:
+     - max-width: 800px (紧凑工具)
+     - margin-y: 40px (比标准 20px 大一圈, 给工具多一点垂直呼吸)
+     - padding: 24px 12px
+     - subtitle margin-bottom: 24px */
 .pwd-tool {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 24px 12px;
-}
-
-.subtitle {
-  margin-bottom: 24px;
+  --tool-page-max-width: 800px;
+  --tool-page-margin-y: 40px;
+  --tool-page-padding: 24px 12px;
+  --tool-page-subtitle-mb: 24px;
 }
 
 .pwd-label {

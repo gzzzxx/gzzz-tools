@@ -18,10 +18,11 @@
   and audible on laptop speakers without being obnoxious.
 -->
 <template>
-  <div class="tool-page timer-tool">
-    <h2 class="tool-page__title title">{{ t('tools.timer.name') }}</h2>
-    <div class="tool-page__subtitle subtitle">{{ t('tools.timer.desc') }}</div>
-
+  <ToolPage
+    class="timer-tool"
+    :title="t('tools.timer.name')"
+    :subtitle="t('tools.timer.desc')"
+  >
     <div class="t-tabs" role="tablist">
       <button
         class="t-tab"
@@ -135,7 +136,7 @@
         </el-button>
       </div>
     </div>
-  </div>
+  </ToolPage>
 </template>
 
 <script setup lang="ts">
@@ -389,19 +390,19 @@ onBeforeUnmount(() => {
 <style scoped>
 /* Page-level wrapper — same look as the other tools in this
    project (max-width 1200px, soft shadow card on the page bg).
-   外壳的 background/border-radius/box-shadow、标题副标题的字体、
-   @media (max-width: 600px) 的 padding + title font-size
-   已抽到 ~/styles/_tool-page.scss (全局 .tool-page / .tool-page__title /
-   .tool-page__subtitle)。这里只保留 timer 特有的 max-width / margin /
-   desktop padding / subtitle margin-bottom (20px)。 */
+   标题 / 副标题的字体 + 移动端 padding + 外壳 background/border-radius
+   / box-shadow 已抽到 ~/components/tools/ToolPage.vue + ~/styles/_tool-page.scss,
+   这里只保留 timer 特有的 sizing (通过 CSS 变量覆盖 <ToolPage> 根元素的默认值):
+     - max-width: 1200px
+     - margin-y: 20px
+     - padding: 24px 12px
+     - subtitle margin-bottom: 20px
+   CSS 变量是必要的 — Vue scoped CSS 不会穿透到 <ToolPage> 内部元素。 */
 .timer-tool {
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 24px 12px;
-}
-
-.subtitle {
-  margin-bottom: 20px;
+  --tool-page-max-width: 1200px;
+  --tool-page-margin-y: 20px;
+  --tool-page-padding: 24px 12px;
+  --tool-page-subtitle-mb: 20px;
 }
 
 /* Mode tabs */

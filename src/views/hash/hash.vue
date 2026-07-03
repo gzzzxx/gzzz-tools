@@ -10,12 +10,11 @@
   Auto-recompute on input change — cheap for small text, no debounce.
 -->
 <template>
-  <div class="tool-page hash-tool">
-    <h2 class="tool-page__title title">Hash 计算</h2>
-    <div class="tool-page__subtitle subtitle">
-      输入文本,实时计算 MD5 / SHA-1 / SHA-256 / SHA-384 / SHA-512
-    </div>
-
+  <ToolPage
+    class="hash-tool"
+    title="Hash 计算"
+    subtitle="输入文本,实时计算 MD5 / SHA-1 / SHA-256 / SHA-384 / SHA-512"
+  >
     <el-card class="input-card">
       <el-input
         v-model="input"
@@ -66,7 +65,7 @@
         </el-card>
       </el-col>
     </el-row>
-  </div>
+  </ToolPage>
 </template>
 
 <script setup lang="ts">
@@ -140,18 +139,20 @@ function copy(key: keyof HashResults) {
 </script>
 
 <style scoped>
-/* 外壳 / 标题 / 副标题 / 移动端 padding 已抽到 ~/styles/_tool-page.scss
-   (全局 .tool-page / .tool-page__title / .tool-page__subtitle),
-   这里只保留 hash 特有的 max-width / margin / desktop padding /
-   subtitle margin-bottom (24px, 比 20px 工具多一行间距)。 */
+/* 标题 / 副标题的字体 + 移动端 padding 已抽到 ~/styles/_tool-page.scss
+   + ~/components/tools/ToolPage.vue, 这里只保留 hash 特有的 sizing
+   (通过 CSS 变量覆盖 <ToolPage> 根元素的默认值):
+     - max-width: 800px (hash 是紧凑工具)
+     - margin-y: 20px
+     - padding: 24px 12px
+     - subtitle margin-bottom: 24px (比标准 20px 多一行间距)
+   CSS 变量是必要的 — Vue scoped CSS 不会穿透到 <ToolPage> 内部元素,
+   所以不能写 .hash-subtitle 块, 必须从外层 root 把变量继承到内层。 */
 .hash-tool {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 24px 12px;
-}
-
-.subtitle {
-  margin-bottom: 24px;
+  --tool-page-max-width: 800px;
+  --tool-page-margin-y: 20px;
+  --tool-page-padding: 24px 12px;
+  --tool-page-subtitle-mb: 24px;
 }
 
 .input-card {

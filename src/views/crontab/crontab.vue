@@ -13,9 +13,11 @@
   the description text follows the UI locale.
 -->
 <template>
-  <div class="tool-page crontab-tool">
-    <h2 class="tool-page__title title">{{ t('tools.crontab.name') }}</h2>
-    <div class="tool-page__subtitle subtitle">{{ t('tools.crontab.desc') }}</div>
+  <ToolPage
+    class="crontab-tool"
+    :title="t('tools.crontab.name')"
+    :subtitle="t('tools.crontab.desc')"
+  >
 
     <div class="crontab-row">
       <!-- ============== Left: input + description + toggles ============== -->
@@ -99,7 +101,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </ToolPage>
 </template>
 
 <script setup lang="ts">
@@ -229,19 +231,18 @@ const diagramText = computed(() => {
 <style scoped>
 /* Page-level wrapper — same look as the other tools in this
    project (max-width 1200px, soft shadow card on the page bg).
-   外壳的 background/border-radius/box-shadow、标题副标题的字体、
-   @media (max-width: 600px) 的 padding + title font-size
-   已抽到 ~/styles/_tool-page.scss (全局 .tool-page / .tool-page__title /
-   .tool-page__subtitle)。这里只保留 crontab 特有的 max-width /
-   margin / desktop padding / subtitle margin-bottom (20px)。 */
+   标题 / 副标题的字体 + 移动端 padding + 外壳 background/border-radius
+   / box-shadow 已抽到 ~/components/tools/ToolPage.vue + ~/styles/_tool-page.scss,
+   这里只保留 crontab 特有的 sizing (通过 CSS 变量覆盖默认值):
+     - max-width: 1200px
+     - margin-y: 20px
+     - padding: 24px 12px
+     - subtitle margin-bottom: 20px */
 .crontab-tool {
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 24px 12px;
-}
-
-.subtitle {
-  margin-bottom: 20px;
+  --tool-page-max-width: 1200px;
+  --tool-page-margin-y: 20px;
+  --tool-page-padding: 24px 12px;
+  --tool-page-subtitle-mb: 20px;
 }
 
 /* c-card — direct port of it-tools' CCard.vue: white bg + 1px

@@ -19,9 +19,11 @@
   loop idle most of the time.
 -->
 <template>
-  <div class="tool-page qrcode-tool">
-    <h2 class="tool-page__title title">{{ t('tools.qrcode.name') }}</h2>
-    <div class="tool-page__subtitle subtitle">{{ t('tools.qrcode.desc') }}</div>
+  <ToolPage
+    class="qrcode-tool"
+    :title="t('tools.qrcode.name')"
+    :subtitle="t('tools.qrcode.desc')"
+  >
 
     <div class="qr-row">
       <!-- ============== Left: input + options ============== -->
@@ -106,7 +108,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </ToolPage>
 </template>
 
 <script setup lang="ts">
@@ -231,19 +233,18 @@ async function copyImage() {
 </script>
 
 <style scoped>
-/* Page wrapper — 外壳的 background/border-radius/box-shadow、标题副标题
-   的字体、@media (max-width: 600px) 的 padding + title font-size
-   已抽到 ~/styles/_tool-page.scss (全局 .tool-page / .tool-page__title /
-   .tool-page__subtitle)。这里只保留 qrcode 特有的 max-width /
-   margin / desktop padding / subtitle margin-bottom (20px)。 */
+/* 标题 / 副标题的字体 + 移动端 padding + 外壳 background/border-radius
+   / box-shadow 已抽到 ~/components/tools/ToolPage.vue + ~/styles/_tool-page.scss,
+   这里只保留 qrcode 特有的 sizing (通过 CSS 变量覆盖默认值):
+     - max-width: 1200px
+     - margin-y: 20px
+     - padding: 24px 12px
+     - subtitle margin-bottom: 20px */
 .qrcode-tool {
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 24px 12px;
-}
-
-.subtitle {
-  margin-bottom: 20px;
+  --tool-page-max-width: 1200px;
+  --tool-page-margin-y: 20px;
+  --tool-page-padding: 24px 12px;
+  --tool-page-subtitle-mb: 20px;
 }
 
 /* Two-card row */

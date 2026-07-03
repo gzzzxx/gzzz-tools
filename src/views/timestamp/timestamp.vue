@@ -1,7 +1,9 @@
 <template>
-  <div class="tool-page timestamp-tool">
-    <h2 class="tool-page__title title">时间戳转换工具</h2>
-    <div class="tool-page__subtitle subtitle">支持秒/毫秒与日期互转，选择或输入任意一项自动同步</div>
+  <ToolPage
+    class="timestamp-tool"
+    title="时间戳转换工具"
+    subtitle="支持秒/毫秒与日期互转，选择或输入任意一项自动同步"
+  >
     <el-card class="input-card">
       <el-row :gutter="20" style="margin-bottom: 16px;">
         <el-col :span="24">
@@ -77,7 +79,7 @@
         </el-card>
       </el-col>
     </el-row>
-  </div>
+  </ToolPage>
 </template>
 
 <script setup lang="ts">
@@ -160,19 +162,18 @@ function copyToClipboard(text: string) {
 </script>
 
 <style scoped>
-/* 外壳 / 标题 / 副标题 / @media (max-width: 600px) 的 padding + title
-   font-size 已抽到 ~/styles/_tool-page.scss (全局 .tool-page /
-   .tool-page__title / .tool-page__subtitle)。这里只保留 timestamp
-   特有的 max-width (700px, 最窄的工具) / margin (40px) /
-   desktop padding / subtitle margin-bottom (24px)。 */
+/* 标题 / 副标题的字体 + 移动端 padding + 外壳 background/border-radius
+   / box-shadow 已抽到 ~/components/tools/ToolPage.vue + ~/styles/_tool-page.scss,
+   这里只保留 timestamp 特有的 sizing (通过 CSS 变量覆盖默认值):
+     - max-width: 700px (最窄的工具)
+     - margin-y: 40px
+     - padding: 24px 12px
+     - subtitle margin-bottom: 24px */
 .timestamp-tool {
-  max-width: 700px;
-  margin: 40px auto;
-  padding: 24px 12px;
-}
-
-.subtitle {
-  margin-bottom: 24px;
+  --tool-page-max-width: 700px;
+  --tool-page-margin-y: 40px;
+  --tool-page-padding: 24px 12px;
+  --tool-page-subtitle-mb: 24px;
 }
 .input-card {
   margin-bottom: 24px;

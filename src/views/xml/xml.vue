@@ -17,9 +17,11 @@
   see there" split.
 -->
 <template>
-  <div class="tool-page xml-page">
-    <h2 class="tool-page__title xml-title">{{ t('tools.xml.name') }}</h2>
-    <div class="tool-page__subtitle xml-subtitle">{{ t('tools.xml.desc') }}</div>
+  <ToolPage
+    class="xml-page"
+    :title="t('tools.xml.name')"
+    :subtitle="t('tools.xml.desc')"
+  >
 
     <!-- Top action toolbar — sits above the input/output grid so
          the user sees what they can do before diving into either
@@ -96,7 +98,7 @@
         />
       </section>
     </div>
-  </div>
+  </ToolPage>
 </template>
 
 <script lang="ts" setup>
@@ -210,25 +212,25 @@ watch([() => form.data, indent], () => autoFormat(form.data), { flush: 'post' })
      height = 100vh - BaseHeader (56px) - top/bottom margin (16+16)
    overflow: hidden + box-sizing: border-box keep any inner
    overflow confined — textareas scroll internally.
-   外壳的 background/border-radius/box-shadow、标题副标题的字体、
-   @media (max-width: 600px) 的 padding + title font-size
-   已抽到 ~/styles/_tool-page.scss (全局 .tool-page / .tool-page__title /
-   .tool-page__subtitle)。这里只保留 xml 特有的 height (viewport-fixed) /
-   flex / overflow / max-width / margin / padding /
-   subtitle margin-bottom (20px)。 */
+   标题 / 副标题的字体 + 移动端 padding + 外壳 background/border-radius
+   / box-shadow 已抽到 ~/components/tools/ToolPage.vue + ~/styles/_tool-page.scss,
+   这里只保留 xml 特有的 sizing (通过 CSS 变量覆盖默认值) +
+   viewport-fixed 全屏双栏 (height / display / flex / overflow):
+     - max-width: 1600px
+     - margin-y: 16px
+     - padding: 20px 16px
+     - subtitle margin-bottom: 20px */
 .xml-page {
-  max-width: 1600px;
+  --tool-page-max-width: 1600px;
+  --tool-page-margin-y: 16px;
+  --tool-page-padding: 20px 16px;
+  --tool-page-subtitle-mb: 20px;
+
+  // viewport-fixed 全屏双栏
   height: calc(100vh - 88px);
-  margin: 16px auto;
-  padding: 20px 16px;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
   overflow: hidden;
-}
-
-.xml-subtitle {
-  margin-bottom: 20px;
 }
 
 /* Two-card row. 1fr 1fr (no center column) matches the JSON

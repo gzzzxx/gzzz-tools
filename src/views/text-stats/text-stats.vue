@@ -15,9 +15,11 @@
   - Reading time: 400 CJK chars/min + 250 EN words/min, weighted.
 -->
 <template>
-  <div class="tool-page text-stats-tool">
-    <h2 class="tool-page__title title">{{ t('tools.textStats.name') }}</h2>
-    <div class="tool-page__subtitle subtitle">{{ t('tools.textStats.desc') }}</div>
+  <ToolPage
+    class="text-stats-tool"
+    :title="t('tools.textStats.name')"
+    :subtitle="t('tools.textStats.desc')"
+  >
 
     <el-card class="input-card">
       <el-input
@@ -69,7 +71,7 @@
         </div>
       </div>
     </el-card>
-  </div>
+  </ToolPage>
 </template>
 
 <script setup lang="ts">
@@ -227,19 +229,18 @@ function analyze(text: string): Stat {
 </script>
 
 <style scoped>
-/* 外壳 / 标题 / 副标题 / @media (max-width: 600px) 的 padding + title
-   font-size 已抽到 ~/styles/_tool-page.scss (全局 .tool-page /
-   .tool-page__title / .tool-page__subtitle)。这里只保留 text-stats
-   特有的 max-width (1080px) / margin / desktop padding /
-   subtitle margin-bottom (24px)。 */
+/* 标题 / 副标题的字体 + 移动端 padding + 外壳 background/border-radius
+   / box-shadow 已抽到 ~/components/tools/ToolPage.vue + ~/styles/_tool-page.scss,
+   这里只保留 text-stats 特有的 sizing (通过 CSS 变量覆盖默认值):
+     - max-width: 1080px
+     - margin-y: 20px
+     - padding: 24px 12px
+     - subtitle margin-bottom: 24px */
 .text-stats-tool {
-  max-width: 1080px;
-  margin: 20px auto;
-  padding: 24px 12px;
-}
-
-.subtitle {
-  margin-bottom: 24px;
+  --tool-page-max-width: 1080px;
+  --tool-page-margin-y: 20px;
+  --tool-page-padding: 24px 12px;
+  --tool-page-subtitle-mb: 24px;
 }
 
 .input-card {

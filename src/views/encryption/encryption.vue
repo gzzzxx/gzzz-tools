@@ -19,9 +19,11 @@
   scoped to style only — the user asked to preserve functionality.
 -->
 <template>
-  <div class="tool-page encryption-page">
-    <h2 class="tool-page__title encryption-title">{{ title }}</h2>
-    <div class="tool-page__subtitle encryption-subtitle">{{ subtitle }}</div>
+  <ToolPage
+    class="encryption-page"
+    :title="title"
+    :subtitle="subtitle"
+  >
 
     <div class="encryption-tabs">
       <el-tabs v-model="activeName" class="encryption-tabs__nav" @tab-click="handleClick">
@@ -33,7 +35,7 @@
         </el-tab-pane>
       </el-tabs>
     </div>
-  </div>
+  </ToolPage>
 </template>
 
 <script lang="ts" setup>
@@ -66,21 +68,18 @@ const handleClick = (tab: { props: { label: string } }) => {
 /* Outer wrapper — same shell family as the other dev tools. 1400px
    (slightly narrower than sql.vue's 1600px) since the form has a
    3:1 column ratio and the narrower side doesn't need full 1600.
-   外壳的 background/border-radius/box-shadow、标题副标题的字体、
-   @media (max-width: 600px) 的 padding + title font-size
-   已抽到 ~/styles/_tool-page.scss (全局 .tool-page / .tool-page__title /
-   .tool-page__subtitle)。这里只保留 encryption 特有的 max-width (1400px) /
-   margin (20px) / desktop padding (24px 16px) /
-   subtitle margin-bottom (20px)。 */
+   标题 / 副标题的字体 + 移动端 padding + 外壳 background/border-radius
+   / box-shadow 已抽到 ~/components/tools/ToolPage.vue + ~/styles/_tool-page.scss,
+   这里只保留 encryption 特有的 sizing (通过 CSS 变量覆盖默认值):
+     - max-width: 1400px
+     - margin-y: 20px
+     - padding: 24px 16px
+     - subtitle margin-bottom: 20px */
 .encryption-page {
-  max-width: 1400px;
-  margin: 20px auto;
-  padding: 24px 16px;
-  box-sizing: border-box;
-}
-
-.encryption-subtitle {
-  margin-bottom: 20px;
+  --tool-page-max-width: 1400px;
+  --tool-page-margin-y: 20px;
+  --tool-page-padding: 24px 16px;
+  --tool-page-subtitle-mb: 20px;
 }
 
 /* Tabs — el-tabs defaults to left-aligned; we center the nav row

@@ -47,5 +47,6 @@ declare module 'vue' {
     SectionTitle: typeof import('./components/cards/SectionTitle.vue')['default']
     ThemeToggle: typeof import('./components/ThemeToggle.vue')['default']
     ToolCard: typeof import('./components/cards/ToolCard.vue')['default']
+    ToolPage: typeof import('./components/tools/ToolPage.vue')['default']
   }
 }
