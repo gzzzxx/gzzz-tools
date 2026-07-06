@@ -1,135 +1,42 @@
-<script lang="ts">
-const DEFAULT_COLOR = 'F5F7FA';
-const DEFAULT_COLOR_DARK = '#004035';
+<!--
+  color.vue — multi-picker color playground (vue-color 上游 demo 容器).
 
-import { parseSearchParams } from './utils.js';
-const pickers = ['chrome', 'sketch', 'photoshop', 'compact', 'grayscale', 'material', 'slider', 'twitter', 'swatches', 'hue', 'sliders'] as const;
-const searchParams = parseSearchParams(location.search);
-const manualEnabledPickers = searchParams.picker?.split(',');
+  对比其他工具页面 (双栏 / 1输入-N输出 / 居中 t-card):
+    - 11 种 picker 网格展示: 不走"单功能"工具模式, 而是把各种 picker
+      横向铺开供用户选
+    - .text 动态反色: 让 current-color / picker-title 文字在任意
+      用户选色背景下都可读
 
-function invertColor({ r, g, b, a}: { r: number; g: number; b: number, a: number }): string {
-  const invert = (val: number, alpha: number) => alpha === 0 ? 0 : 255 - val;
-  const inverted = {
-    r: invert(r, a),
-    g: invert(g, a),
-    b: invert(b, a),
-    a: a < 0.5 ? 1 - a : a
-  };
-  return `rgba(${inverted.r}, ${inverted.g}, ${inverted.b}, ${inverted.a})`;
-}
+  与其他工具页面的统一点:
+    - <ToolPage> 卡片外壳: max-width 1600px 居中, 跟随 light/dark
+      主题 (var(--ep-bg-color) + var(--it-text-primary))
+    - title / subtitle 走 i18n (复用 tools.color.name /
+      tools.color.desc, 已在 locales 配好)
 
-let isDark = document.documentElement.classList.contains('dark')
-const hasInitialColor = !!searchParams.hex;
-const initialColor = `${searchParams.hex ?? isDark ? DEFAULT_COLOR_DARK : DEFAULT_COLOR}`;
-</script>
+  内部布局 (100% 保留原版, 不做重排或紧凑化):
+    - 外层 .picker-containers 嵌套 3 行 .row
+    - 第一行 3 col: 第一个 col 顶部是 hex/rgb/hsv 文字 + ChromePicker
+    - 第二行 3 col: Compact/Grayscale/Material (stack) | Hue/Slider/Twitter (stack) | Swatches
+    - 第三行 3 col: RGBSliders | HSVSliders | HSLSliders
+    - 全部 picker-title 文字保留 (&lt;ChromePicker /&gt; 这种代码名)
 
-<script setup lang="ts">
-import { watch, computed, reactive } from 'vue';
-
-import {
-  ChromePicker,
-  SketchPicker,
-  PhotoshopPicker,
-  CompactPicker,
-  GrayscalePicker,
-  MaterialPicker,
-  SliderPicker,
-  TwitterPicker,
-  SwatchesPicker,
-  HueSlider,
-  HSLSliders,
-  HSVSliders,
-  RGBSliders,
-  tinycolor
-} from 'vue-color';
-import ThemeToggle from '../../components/ThemeToggle.vue';
-import 'vue-color/style.css';
-
-const showStatus: Record<(typeof pickers)[number], boolean> = {} as Record<(typeof pickers)[number], boolean>;
-pickers.forEach((picker) => {
-  if (!manualEnabledPickers || manualEnabledPickers.length === 0) {
-    showStatus[picker] = true;
-  } else {
-    showStatus[picker] = manualEnabledPickers.indexOf(picker) > -1;
-  }
-});
-
-const tinyColor = defineModel('tinyColor', {
-  default: tinycolor(initialColor)
-});
-
-const color = defineModel({
-  default: () => {
-    if (hasInitialColor) {
-      return initialColor;
-    }
-    // #F5F7FA
-    return reactive({r: 245, g: 247, b: 250, a: 1})
-  }
-});
-
-watch(color, () => console.log('changed ==>', color.value));
-
-const hex = computed(() => {
-  return tinycolor(tinyColor.value).toHex8String();
-});
-
-const hsva = computed(() => {
-  const hsva = tinycolor(tinyColor.value).toHsv();
-  const res: Record<string, number> = {};
-  for (const [key, value] of Object.entries(hsva)) {
-    res[key] = Number(value.toFixed(2));
-  }
-  return res;
-});
-
-const textColor = computed(() => {
-  return invertColor(tinycolor(tinyColor.value).toRgb());
-});
-
-const updateHue = (newHue: number) => {
-  tinyColor.value = tinycolor(tinyColor.value).spin(newHue - hsva.value.h).clone();
-}
-
-const onModeChange = (isDark: boolean) => {
-  if (isDark) {
-    tinyColor.value = tinycolor(DEFAULT_COLOR_DARK);
-  } else {
-    tinyColor.value = tinycolor(initialColor);
-  }
-}
-
-</script>
-
+  URL 参数:
+    - ?hex=XXXXXX   初始选色 (覆盖默认)
+    - ?picker=a,b,c  指定启用的 picker 列表 (默认全部)
+-->
 <template>
-  <div class="wrapper">
-    <!-- <div class="fixed-side">
-      <div class="title text">
-        <h1>Vue-color</h1>
-      </div>
-
-      <main class="intro text">
-        A collection of efficient color pickers designed for modern web development.
-        <ul class="feature-list text">
-          <li>✅ Supports both Vue 2.7 and Vue 3</li>
-          <li>✅ Modular & Tree-Shakable</li>
-          <li>✅ TypeScript Ready</li>
-          <li>✅ SSR-Friendly</li>
-          <li>✅ Optimized for Accessibility</li>
-          <li class="dark-mode"><span>✅ Supports Dark Theme</span><ThemeToggle style="margin-left: 10px;" :color="textColor" @change="onModeChange" /></li>
-        </ul>
-      </main>
-      <a
-        class="get-started text"
-        href="https://github.com/linx4200/vue-color#-installation"
-        :style="{'background-color': textColor.replace('1)', '0.75)'), color: hex}"
-        role="button"
-        aria-label="Get started with installation on GitHub"
-      >
-        Get Started &nbsp; 🚀
-      </a>
-    </div> -->
-    <div class="picker-containers">
+  <ToolPage
+    preset="large-form"
+    :title="t('tools.color.name')"
+    :subtitle="t('tools.color.desc')"
+  >
+    <!-- .wrapper 内部色块容器: background-color 跟随用户选色,
+         跟 .text 反色文字配对 — 保证 current-color / picker-title
+         文字在任意选色下都可读 (color 工具核心 UX)。
+         外层 <ToolPage> 仍然跟随 light/dark 主题, 内部色块不破坏
+         卡片化。 -->
+    <div class="wrapper" :style="{ backgroundColor: hex }">
+      <div class="picker-containers">
       <div class="row">
         <div class="col">
           <div class="text current-color">
@@ -207,11 +114,170 @@ const onModeChange = (isDark: boolean) => {
           <div class="picker-title text">&lt;HSLSliders /&gt;</div>
         </div>
       </div>
+      </div>
     </div>
-  </div>
+  </ToolPage>
 </template>
 
+<script lang="ts">
+const DEFAULT_COLOR = 'F5F7FA';
+const DEFAULT_COLOR_DARK = '#004035';
+
+import { parseSearchParams } from './utils';
+const pickers = ['chrome', 'sketch', 'photoshop', 'compact', 'grayscale', 'material', 'slider', 'twitter', 'swatches', 'hue', 'sliders'] as const;
+// typeof guards: vite-ssg build (prerender) 在 node 环境跑, document /
+// location 都不可用, 这里加 typeof 检查让 SSR / SSG 阶段拿到 fallback
+// 而不是抛错。
+const searchParams = parseSearchParams(
+  typeof location !== 'undefined' ? location.search : '',
+);
+const manualEnabledPickers = searchParams.picker?.split(',');
+
+function invertColor({ r, g, b, a}: { r: number; g: number; b: number, a: number }): string {
+  const invert = (val: number, alpha: number) => alpha === 0 ? 0 : 255 - val;
+  const inverted = {
+    r: invert(r, a),
+    g: invert(g, a),
+    b: invert(b, a),
+    a: a < 0.5 ? 1 - a : a
+  };
+  return `rgba(${inverted.r}, ${inverted.g}, ${inverted.b}, ${inverted.a})`;
+}
+
+const hasInitialColor = !!searchParams.hex;
+// typeof guard: vite-ssg build (prerender) 在 node 环境跑, document
+// 不可用, 这里加 typeof 检查让 SSR / SSG 阶段拿到 fallback 而不是抛错。
+const isDarkInitial = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
+// initialColor — 用于 tinycolor / color defineModel 的 default,
+// 也供 setup script 切主题时重置 tinycolor 参考。优先级: URL hex
+// (?hex=XXXXXX) > 当前主题默认色。
+const initialColor = `${searchParams.hex ?? isDarkInitial ? DEFAULT_COLOR_DARK : DEFAULT_COLOR}`;
+</script>
+
+<script setup lang="ts">
+import { computed, reactive, ref, onMounted, onUnmounted, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import {
+  ChromePicker,
+  SketchPicker,
+  PhotoshopPicker,
+  CompactPicker,
+  GrayscalePicker,
+  MaterialPicker,
+  SliderPicker,
+  TwitterPicker,
+  SwatchesPicker,
+  HueSlider,
+  HSLSliders,
+  HSVSliders,
+  RGBSliders,
+  tinycolor
+} from 'vue-color';
+import 'vue-color/style.css';
+
+const { t } = useI18n({ useScope: 'global' });
+
+const showStatus: Record<(typeof pickers)[number], boolean> = {} as Record<(typeof pickers)[number], boolean>;
+pickers.forEach((picker) => {
+  if (!manualEnabledPickers || manualEnabledPickers.length === 0) {
+    showStatus[picker] = true;
+  } else {
+    showStatus[picker] = manualEnabledPickers.indexOf(picker) > -1;
+  }
+});
+
+// 主题感知 — 用 MutationObserver 直接监听 html.dark class 变化.
+// 为什么不用 useDark / useColorMode: useColorMode 是单向同步
+// (state ref → html class), 它**不**读 html class 变化, 所以
+// App.vue 手动改的 html class 对它**不可见**。BaseHeader.vue 也
+// 是用同样的 MutationObserver 模式 (L321-340)。onMounted 里同步
+// 读一次 class 拿到初始值, 之后 MutationObserver 监听后续变化。
+const isDark = ref(false)
+let themeObserver: MutationObserver | null = null
+
+onMounted(() => {
+  isDark.value = document.documentElement.classList.contains('dark')
+  themeObserver = new MutationObserver(() => {
+    isDark.value = document.documentElement.classList.contains('dark')
+  })
+  themeObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class'],
+  })
+})
+
+onUnmounted(() => {
+  themeObserver?.disconnect()
+})
+
+const tinyColor = defineModel('tinyColor', {
+  default: tinycolor(initialColor)
+});
+
+// 主题切换 → 自动重置 tinycolor 为对应主题默认色
+// 让 .wrapper 背景 (v-bind(hex)) 跟随主题变化 — 切到 light mode 时
+// 背景自动变浅, 切到 dark mode 时自动变深。User 主动用 picker 选色后
+// 会立即覆盖, 选色状态会持续到下次主题切换或下次选色。
+// URL 显式指定 ?hex= 时不重置 (让 URL 控制优先级最高)。
+watch(isDark, (newIsDark) => {
+  if (hasInitialColor) return;
+  tinyColor.value = tinycolor(newIsDark ? DEFAULT_COLOR_DARK : DEFAULT_COLOR);
+});
+
+const color = defineModel({
+  default: () => {
+    if (hasInitialColor) {
+      return initialColor;
+    }
+    // #F5F7FA
+    return reactive({r: 245, g: 247, b: 250, a: 1})
+  }
+});
+
+const hex = computed(() => {
+  return tinycolor(tinyColor.value).toHex8String();
+});
+
+const hsva = computed(() => {
+  const hsva = tinycolor(tinyColor.value).toHsv();
+  const res: Record<string, number> = {};
+  for (const [key, value] of Object.entries(hsva)) {
+    res[key] = Number(value.toFixed(2));
+  }
+  return res;
+});
+
+const textColor = computed(() => {
+  return invertColor(tinycolor(tinyColor.value).toRgb());
+});
+
+const updateHue = (newHue: number) => {
+  tinyColor.value = tinycolor(tinyColor.value).spin(newHue - hsva.value.h).clone();
+}
+</script>
+
 <style lang="scss" scoped>
+/* .wrapper — 内部色块容器, background-color 跟随用户当前选色,
+   跟 .text 反色文字配对 — 保证 current-color / picker-title
+   文字在任意选色下都可读 (color 工具核心 UX)。
+   外层 <ToolPage> 仍然跟随 light/dark 主题, 内部色块不破坏
+   卡片化 — 是"外卡片化 + 内动态色块"双层结构。 */
+.wrapper {
+  display: flex;
+  padding: 3%;
+  background-color: v-bind(hex);
+  border-radius: 4px;
+}
+
+/* .picker-containers — 在 .wrapper (flex 父) 内 grow, 吃满 3% padding
+   之后剩余的所有横向空间。 */
+.picker-containers {
+  flex: 1;
+}
+
+/* .text — 动态反色, 让 current-color / picker-title 文字在
+   .wrapper (动态色块) 背景下都可读。 */
 .text {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   font-optical-sizing: auto;
@@ -220,20 +286,8 @@ const onModeChange = (isDark: boolean) => {
   color: v-bind(textColor);
 }
 
-.wrapper {
-  display: flex;
-  padding: 3%;
-  background-color: v-bind(hex);
-}
-
-.fixed-side {
-  width: 300px;
-}
-
-.picker-containers {
-  flex: 1;
-}
-
+/* picker 网格 — 完全保留原版 3 行结构 + 3% gap / 3% margin。
+   不做紧凑化或重排, 跟原 color 页面的视觉保持一致。 */
 .row {
   width: 100%;
   display: flex;
@@ -242,53 +296,6 @@ const onModeChange = (isDark: boolean) => {
   align-items: center;
   gap: 3%;
   margin-bottom: 3%;
-}
-
-.title {
-  margin-bottom: 3%;
-}
-
-.title h1 {
-  display: inline-block;
-  font-size: 60px;
-  font-weight: bold;
-  margin: 0;
-}
-
-.intro {
-  font-size: 20px;
-  line-height: 1.8;
-  width: 300px;
-}
-
-.feature-list {
-  line-height: 1.8;
-  padding-left: 0px;
-  list-style: none;
-  font-size: 18px;
-  opacity: 0.75;
-}
-
-.dark-mode {
-  display: flex;
-  align-items: center;
-}
-
-.get-started {
-  display: inline-block;
-  width: 124px;
-  height: 24px;
-  padding: 8px 12px;
-  line-height: 24px;
-  text-align: center;
-  text-decoration: none;
-  border-radius: 6px;
-  font-weight: 500;
-  transition: opacity 0.2s;
-}
-
-.get-started:hover {
-  opacity: 0.8;
 }
 
 .picker-title {
