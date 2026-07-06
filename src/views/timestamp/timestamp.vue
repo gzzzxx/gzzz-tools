@@ -176,7 +176,7 @@ function copyToClipboard(text: string) {
 .result-label {
   color: var(--ep-text-color-secondary);
   font-size: 0.95rem;
-  margin-bottom: 8px;
+  margin-top: 8px;
   align-self: center;
 }
 .result-row-flex {
