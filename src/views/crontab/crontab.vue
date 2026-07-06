@@ -15,6 +15,7 @@
 <template>
   <ToolPage
     class="crontab-tool"
+    preset="large-form"
     :title="t('tools.crontab.name')"
     :subtitle="t('tools.crontab.desc')"
   >
@@ -229,22 +230,7 @@ const diagramText = computed(() => {
 </script>
 
 <style scoped>
-/* Page-level wrapper — same look as the other tools in this
-   project (max-width 1200px, soft shadow card on the page bg).
-   标题 / 副标题的字体 + 移动端 padding + 外壳 background/border-radius
-   / box-shadow 已抽到 ~/components/tools/ToolPage.vue + ~/styles/_tool-page.scss,
-   这里只保留 crontab 特有的 sizing (通过 CSS 变量覆盖默认值):
-     - max-width: 1200px
-     - margin-y: 20px
-     - padding: 24px 12px
-     - subtitle margin-bottom: 20px */
-.crontab-tool {
-  --tool-page-max-width: 1200px;
-  --tool-page-margin-y: 20px;
-  --tool-page-padding: 24px 12px;
-  --tool-page-subtitle-mb: 20px;
-}
-
+/* Page-level wrapper sizing is provided by <ToolPage preset="large-form">. */
 /* c-card 容器 — 背景 / 边框 / 圆角 / 20-24 padding 已抽到
    ~/components/tools/CardPane.vue 组件 (bodyPadding="20px 24px"),
    这里不需要再写一份。c-card 只保留特异样式 (没有任何 — 现在它

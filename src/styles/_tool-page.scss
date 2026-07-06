@@ -10,17 +10,15 @@
 //   - 居中副标题的 text-align / color / font-size
 //   - @media (max-width: 600px) 的 padding: 8px 2px + title font-size: 1.5rem
 //
-// 不一致的字段通过 CSS 变量在 .tool-page 上声明默认值, 各工具页面的
-// scoped .xxx-page 块覆盖 (因为 Vue scoped CSS 不会穿透到 <ToolPage>
-// 组件内部, 所以不能写 .xxx-subtitle { margin-bottom: 24px } 命中内部
-// 元素 — 必须用 CSS 变量从外层继承到内层):
+// 不一致的字段通过 <ToolPage preset="..."> 注入为 CSS 变量。这样各页面
+// 不再重复写同一组 sizing 变量, 但 _tool-page.scss 仍然只负责消费变量:
 //
 //   --tool-page-max-width   (默认 1600px)  各页面 700-1600 不等
 //   --tool-page-margin-y    (默认 20px)    各页面 16 / 20 / 40
 //   --tool-page-padding     (默认 24px 16px) 各页面 20 16 / 24 12 / 24 16
 //   --tool-page-subtitle-mb (默认 20px)    各页面 20 / 24
 //
-// **caller 必须显式覆盖 4 个变量** — 默认值只是兜底, 不保证与原视觉一致。
+// 默认值只是兜底; 正常工具页应通过 ToolPage preset 设置这些变量。
 //
 // 各页面继续保留 (不抽到此处, 因为现有页面这些值不一致):
 //
@@ -46,15 +44,16 @@
 //     <!-- 100 行内容 -->
 //   </ToolPage>
 //
-//   /* scoped */
-//   .sql-page {
-//     /* 必须显式覆盖 4 个变量 (不能依赖默认值) */
-//     --tool-page-max-width: 1600px;
-//     --tool-page-margin-y: 16px;
-//     --tool-page-padding: 20px 16px;
-//     --tool-page-subtitle-mb: 20px;
+//   <!-- 模板 -->
+//   <ToolPage
+//     class="sql-page"
+//     preset="wide-editor"
+//     :title="t('tools.sql.name')"
+//     :subtitle="t('tools.sql.desc')"
+//   >
 //
-//     /* 其他特异值 (height / display / overflow 等) */
+//   /* scoped: 只保留特异值 (height / display / overflow 等) */
+//   .sql-page {
 //     height: calc(100vh - 88px);
 //     display: flex;
 //     flex-direction: column;
@@ -66,10 +65,7 @@
 // =====================================================================
 
 .tool-page {
-  // === Sizing 变量 (caller 必须显式覆盖) ============================
-  // 默认值 = 15 个工具页面的众数, 仅作 fallback — caller 不显式设
-  // 就会跟部分原页面视觉不一致, 必须在每个工具页面的 scoped .xxx-page
-  // 块里覆盖。
+  // === Sizing 变量 (由 ToolPage preset 注入, 这里提供 fallback) =====
   --tool-page-max-width: 1600px;
   --tool-page-margin-y: 20px;
   --tool-page-padding: 24px 16px;
@@ -97,10 +93,7 @@
   text-align: center;
   color: #888;
   font-size: 1rem;
-  // margin-bottom 通过 CSS 变量从 .tool-page 继承下来 — caller 在
-  // scoped .xxx-page 块里设 --tool-page-subtitle-mb: 20/24 即可。
-  // 这样不用写 .xxx-subtitle 块, 也避开了 Vue scoped CSS 不会穿透
-  // 到 <ToolPage> 内部元素的限制。
+  // margin-bottom 通过 CSS 变量从 ToolPage preset 继承下来。
   margin-bottom: var(--tool-page-subtitle-mb);
 }
 

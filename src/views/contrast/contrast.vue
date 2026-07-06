@@ -23,6 +23,7 @@
 <template>
   <ToolPage
     class="contrast-page"
+    preset="wide-editor"
     :title="t('tools.contrast.name')"
     :subtitle="t('tools.contrast.desc')"
   >
@@ -171,20 +172,7 @@ watch(
    here (unlike sql.vue) because the diff result can be tall and
    shouldn't squeeze the two input cards above; the page grows with
    content and the browser scrolls naturally.
-   标题 / 副标题的字体 + 移动端 padding + 外壳 background/border-radius
-   / box-shadow 已抽到 ~/components/tools/ToolPage.vue + ~/styles/_tool-page.scss,
-   这里只保留 contrast 特有的 sizing (通过 CSS 变量覆盖默认值):
-     - max-width: 1600px
-     - margin-y: 16px
-     - padding: 20px 16px
-     - subtitle margin-bottom: 20px */
-.contrast-page {
-  --tool-page-max-width: 1600px;
-  --tool-page-margin-y: 16px;
-  --tool-page-padding: 20px 16px;
-  --tool-page-subtitle-mb: 20px;
-}
-
+   页面尺寸由 <ToolPage preset="wide-editor"> 提供。 */
 /* Toolbar — page-level settings (language / mode / folding). Sits
    in its own elevated strip so the controls feel like "settings",
    not like primary actions on the data. Uses an inline label +

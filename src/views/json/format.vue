@@ -23,6 +23,7 @@
 <template>
   <ToolPage
     class="json-page"
+    preset="wide-editor"
     :title="t('tools.format.name')"
     :subtitle="t('tools.format.desc')"
   >
@@ -76,20 +77,9 @@ const editorClass = computed(() =>
    never triggers a page-level scrollbar (height = 100vh -
    header (56) - page margins (16+16), with overflow:hidden to
    clip inner overflow).
-   标题 / 副标题的字体 + 移动端 padding + 外壳 background/border-radius
-   / box-shadow 已抽到 ~/components/tools/ToolPage.vue + ~/styles/_tool-page.scss,
-   这里只保留 json 特有的 sizing (通过 CSS 变量覆盖默认值) + viewport-fixed
-   全屏双栏布局 (height / display / flex / overflow):
-     - max-width: 1600px
-     - margin-y: 16px
-     - padding: 20px 16px
-     - subtitle margin-bottom: 20px */
+   尺寸由 <ToolPage preset="wide-editor"> 提供; 这里只保留
+   viewport-fixed 全屏双栏布局 (height / display / flex / overflow)。 */
 .json-page {
-  --tool-page-max-width: 1600px;
-  --tool-page-margin-y: 16px;
-  --tool-page-padding: 20px 16px;
-  --tool-page-subtitle-mb: 20px;
-
   // viewport-fixed 全屏双栏 — 不能用 CSS 变量化, 直接写规则
   height: calc(100vh - 88px);
   display: flex;

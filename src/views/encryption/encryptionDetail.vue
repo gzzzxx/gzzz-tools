@@ -428,7 +428,6 @@ function clear() {
   overflow: hidden;
 }
 .enc-info__body {
-  padding: 20px;
   font-size: 14px;
   line-height: 1.7;
   color: var(--it-text-primary);
@@ -442,6 +441,9 @@ function clear() {
 .enc-info__term {
   color: var(--brand-primary);
   font-weight: 600;
+}
+:deep(.card-pane__body) {
+  gap: 10px;
 }
 
 /* ====================================================================

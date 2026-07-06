@@ -1,6 +1,7 @@
 <template>
   <ToolPage
     class="timestamp-tool"
+    preset="medium-form"
     title="时间戳转换工具"
     subtitle="支持秒/毫秒与日期互转，选择或输入任意一项自动同步"
   >
@@ -162,19 +163,7 @@ function copyToClipboard(text: string) {
 </script>
 
 <style scoped>
-/* 标题 / 副标题的字体 + 移动端 padding + 外壳 background/border-radius
-   / box-shadow 已抽到 ~/components/tools/ToolPage.vue + ~/styles/_tool-page.scss,
-   这里只保留 timestamp 特有的 sizing (通过 CSS 变量覆盖默认值):
-     - max-width: 700px (最窄的工具)
-     - margin-y: 40px
-     - padding: 24px 12px
-     - subtitle margin-bottom: 24px */
-.timestamp-tool {
-  --tool-page-max-width: 700px;
-  --tool-page-margin-y: 40px;
-  --tool-page-padding: 24px 12px;
-  --tool-page-subtitle-mb: 24px;
-}
+/* Page-level wrapper sizing is provided by <ToolPage preset="medium-form">. */
 .input-card {
   margin-bottom: 24px;
   border-radius: 8px;

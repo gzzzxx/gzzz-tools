@@ -21,6 +21,7 @@
 <template>
   <ToolPage
     class="qrcode-tool"
+    preset="large-form"
     :title="t('tools.qrcode.name')"
     :subtitle="t('tools.qrcode.desc')"
   >
@@ -233,20 +234,7 @@ async function copyImage() {
 </script>
 
 <style scoped>
-/* 标题 / 副标题的字体 + 移动端 padding + 外壳 background/border-radius
-   / box-shadow 已抽到 ~/components/tools/ToolPage.vue + ~/styles/_tool-page.scss,
-   这里只保留 qrcode 特有的 sizing (通过 CSS 变量覆盖默认值):
-     - max-width: 1200px
-     - margin-y: 20px
-     - padding: 24px 12px
-     - subtitle margin-bottom: 20px */
-.qrcode-tool {
-  --tool-page-max-width: 1200px;
-  --tool-page-margin-y: 20px;
-  --tool-page-padding: 24px 12px;
-  --tool-page-subtitle-mb: 20px;
-}
-
+/* Page-level wrapper sizing is provided by <ToolPage preset="large-form">. */
 /* Two-card row */
 .qr-row {
   display: grid;

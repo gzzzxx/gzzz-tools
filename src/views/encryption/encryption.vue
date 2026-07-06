@@ -21,6 +21,7 @@
 <template>
   <ToolPage
     class="encryption-page"
+    preset="wide-form"
     :title="title"
     :subtitle="subtitle"
   >
@@ -68,20 +69,7 @@ const handleClick = (tab: { props: { label: string } }) => {
 /* Outer wrapper — same shell family as the other dev tools. 1400px
    (slightly narrower than sql.vue's 1600px) since the form has a
    3:1 column ratio and the narrower side doesn't need full 1600.
-   标题 / 副标题的字体 + 移动端 padding + 外壳 background/border-radius
-   / box-shadow 已抽到 ~/components/tools/ToolPage.vue + ~/styles/_tool-page.scss,
-   这里只保留 encryption 特有的 sizing (通过 CSS 变量覆盖默认值):
-     - max-width: 1400px
-     - margin-y: 20px
-     - padding: 24px 16px
-     - subtitle margin-bottom: 20px */
-.encryption-page {
-  --tool-page-max-width: 1400px;
-  --tool-page-margin-y: 20px;
-  --tool-page-padding: 24px 16px;
-  --tool-page-subtitle-mb: 20px;
-}
-
+   页面尺寸由 <ToolPage preset="wide-form"> 提供。 */
 /* Tabs — el-tabs defaults to left-aligned; we center the nav row
    and tint the active indicator with the brand color so it matches
    the rest of the app's accent palette. */

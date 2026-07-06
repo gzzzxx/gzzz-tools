@@ -12,6 +12,7 @@
 <template>
   <ToolPage
     class="hash-tool"
+    preset="medium-form"
     title="Hash 计算"
     subtitle="输入文本,实时计算 MD5 / SHA-1 / SHA-256 / SHA-384 / SHA-512"
   >
@@ -139,22 +140,7 @@ function copy(key: keyof HashResults) {
 </script>
 
 <style scoped>
-/* 标题 / 副标题的字体 + 移动端 padding 已抽到 ~/styles/_tool-page.scss
-   + ~/components/tools/ToolPage.vue, 这里只保留 hash 特有的 sizing
-   (通过 CSS 变量覆盖 <ToolPage> 根元素的默认值):
-     - max-width: 800px (hash 是紧凑工具)
-     - margin-y: 20px
-     - padding: 24px 12px
-     - subtitle margin-bottom: 24px (比标准 20px 多一行间距)
-   CSS 变量是必要的 — Vue scoped CSS 不会穿透到 <ToolPage> 内部元素,
-   所以不能写 .hash-subtitle 块, 必须从外层 root 把变量继承到内层。 */
-.hash-tool {
-  --tool-page-max-width: 800px;
-  --tool-page-margin-y: 20px;
-  --tool-page-padding: 24px 12px;
-  --tool-page-subtitle-mb: 24px;
-}
-
+/* Page-level wrapper sizing is provided by <ToolPage preset="medium-form">. */
 .input-card {
   margin-bottom: 20px;
   border-radius: 8px;

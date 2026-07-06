@@ -440,13 +440,6 @@
     },
     "error": {
       "copyFailed": "Copy failed, please copy manually"
-    },
-    "reference": {
-      "title": "About Base64",
-      "tableTitle": "Base64 Encoding Table",
-      "exampleIntro": "For example, here is a quote from Thomas Hobbes' Leviathan:",
-      "exampleEncodedIntro": "After Base64 encoding, it becomes:",
-      "manEncoded": "Encoding \"Man\" produces TWFu. Here's the conversion process:"
     }
   },
   "encryptionPage": {

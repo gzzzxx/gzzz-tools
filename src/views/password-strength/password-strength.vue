@@ -21,6 +21,7 @@
 <template>
   <ToolPage
     class="pwd-tool"
+    preset="medium-form"
     :title="t('tools.passwordStrength.name')"
     :subtitle="t('tools.passwordStrength.desc')"
   >
@@ -308,20 +309,7 @@ const rules = computed<Rule[]>(() => {
 </script>
 
 <style scoped>
-/* Page wrapper — 标题 / 副标题的字体 + 移动端 padding + 外壳 background/
-   border-radius / box-shadow 已抽到 ~/components/tools/ToolPage.vue +
-   ~/styles/_tool-page.scss, 这里只保留 pwd-tool 特有的 sizing:
-     - max-width: 800px (紧凑工具)
-     - margin-y: 40px (比标准 20px 大一圈, 给工具多一点垂直呼吸)
-     - padding: 24px 12px
-     - subtitle margin-bottom: 24px */
-.pwd-tool {
-  --tool-page-max-width: 800px;
-  --tool-page-margin-y: 40px;
-  --tool-page-padding: 24px 12px;
-  --tool-page-subtitle-mb: 24px;
-}
-
+/* Page-level wrapper sizing is provided by <ToolPage preset="medium-form">. */
 .pwd-label {
   display: block;
   font-size: 13px;

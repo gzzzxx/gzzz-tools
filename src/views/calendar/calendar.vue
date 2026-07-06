@@ -23,6 +23,7 @@
 <template>
   <ToolPage
     class="calendar-page"
+    preset="large-form"
     :title="t('tools.calendar.name')"
     :subtitle="t('tools.calendar.desc')"
   >
@@ -90,23 +91,7 @@ function solarToLunar(slotData: { day: string }) {
 </script>
 
 <style lang="scss" scoped>
-/* Outer wrapper — same shell as crontab.vue (1200px, soft shadow).
-   Calendar is a single-panel tool, no need for the 1600px width
-   that the side-by-side formatters use.
-   标题 / 副标题的字体 + 移动端 padding + 外壳 background/border-radius
-   / box-shadow 已抽到 ~/components/tools/ToolPage.vue + ~/styles/_tool-page.scss,
-   这里只保留 calendar 特有的 sizing (通过 CSS 变量覆盖默认值):
-     - max-width: 1200px
-     - margin-y: 20px
-     - padding: 24px 16px
-     - subtitle margin-bottom: 20px */
-.calendar-page {
-  --tool-page-max-width: 1200px;
-  --tool-page-margin-y: 20px;
-  --tool-page-padding: 24px 16px;
-  --tool-page-subtitle-mb: 20px;
-}
-
+/* Page-level wrapper sizing is provided by <ToolPage preset="large-form">. */
 /* Calendar card — el-calendar fills the card. Border + radius +
    elevated bg matches the c-card / sql-card / xml-card family. The
    calendar's own header sits on the elevated bg so we don't need

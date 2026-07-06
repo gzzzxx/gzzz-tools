@@ -29,6 +29,7 @@
 <template>
   <ToolPage
     class="base64-page"
+    preset="wide-editor"
     :title="t('tools.base64.name')"
     :subtitle="t('tools.base64.desc')"
   >
@@ -77,8 +78,11 @@
       </CardPane>
     </div>
 
-    <CardPane class="base64-reference" :title="t('base64Page.reference.title')">
+    <CardPane class="base64-reference">
       <div class="base64-reference__body">
+        <p class="base64-reference__para">
+          <strong>Base64 编码说明</strong>
+        </p>
         <p class="base64-reference__para">
           <span class="base64-reference__term">Base64 </span>
           <span>是一种基于 64 个可打印字符来表示二进制数据的表示方法，由于 2^6=64，所以每 6 个比特为一个单元，对应某个可打印字符。</span>
@@ -139,9 +143,9 @@
           <li>Base64 编码是一种可逆的编码方式，可以通过解码还原原始数据。</li>
         </ul>
 
-        <h3 class="base64-reference__subtitle">
-          {{ t('base64Page.reference.tableTitle') }}
-        </h3>
+        <p class="base64-reference__para">
+          <strong>Base64 编码表</strong>
+        </p>
         <el-table
           :data="tableData"
           :span-method="objectSpanMethod"
@@ -163,21 +167,21 @@
         </el-table>
 
         <p class="base64-reference__para">
-          {{ t('base64Page.reference.exampleIntro') }}
+          举例来说，一段引用自托马斯·霍布斯《利维坦》的文本：
         </p>
         <div class="base64-reference__quote">
           Man is distinguished, not only by his reason, but by this singular passion from other animals, which is a lust of the mind, that by a perseverance of delight in the continued and indefatigable generation of knowledge, exceeds the short vehemence of any carnal pleasure.
         </div>
 
         <p class="base64-reference__para">
-          {{ t('base64Page.reference.exampleEncodedIntro') }}
+          使用 Base64 编码之后变成：
         </p>
         <div class="base64-reference__quote">
           TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCBieSB0aGlzIHNpbmd1bGFyIHBhc3Npb24gZnJvbSBvdGhlciBhbmltYWxzLCB3aGljaCBpcyBhIGx1c3Qgb2YgdGhlIG1pbmQsIHRoYXQgYnkgYSBwZXJzZXZlcmFuY2Ugb2YgZGVsaWdodCBpbiB0aGUgY29udGludWVkIGFuZCBpbmRlZmF0aWdhYmxlIGdlbmVyYXRpb24gb2Yga25vd2xlZGdlLCBleGNlZWRzIHRoZSBzaG9ydCB2ZWhlbWVuY2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4=
         </div>
 
         <p class="base64-reference__para">
-          {{ t('base64Page.reference.manEncoded') }}
+          编码 "Man" 的结果为 TWFu，转换过程如下：
         </p>
         <el-table
           :data="tableDemoData"
@@ -389,20 +393,7 @@ const tableDemoData: TableDemo[] = [
    centered shell with a soft drop shadow. The reference card
    below has a 27-column demo table, so the wider shell keeps it
    from being squeezed into horizontal scroll on desktop.
-   标题 / 副标题的字体 + 移动端 padding + 外壳 background/border-radius
-   / box-shadow 已抽到 ~/components/tools/ToolPage.vue + ~/styles/_tool-page.scss,
-   这里只保留 base64 特有的 sizing (通过 CSS 变量覆盖默认值):
-     - max-width: 1600px (最宽, 因为有 27 列 demo table)
-     - margin-y: 16px (比标准 20px 更贴近边缘)
-     - padding: 20px 16px
-     - subtitle margin-bottom: 20px */
-.base64-page {
-  --tool-page-max-width: 1600px;
-  --tool-page-margin-y: 16px;
-  --tool-page-padding: 20px 16px;
-  --tool-page-subtitle-mb: 20px;
-}
-
+   页面尺寸由 <ToolPage preset="wide-editor"> 提供。 */
 /* Top toolbar — primary transform actions live here so they're
    visible before the user touches either card. Same recipe as
    sql.vue / xml.vue: flex row, centered, 12px gap. */
@@ -485,16 +476,6 @@ const tableDemoData: TableDemo[] = [
 }
 .base64-reference__list li {
   margin: 2px 0;
-}
-
-/* Sub-heading inside the reference body (e.g. "Base64 编码表").
-   Visually subordinate to the card header — same scale as body text
-   but bold so it sections the prose cleanly. */
-.base64-reference__subtitle {
-  margin: 24px 0 12px;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--it-text-primary);
 }
 
 /* Tables inside the reference body — full width by default; the
