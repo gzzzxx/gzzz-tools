@@ -2,17 +2,17 @@
   <ToolPage
     class="timestamp-tool"
     preset="medium-form"
-    title="时间戳转换工具"
-    subtitle="支持秒/毫秒与日期互转，选择或输入任意一项自动同步"
+    :title="t('tools.timestamp.name')"
+    :subtitle="t('tools.timestamp.desc')"
   >
-    <el-card class="input-card">
+    <CardPane class="input-card" body-padding="20px" radius="8px">
       <el-row :gutter="20" style="margin-bottom: 16px;">
         <el-col :span="24">
           <div class="date-picker-wrapper">
             <el-date-picker
               v-model="datePickerValue"
               type="datetime"
-              placeholder="选择日期时间"
+              :placeholder="t('timestampPage.input.datePickerPlaceholder')"
               format="YYYY-MM-DD HH:mm:ss"
               value-format="YYYY-MM-DD HH:mm:ss"
               style="width: 100%; max-width: 300px;"
@@ -27,7 +27,7 @@
         <el-col :span="12">
           <el-input
             v-model="timestamp"
-            placeholder="请输入时间戳（秒或毫秒）"
+            :placeholder="t('timestampPage.input.timestampPlaceholder')"
             @input="onTimestampInput"
             prefix-icon="el-icon-time"
             clearable
@@ -36,23 +36,22 @@
         <el-col :span="12">
           <el-input
             v-model="dateString"
-            placeholder="请输入日期（YYYY-MM-DD HH:mm:ss）"
+            :placeholder="t('timestampPage.input.dateStringPlaceholder')"
             @input="onDateInput"
             prefix-icon="el-icon-date"
             clearable
           />
         </el-col>
       </el-row>
-    </el-card>
+    </CardPane>
     <el-row :gutter="20" class="result-row">
       <el-col :span="12">
-        <el-card class="result-card">
-          <div class="result-label">对应日期</div>
+        <CardPane class="result-card" radius="8px">
+          <div class="result-label">{{ t('timestampPage.result.date') }}</div>
           <div class="result-row-flex">
             <span class="result-value">{{ formattedDate }}</span>
             <el-button
               v-if="formattedDate"
-              type="primary"
               size="small"
               :icon="DocumentCopy"
               @click="copyToClipboard(formattedDate)"
@@ -60,16 +59,15 @@
               circle
             />
           </div>
-        </el-card>
+        </CardPane>
       </el-col>
       <el-col :span="12">
-        <el-card class="result-card">
-          <div class="result-label">对应时间戳</div>
+        <CardPane class="result-card" radius="8px">
+          <div class="result-label">{{ t('timestampPage.result.timestamp') }}</div>
           <div class="result-row-flex">
             <span class="result-value">{{ formattedTimestamp }}</span>
             <el-button
               v-if="formattedTimestamp"
-              type="primary"
               size="small"
               :icon="DocumentCopy"
               @click="copyToClipboard(formattedTimestamp)"
@@ -77,7 +75,7 @@
               circle
             />
           </div>
-        </el-card>
+        </CardPane>
       </el-col>
     </el-row>
   </ToolPage>
@@ -85,22 +83,19 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { ElMessage } from 'element-plus';
 import { DocumentCopy } from '@element-plus/icons-vue';
+import { useI18n } from 'vue-i18n';
+import { useClipboard } from '~/composables/useClipboard';
+import { formatDateTime } from '~/utils/datetime';
+
+const { t } = useI18n({ useScope: 'global' });
+const clipboard = useClipboard();
 
 const timestamp = ref('');
 const dateString = ref('');
 const formattedDate = ref('');
 const formattedTimestamp = ref('');
 const datePickerValue = ref<string | null>(null);
-
-function pad(num: number) {
-  return num < 10 ? '0' + num : num;
-}
-
-function formatDate(date: Date) {
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
-}
 
 function onTimestampInput() {
   let ts = timestamp.value.trim();
@@ -114,14 +109,14 @@ function onTimestampInput() {
   if (!isNaN(num)) {
     const date = new Date(num);
     if (!isNaN(date.getTime())) {
-      formattedDate.value = formatDate(date);
-      dateString.value = formatDate(date);
-      datePickerValue.value = formatDate(date);
+      formattedDate.value = formatDateTime(date);
+      dateString.value = formatDateTime(date);
+      datePickerValue.value = formatDateTime(date);
     } else {
-      formattedDate.value = '无效时间戳';
+      formattedDate.value = t('timestampPage.error.invalidTimestamp');
     }
   } else {
-    formattedDate.value = '无效时间戳';
+    formattedDate.value = t('timestampPage.error.invalidTimestamp');
   }
 }
 
@@ -137,9 +132,9 @@ function onDateInput() {
     formattedTimestamp.value = date.getTime().toString();
     timestamp.value = date.getTime().toString();
     datePickerValue.value = str;
-    formattedDate.value = formatDate(date);
+    formattedDate.value = formatDateTime(date);
   } else {
-    formattedTimestamp.value = '无效日期';
+    formattedTimestamp.value = t('timestampPage.error.invalidDate');
     formattedDate.value = '';
   }
 }
@@ -152,53 +147,59 @@ function onDatePickerChange(val: string) {
 }
 
 function copyToClipboard(text: string) {
-  navigator.clipboard.writeText(text)
-    .then(() => {
-      ElMessage.success('已复制到剪贴板');
-    })
-    .catch(() => {
-      ElMessage.error('复制失败');
-    });
+  clipboard.copy(text);
 }
 </script>
 
-<style scoped>
-/* Page-level wrapper sizing is provided by <ToolPage preset="medium-form">. */
+<style lang="scss" scoped>
+/* Page-level wrapper sizing is provided by <ToolPage preset="medium-form"> */
+/* border-radius 由 <CardPane radius="8px"> 提供 */
 .input-card {
   margin-bottom: 24px;
-  border-radius: 8px;
 }
 .result-row {
   margin-top: 12px;
 }
 .result-card {
-  min-height: 120px;
+  /* flex: 1 让 result-card 在 CardPane body (display: flex; flex-direction: column)
+     里 grow 到父高 — 不然 result-card 高度被 min-height 钉死在 120px,
+     justify-content: center 只能在这 120px 内"假装"居中, 视觉上仍然贴顶. */
   display: flex;
   flex-direction: column;
+  /* 整体内容 (label + row) 在 box 内水平+垂直居中. 改 align-items:
+     center 替代 flex-start — 之前 label 顶左对齐, 数字顶左对齐, 看起来
+     整个内容"挤左上". */
   justify-content: center;
-  align-items: flex-start;
-  border-radius: 8px;
+  align-items: center;
   background: var(--ep-fill-color-light);
 }
 .result-label {
   color: var(--ep-text-color-secondary);
   font-size: 0.95rem;
   margin-bottom: 8px;
+  align-self: center;
 }
 .result-row-flex {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* 居中展示 value + 复制按钮: 之前用 space-between 把按钮推到
+     最右, 数字顶到最左, 视觉上偏左. 改 center 后 value + button
+     作为一组在 row 水平居中. flex-wrap 让超长 timestamp 换行
+     不会撑破 row. */
+  justify-content: center;
   min-height: 38px;
   gap: 8px;
+  flex-wrap: wrap;
 }
 .result-value {
-  flex: 1;
+  /* 不再 flex: 1 — 让 value 按内容自身宽度 + text-align 居中,
+     长 timestamp 会按 word-break 换行, 不再把按钮推到 row 最右. */
+  flex: 0 1 auto;
+  text-align: center;
   font-size: 1.15rem;
   font-weight: bold;
   color: var(--ep-text-color-primary);
   word-break: break-all;
-  padding-right: 4px;
 }
 .copy-btn {
   margin-left: 0;
@@ -228,4 +229,4 @@ function copyToClipboard(text: string) {
   justify-content: center;
   margin-bottom: 8px;
 }
-</style> 
+</style>

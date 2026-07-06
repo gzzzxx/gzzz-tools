@@ -72,8 +72,10 @@ import { Delete, DocumentCopy, MagicStick, Minus } from '@element-plus/icons-vue
 import { ElMessage } from 'element-plus'
 import { format as sqlFormat } from 'sql-formatter'
 import { useI18n } from 'vue-i18n'
+import { useClipboard } from '~/composables/useClipboard'
 
 const { t } = useI18n({ useScope: 'global' })
+const { copy } = useClipboard()
 
 const FORMAT_OPTS = {
   language: 'sql',
@@ -130,10 +132,7 @@ function copyData() {
   if (!form.result) {
     return ElMessage.warning({ message: t('sqlPage.error.copyEmpty') })
   }
-  navigator.clipboard.writeText(form.result).then(
-    () => ElMessage.success({ message: t('sqlPage.action.copied') }),
-    () => ElMessage.error({ message: t('sqlPage.error.copyFailed') }),
-  )
+  copy(form.result)
 }
 
 function clear() {

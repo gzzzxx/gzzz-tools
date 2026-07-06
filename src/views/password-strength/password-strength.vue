@@ -26,7 +26,7 @@
     :subtitle="t('tools.passwordStrength.desc')"
   >
 
-    <el-card class="input-card">
+    <CardPane class="input-card" body-padding="20px" radius="8px">
       <label class="pwd-label">{{ t('passwordStrengthPage.input.label') }}</label>
       <el-input
         v-model="password"
@@ -47,9 +47,9 @@
           </el-button>
         </template>
       </el-input>
-    </el-card>
+    </CardPane>
 
-    <el-card v-if="password.length > 0" class="result-card">
+    <CardPane v-if="password.length > 0" class="result-card" body-padding="20px" radius="8px">
       <!-- Strength meter -->
       <div class="meter">
         <div class="meter__bar">
@@ -116,7 +116,7 @@
           <span>{{ r.label }}</span>
         </div>
       </div>
-    </el-card>
+    </CardPane>
 
     <div v-else class="empty">
       {{ t('passwordStrengthPage.empty') }}
@@ -308,7 +308,7 @@ const rules = computed<Rule[]>(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 /* Page-level wrapper sizing is provided by <ToolPage preset="medium-form">. */
 .pwd-label {
   display: block;
@@ -318,16 +318,12 @@ const rules = computed<Rule[]>(() => {
   margin-bottom: 8px;
 }
 
-/* Input card */
+/* Input card — border-radius 由 <CardPane radius="8px"> 提供 */
 .input-card {
   margin-bottom: 16px;
-  border-radius: 8px;
 }
 
-/* Result card */
-.result-card {
-  border-radius: 8px;
-}
+/* Result card — border-radius 由 <CardPane radius="8px"> 提供 */
 
 /* Strength meter */
 .meter {

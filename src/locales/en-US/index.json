@@ -4,6 +4,11 @@
     "theme": {
       "light": "Switch to light",
       "dark": "Switch to dark"
+    },
+    "clipboard": {
+      "success": "Copied to clipboard",
+      "failed": "Copy failed",
+      "imageUnsupported": "This browser does not support copying images"
     }
   },
   "header": {
@@ -137,7 +142,32 @@
     },
     "timer": {
       "name": "Timer",
-      "desc": "Stopwatch and countdown with lap recording and audio alert"
+      "desc": "Stopwatch and countdown, with lap recording and audio cue"
+    }
+  },
+  "hashPage": {
+    "input": {
+      "placeholder": "Enter text to hash",
+      "charCount": "Characters: {n}",
+      "clear": "Clear"
+    },
+    "result": {
+      "bits": "{n} bits"
+    }
+  },
+  "timestampPage": {
+    "input": {
+      "datePickerPlaceholder": "Select date and time",
+      "timestampPlaceholder": "Enter timestamp (seconds or milliseconds)",
+      "dateStringPlaceholder": "Enter date (YYYY-MM-DD HH:mm:ss)"
+    },
+    "result": {
+      "date": "Date",
+      "timestamp": "Timestamp"
+    },
+    "error": {
+      "invalidTimestamp": "Invalid timestamp",
+      "invalidDate": "Invalid date"
     }
   },
   "textStatsPage": {
@@ -284,9 +314,7 @@
       "downloadPng": "Download PNG",
       "downloadSvg": "Download SVG",
       "copy": "Copy"
-    },
-    "copied": "Copied to clipboard",
-    "copyUnsupported": "Image copy is not supported in this browser, please download instead"
+    }
   },
   "passwordStrengthPage": {
     "input": {
@@ -351,13 +379,11 @@
       "format": "Format",
       "minify": "Minify",
       "copy": "Copy",
-      "clear": "Clear",
-      "copied": "Copied"
+      "clear": "Clear"
     },
     "error": {
       "empty": "Please enter XML to format",
-      "copyEmpty": "Nothing to copy, please format first",
-      "copyFailed": "Copy failed, please copy manually"
+      "copyEmpty": "Nothing to copy, please format first"
     }
   },
   "sqlPage": {
@@ -375,13 +401,11 @@
       "format": "Format",
       "minify": "Minify",
       "copy": "Copy",
-      "clear": "Clear",
-      "copied": "Copied"
+      "clear": "Clear"
     },
     "error": {
       "empty": "Please enter SQL to format",
-      "copyEmpty": "Nothing to copy, please format first",
-      "copyFailed": "Copy failed, please copy manually"
+      "copyEmpty": "Nothing to copy, please format first"
     }
   },
   "formatPage": {
@@ -435,11 +459,7 @@
       "encode": "Encode",
       "decode": "Decode",
       "copy": "Copy",
-      "clear": "Clear",
-      "copied": "Copied"
-    },
-    "error": {
-      "copyFailed": "Copy failed, please copy manually"
+      "clear": "Clear"
     }
   },
   "encryptionPage": {
@@ -477,8 +497,6 @@
     "message": {
       "encryptSuccess": "Encrypted",
       "decryptSuccess": "Decrypted",
-      "copySuccess": "Copied",
-      "copyFailed": "Copy failed, please copy manually",
       "error": "Operation failed"
     }
   }

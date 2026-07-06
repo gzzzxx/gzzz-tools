@@ -229,7 +229,7 @@ const diagramText = computed(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 /* Page-level wrapper sizing is provided by <ToolPage preset="large-form">. */
 /* c-card 容器 — 背景 / 边框 / 圆角 / 20-24 padding 已抽到
    ~/components/tools/CardPane.vue 组件 (bodyPadding="20px 24px"),

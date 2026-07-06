@@ -13,23 +13,25 @@
   <ToolPage
     class="hash-tool"
     preset="medium-form"
-    title="Hash 计算"
-    subtitle="输入文本,实时计算 MD5 / SHA-1 / SHA-256 / SHA-384 / SHA-512"
+    :title="t('tools.hash.name')"
+    :subtitle="t('tools.hash.desc')"
   >
-    <el-card class="input-card">
+    <CardPane class="input-card" body-padding="20px" radius="8px">
       <el-input
         v-model="input"
         type="textarea"
         :rows="6"
-        placeholder="输入要计算 hash 的文本"
+        :placeholder="t('hashPage.input.placeholder')"
         resize="none"
         clearable
       />
       <div class="input-meta">
-        <span>字符数: {{ input.length }}</span>
-        <el-button :icon="Delete" size="small" @click="input = ''">清空</el-button>
+        <span>{{ t('hashPage.input.charCount', { n: input.length }) }}</span>
+        <el-button :icon="Delete" size="small" @click="input = ''">
+          {{ t('hashPage.input.clear') }}
+        </el-button>
       </div>
-    </el-card>
+    </CardPane>
 
     <!-- Inline margin on el-col: CSS margin-bottom gets eaten by el-row's
          flex-wrap, but inline style has specificity 1000 and can't be
@@ -41,12 +43,12 @@
         :span="24"
         :style="{ marginBottom: i < algorithms.length - 1 ? '8px' : '0' }"
       >
-        <el-card class="result-card" :class="{ 'is-empty': !input }" :body-style="{ padding: '8px 14px' }">
+        <CardPane class="result-card" :class="{ 'is-empty': !input }" body-padding="8px 14px" radius="8px">
           <div class="result-row-flex">
             <div class="result-info">
               <div class="result-label">
                 {{ algo.label }}
-                <span class="result-bits">{{ algo.bits }} 位</span>
+                <span class="result-bits">{{ t('hashPage.result.bits', { n: algo.bits }) }}</span>
               </div>
               <div
                 class="result-value"
@@ -63,7 +65,7 @@
               @click="copy(algo.key)"
             />
           </div>
-        </el-card>
+        </CardPane>
       </el-col>
     </el-row>
   </ToolPage>
@@ -72,8 +74,9 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue'
 import { Delete, DocumentCopy } from '@element-plus/icons-vue'
-import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import { md5 } from '~/utils/md5'
+import { useClipboard } from '~/composables/useClipboard'
 
 interface HashResults {
   md5: string
@@ -90,6 +93,9 @@ const algorithms: { key: keyof HashResults; label: string; bits: number }[] = [
   { key: 'sha384', label: 'SHA-384', bits: 384 },
   { key: 'sha512', label: 'SHA-512', bits: 512 },
 ]
+
+const { t } = useI18n({ useScope: 'global' })
+const clipboard = useClipboard()
 
 const input = ref('')
 const results = reactive<HashResults>({
@@ -133,17 +139,15 @@ watch(input, async (text) => {
 function copy(key: keyof HashResults) {
   const value = results[key]
   if (!value) return
-  navigator.clipboard.writeText(value)
-    .then(() => ElMessage.success('已复制到剪贴板'))
-    .catch(() => ElMessage.error('复制失败'))
+  clipboard.copy(value)
 }
 </script>
 
-<style scoped>
-/* Page-level wrapper sizing is provided by <ToolPage preset="medium-form">. */
+<style lang="scss" scoped>
+/* Page-level wrapper sizing is provided by <ToolPage preset="medium-form"> */
 .input-card {
   margin-bottom: 20px;
-  border-radius: 8px;
+  /* border-radius 由 <CardPane radius="8px"> 提供 */
 }
 
 .input-meta {
@@ -160,7 +164,7 @@ function copy(key: keyof HashResults) {
 }
 
 .result-card {
-  border-radius: 8px;
+  /* border-radius 由 <CardPane radius="8px"> 提供 */
   background: var(--ep-fill-color-light);
 }
 .result-card.is-empty { opacity: 0.6; }

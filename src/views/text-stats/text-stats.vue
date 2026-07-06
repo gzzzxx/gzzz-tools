@@ -22,7 +22,7 @@
     :subtitle="t('tools.textStats.desc')"
   >
 
-    <el-card class="input-card">
+    <CardPane class="input-card" body-padding="20px" radius="8px">
       <el-input
         v-model="input"
         type="textarea"
@@ -37,7 +37,7 @@
           {{ t('textStatsPage.input.clear') }}
         </el-button>
       </div>
-    </el-card>
+    </CardPane>
 
     <el-row :gutter="16" class="stat-row">
       <el-col
@@ -46,7 +46,7 @@
         :xs="24" :sm="12" :md="6"
         :style="{ marginBottom: '12px' }"
       >
-        <el-card class="stat-card" :body-style="{ padding: '14px 16px' }">
+        <CardPane class="stat-card" body-padding="14px 16px" radius="8px">
           <div class="stat-card__title">{{ t(`textStatsPage.group.${group.key}`) }}</div>
           <ul class="stat-card__list">
             <li v-for="key in group.items" :key="key" class="stat-card__item">
@@ -54,11 +54,11 @@
               <span class="stat-card__value">{{ stats[key] }}</span>
             </li>
           </ul>
-        </el-card>
+        </CardPane>
       </el-col>
     </el-row>
 
-    <el-card class="reading-card" :body-style="{ padding: '14px 16px' }">
+    <CardPane class="reading-card" body-padding="14px 16px" radius="8px">
       <div class="reading-row">
         <div class="reading-block">
           <div class="reading-block__label">{{ t('textStatsPage.reading.label') }}</div>
@@ -71,7 +71,7 @@
           </div>
         </div>
       </div>
-    </el-card>
+    </CardPane>
   </ToolPage>
 </template>
 
@@ -229,11 +229,11 @@ function analyze(text: string): Stat {
 }
 </script>
 
-<style scoped>
-/* Page-level wrapper sizing is provided by <ToolPage preset="large-form">. */
+<style lang="scss" scoped>
+/* Page-level wrapper sizing is provided by <ToolPage preset="large-form"> */
+/* border-radius 由 <CardPane radius="8px"> 提供 */
 .input-card {
   margin-bottom: 20px;
-  border-radius: 8px;
 }
 
 .input-meta {
@@ -249,7 +249,6 @@ function analyze(text: string): Stat {
 
 .stat-card,
 .reading-card {
-  border-radius: 8px;
   background: var(--ep-fill-color-light);
 }
 

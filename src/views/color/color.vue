@@ -211,7 +211,7 @@ const onModeChange = (isDark: boolean) => {
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .text {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   font-optical-sizing: auto;

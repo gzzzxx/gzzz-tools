@@ -92,8 +92,10 @@ import { Delete, DocumentCopy, MagicStick, Minus } from '@element-plus/icons-vue
 import { ElMessage } from 'element-plus'
 import xmlFormat from 'xml-formatter'
 import { useI18n } from 'vue-i18n'
+import { useClipboard } from '~/composables/useClipboard'
 
 const { t } = useI18n({ useScope: 'global' })
+const { copy } = useClipboard()
 
 // Indentation choice — passed verbatim to xml-formatter's
 // `indentation` option (it accepts any literal indent string).
@@ -156,10 +158,7 @@ function copyData() {
   if (!form.result) {
     return ElMessage.warning({ message: t('xmlPage.error.copyEmpty') })
   }
-  navigator.clipboard.writeText(form.result).then(
-    () => ElMessage.success({ message: t('xmlPage.action.copied') }),
-    () => ElMessage.error({ message: t('xmlPage.error.copyFailed') }),
-  )
+  copy(form.result)
 }
 
 function clear() {

@@ -118,8 +118,10 @@ import QRCode, { type QRCodeErrorCorrectionLevel } from 'qrcode'
 import { ElMessage } from 'element-plus'
 import { CopyDocument, Download, Files } from '@element-plus/icons-vue'
 import { useI18n } from 'vue-i18n'
+import { useClipboard } from '~/composables/useClipboard'
 
 const { t } = useI18n({ useScope: 'global' })
+const clipboard = useClipboard()
 
 // Reactive inputs
 
@@ -215,32 +217,19 @@ async function downloadSvg() {
 }
 
 async function copyImage() {
-  try {
-    // ClipboardItem is the only API that writes image data.
-    // Firefox returns undefined here; insecure contexts (http://)
-    // also throw — surface a helpful fallback either way.
-    if (typeof ClipboardItem === 'undefined' || !navigator.clipboard?.write) {
-      ElMessage.warning(t('qrcodePage.copyUnsupported'))
-      return
-    }
-    await navigator.clipboard.write([
-      new ClipboardItem({ 'image/png': await getPngBlob() }),
-    ])
-    ElMessage.success(t('qrcodePage.copied'))
-  } catch (e) {
-    ElMessage.error(toErrorMessage(e))
-  }
+  await clipboard.copyImage(getPngBlob)
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 /* Page-level wrapper sizing is provided by <ToolPage preset="large-form">. */
-/* Two-card row */
+/* Two-card row — stretch (default) so left/right CardPane 等高,
+   跟左栏内容多时右栏不再"挂底部". 旧 align-items: start 改 stretch
+   是为了配合下面 .q-preview-wrap { flex: 1 } 把 canvas 居中显示. */
 .qr-row {
   display: grid;
   grid-template-columns: 5fr 7fr;
   gap: 16px;
-  align-items: start;
 }
 @media (max-width: 900px) {
   .qr-row {
@@ -300,6 +289,10 @@ async function copyImage() {
 .q-preview-wrap {
   position: relative;
   min-height: 280px;
+  /* flex: 1 让 preview-wrap 吃满 CardPane body 的剩余高度 —
+     配合 .qr-row 的 stretch 把右栏拉到与左栏等高, canvas
+     视觉上居中显示 (meta + actions 沉底). */
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -233,12 +233,13 @@ import {
   DocumentCopy,
   SwitchFilled,
 } from '@element-plus/icons-vue'
-import { ElMessage } from 'element-plus'
 import { Base64 } from 'js-base64'
 import type { TableColumnCtx } from 'element-plus'
 import { useI18n } from 'vue-i18n'
+import { useClipboard } from '~/composables/useClipboard'
 
 const { t } = useI18n({ useScope: 'global' })
+const { copy } = useClipboard()
 
 const form = reactive({
   data: '',
@@ -254,10 +255,7 @@ function decode() {
 }
 
 function copyData() {
-  navigator.clipboard.writeText(form.result).then(
-    () => ElMessage.success({ message: t('base64Page.action.copied') }),
-    () => ElMessage.error({ message: t('base64Page.error.copyFailed') }),
-  )
+  copy(form.result)
 }
 
 function clear() {

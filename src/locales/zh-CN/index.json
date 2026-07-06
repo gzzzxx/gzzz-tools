@@ -4,6 +4,11 @@
     "theme": {
       "light": "切换为浅色",
       "dark": "切换为深色"
+    },
+    "clipboard": {
+      "success": "已复制到剪贴板",
+      "failed": "复制失败",
+      "imageUnsupported": "当前浏览器不支持复制图片"
     }
   },
   "header": {
@@ -138,6 +143,31 @@
     "timer": {
       "name": "计时器",
       "desc": "秒表与倒计时,支持分段记录和声音提醒"
+    }
+  },
+  "hashPage": {
+    "input": {
+      "placeholder": "输入要计算 hash 的文本",
+      "charCount": "字符数: {n}",
+      "clear": "清空"
+    },
+    "result": {
+      "bits": "{n} 位"
+    }
+  },
+  "timestampPage": {
+    "input": {
+      "datePickerPlaceholder": "选择日期时间",
+      "timestampPlaceholder": "请输入时间戳（秒或毫秒）",
+      "dateStringPlaceholder": "请输入日期（YYYY-MM-DD HH:mm:ss）"
+    },
+    "result": {
+      "date": "对应日期",
+      "timestamp": "对应时间戳"
+    },
+    "error": {
+      "invalidTimestamp": "无效时间戳",
+      "invalidDate": "无效日期"
     }
   },
   "textStatsPage": {
@@ -284,9 +314,7 @@
       "downloadPng": "下载 PNG",
       "downloadSvg": "下载 SVG",
       "copy": "复制"
-    },
-    "copied": "已复制到剪贴板",
-    "copyUnsupported": "当前浏览器不支持图片复制,请改用下载"
+    }
   },
   "passwordStrengthPage": {
     "input": {
@@ -351,13 +379,11 @@
       "format": "格式化",
       "minify": "压缩",
       "copy": "复制",
-      "clear": "清空",
-      "copied": "复制成功"
+      "clear": "清空"
     },
     "error": {
       "empty": "请输入要格式化的 XML",
-      "copyEmpty": "暂无可复制的内容,请先格式化",
-      "copyFailed": "复制失败,请手动复制"
+      "copyEmpty": "暂无可复制的内容,请先格式化"
     }
   },
   "sqlPage": {
@@ -375,13 +401,11 @@
       "format": "格式化",
       "minify": "压缩",
       "copy": "复制",
-      "clear": "清空",
-      "copied": "复制成功"
+      "clear": "清空"
     },
     "error": {
       "empty": "请输入要格式化的 SQL",
-      "copyEmpty": "暂无可复制的内容,请先格式化",
-      "copyFailed": "复制失败,请手动复制"
+      "copyEmpty": "暂无可复制的内容,请先格式化"
     }
   },
   "formatPage": {
@@ -435,11 +459,7 @@
       "encode": "编码",
       "decode": "解码",
       "copy": "复制",
-      "clear": "清空",
-      "copied": "已复制"
-    },
-    "error": {
-      "copyFailed": "复制失败,请手动复制"
+      "clear": "清空"
     }
   },
   "encryptionPage": {
@@ -477,8 +497,6 @@
     "message": {
       "encryptSuccess": "加密成功",
       "decryptSuccess": "解密成功",
-      "copySuccess": "复制成功",
-      "copyFailed": "复制失败,请手动复制",
       "error": "处理失败"
     }
   }

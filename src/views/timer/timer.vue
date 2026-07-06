@@ -144,6 +144,7 @@
 import { computed, onBeforeUnmount, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useI18n } from 'vue-i18n'
+import { pad } from '~/utils/datetime'
 
 type Mode = 'stopwatch' | 'countdown'
 type CountdownPhase = 'idle' | 'running' | 'paused' | 'finished'
@@ -338,10 +339,7 @@ function beep() {
 
 // =================== Formatting ===================
 
-function pad(n: number, len = 2) {
-  return String(Math.floor(n)).padStart(len, '0')
-}
-
+// `pad` 从 ~/utils/datetime 导入 — 跟 timestamp.vue 共用同一份.
 // Decompose ms into h/m/s/cs. `ceil` rounds up the centisecond
 // count (used by countdown so 0.5s reads "00:01", not "00:00"
 // — last second visibly holds instead of flickering).
@@ -388,7 +386,7 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 /* Page-level wrapper sizing is provided by <ToolPage preset="large-form">. */
 /* Mode tabs */
 .t-tabs {

@@ -51,8 +51,11 @@ const props = defineProps<{ algorithm: string }>()
 
 const { t } = useI18n({ useScope: 'global' })
 
+// 用 ref 而非 let — ref 保持响应式 (let 不会触发依赖它的 watch/
+// computed 重新计算, 是个隐性 bug 源); ref 让 :algorithm 绑定到
+// detail 组件是真正的双向响应。
 const activeName = ref(props.algorithm)
-let algorithm = props.algorithm
+const algorithm = ref(props.algorithm)
 
 // Title / subtitle derived from the active algorithm so the page
 // header reflects whichever route we're on (/encryption/SM4 vs
@@ -61,7 +64,7 @@ const title = computed(() => t(`tools.${props.algorithm.toLowerCase()}.name`))
 const subtitle = computed(() => t(`tools.${props.algorithm.toLowerCase()}.desc`))
 
 const handleClick = (tab: { props: { label: string } }) => {
-  algorithm = tab.props.label
+  algorithm.value = tab.props.label
 }
 </script>
 

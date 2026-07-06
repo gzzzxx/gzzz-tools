@@ -281,8 +281,10 @@ import {
   aesDecrypt,
 } from '~/utils/crypto'
 import { useI18n } from 'vue-i18n'
+import { useClipboard } from '~/composables/useClipboard'
 
 const { t } = useI18n({ useScope: 'global' })
+const { copy } = useClipboard()
 
 const props = defineProps<{ algorithm: string }>()
 
@@ -319,10 +321,7 @@ function run(op: 'enc' | 'dec') {
 }
 
 function copyData() {
-  navigator.clipboard.writeText(form.result).then(
-    () => ElMessage.success({ message: t('encryptionPage.message.copySuccess') }),
-    () => ElMessage.error({ message: t('encryptionPage.message.copyFailed') }),
-  )
+  copy(form.result)
 }
 
 function clear() {

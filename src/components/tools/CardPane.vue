@@ -24,6 +24,9 @@
     - headerMobilePadding 移动端 (≤600px) header 内边距, 默认 '10px 12px'
     - bodyPadding         body 内边距 (desktop), 默认 '0'
     - bodyMobilePadding   移动端 (≤600px) body 内边距, 默认 = bodyPadding
+    - radius              border-radius, 默认 '4px' (现有 11 个 caller);
+                           早期用 <el-card> 的 hash/pwd/timestamp/text-stats
+                           传 '8px' 以保留原视觉
 
   典型用法 (见 caller 模板):
     1) 有 header + body (无 padding) — base64 / sql / xml / contrast / encryptionDetail / json
@@ -36,7 +39,7 @@
        `<CardPane header-mobile-padding="6px 12px" :title="..."> ... </CardPane>`
 -->
 <template>
-  <section :class="['card-pane', $attrs.class]">
+  <section :class="['card-pane', $attrs.class]" :style="rootStyle">
     <header
       v-if="hasHeader"
       class="card-pane__header"
@@ -74,12 +77,16 @@ const props = withDefaults(defineProps<{
   /** body 内边距 (mobile ≤600px)。默认 = bodyPadding (无变化)。
    *  timer.vue 传 '20px 16px' 覆盖 '32px 24px'。 */
   bodyMobilePadding?: string
+  /** border-radius。默认 '4px'。hash/pwd/timestamp/text-stats 传
+   *  '8px' 保留原 <el-card class="xxx-card" border-radius: 8px> 视觉。 */
+  radius?: string
 }>(), {
   title: '',
   headerPadding: '8px 16px',
   headerMobilePadding: '10px 12px',
   bodyPadding: '0',
   bodyMobilePadding: undefined,
+  radius: '4px',
 })
 
 const slots = useSlots()
@@ -102,17 +109,22 @@ const bodyStyle = computed(() => ({
   '--cp-body-padding': props.bodyPadding,
   '--cp-body-padding-mobile': props.bodyMobilePadding ?? props.bodyPadding,
 }))
+
+const rootStyle = computed(() => ({
+  '--cp-radius': props.radius,
+}))
 </script>
 
 <style lang="scss" scoped>
 /* Card 容器 — flex column 让 body 可以 flex:1 撑满剩余空间。
-   background/border/radius/overflow 与原所有 .xxx-card 100% 一致。 */
+   background/border/radius/overflow 与原所有 .xxx-card 100% 一致。
+   border-radius 通过 --cp-radius 控制 (默认 4px, caller 可传 8px)。 */
 .card-pane {
   display: flex;
   flex-direction: column;
   background-color: var(--it-bg-elevated);
   border: 1px solid var(--it-border);
-  border-radius: 4px;
+  border-radius: var(--cp-radius, 4px);
   overflow: hidden;
 }
 
