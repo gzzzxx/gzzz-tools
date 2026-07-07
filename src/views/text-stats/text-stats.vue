@@ -16,7 +16,7 @@
 -->
 <template>
   <ToolPage
-    class="text-stats-tool"
+    class="text-stats-page"
     preset="large-form"
     :title="t('tools.textStats.name')"
     :subtitle="t('tools.textStats.desc')"
@@ -249,7 +249,7 @@ function analyze(text: string): Stat {
 
 .stat-card,
 .reading-card {
-  background: var(--ep-fill-color-light);
+  background: var(--it-card-result-bg);
 }
 
 .stat-card { height: 100%; }
@@ -318,6 +318,6 @@ function analyze(text: string): Stat {
 }
 
 @media (max-width: 600px) {
-  /* .text-stats-tool padding + .title font-size 已由全局 _tool-page.scss 提供 */
+  /* .text-stats-page padding + .title font-size 已由全局 _tool-page.scss 提供 */
 }
 </style>

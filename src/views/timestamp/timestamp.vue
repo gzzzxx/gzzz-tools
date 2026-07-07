@@ -1,6 +1,6 @@
 <template>
   <ToolPage
-    class="timestamp-tool"
+    class="timestamp-page"
     preset="medium-form"
     :title="t('tools.timestamp.name')"
     :subtitle="t('tools.timestamp.desc')"
@@ -171,7 +171,7 @@ function copyToClipboard(text: string) {
      整个内容"挤左上". */
   justify-content: center;
   align-items: center;
-  background: var(--ep-fill-color-light);
+  background: var(--it-card-result-bg);
 }
 .result-label {
   color: var(--ep-text-color-secondary);
@@ -219,7 +219,7 @@ function copyToClipboard(text: string) {
   color: var(--ep-color-primary);
 }
 @media (max-width: 600px) {
-  /* .timestamp-tool padding 已由全局 _tool-page.scss 提供 */
+  /* .timestamp-page padding 已由全局 _tool-page.scss 提供 */
   .result-card {
     min-height: 80px;
   }

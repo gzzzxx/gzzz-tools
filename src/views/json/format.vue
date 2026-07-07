@@ -28,7 +28,7 @@
     :subtitle="t('tools.format.desc')"
   >
 
-    <div class="json-grid">
+    <div class="tool-grid tool-grid--fullscreen">
       <CardPane class="json-card">
         <ToolTextarea
           v-model="text"
@@ -87,22 +87,9 @@ const editorClass = computed(() =>
   overflow: hidden;
 }
 
-/* Two equal-width cards, no arrow. flex:1 + min-height:0 so the
-   cards eat the leftover vertical space; align-items stretch
-   is the default — cards inherit the row's height. */
-.json-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  align-items: stretch;
-  flex: 1;
-  min-height: 0;
-}
-@media (max-width: 900px) {
-  .json-grid {
-    grid-template-columns: 1fr;
-  }
-}
+/* .tool-grid(.tool-grid--fullscreen) 已抽到 ~/styles/_tool-recipes.scss
+   全局 utility。模板里 <div class="tool-grid tool-grid--fullscreen">
+   自动套用相同样式, 父 scoped 不用再写一份。 */
 
 /* .json-card / .json-card__header / .json-card__title 块已抽到
    ~/components/tools/CardPane.vue 组件 (全局 .card-pane /

@@ -31,7 +31,7 @@
          copy) live inside each card's header. Default-size buttons
          keep the toolbar compact so it doesn't crowd the cards
          below. -->
-    <div class="xml-toolbar">
+    <div class="tool-toolbar">
       <el-button type="primary" :icon="MagicStick" @click="format">
         {{ t('xmlPage.action.format') }}
       </el-button>
@@ -40,7 +40,7 @@
       </el-button>
     </div>
 
-    <div class="xml-grid">
+    <div class="tool-grid tool-grid--fullscreen">
       <!-- ============== Source card ============== -->
       <CardPane class="xml-card" :title="t('xmlPage.section.source')">
         <template #actions>
@@ -205,25 +205,10 @@ watch([() => form.data, indent], () => autoFormat(form.data), { flush: 'post' })
   overflow: hidden;
 }
 
-/* Two-card row. 1fr 1fr (no center column) matches the JSON
-   formatter's "equal width, no arrow" style — the input/output
-   relationship is implied by left/right positioning alone, and
-   dropping the arrow gives both cards ~40px more horizontal
-   space. flex:1 + min-height:0 so the cards eat the leftover
-   vertical space; align-items stretch is the default. */
-.xml-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  align-items: stretch;
-  flex: 1;
-  min-height: 0;
-}
-@media (max-width: 900px) {
-  .xml-grid {
-    grid-template-columns: 1fr;
-  }
-}
+/* .tool-toolbar / .tool-grid(.tool-grid--fullscreen) 已抽到
+   ~/styles/_tool-recipes.scss 全局 utility。
+   模板里 <div class="tool-toolbar"> / <div class="tool-grid
+   tool-grid--fullscreen"> 自动套用相同样式, 父 scoped 不用再写一份。 */
 
 /* xml-card — same role as crontab.vue's .c-card: elevated bg +
    1px border + 4px radius. Plain section (not el-card) so we
@@ -244,20 +229,9 @@ watch([() => form.data, indent], () => autoFormat(form.data), { flush: 'post' })
    border / box-shadow 等 fill-the-card + monospace 样式) 已抽到
    ~/components/tools/ToolTextarea.vue 组件, 父 scoped 不需要再写一份。 */
 
-/* Top toolbar. Button horizontal padding tightened from the
-   Element Plus default 15px to 10px — for 2-3 char labels the
-   default padding leaves the buttons looking loose, even at
-   default size. */
-.xml-toolbar {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-.xml-toolbar :deep(.ep-button) {
-  padding-left: 10px;
-  padding-right: 10px;
-}
+/* xml-specific select height tweak — small size select needs an
+   explicit min-height (else EP wraps it weirdly with the toolbar
+   buttons above). Caller-only rule, not shared. */
 :deep(.ep-select--small .ep-select__wrapper) {
   min-height: 18px;
 }
@@ -266,6 +240,5 @@ watch([() => form.data, indent], () => autoFormat(form.data), { flush: 'post' })
   // .xml-page padding + .xml-title font-size 已由全局 _tool-page.scss 提供
   // .xml-card__header 移动端 padding 10 12 已由 <CardPane> 组件默认提供
   .xml-card__indent { width: 110px; }
-  .xml-toolbar { gap: 12px; }
 }
 </style>

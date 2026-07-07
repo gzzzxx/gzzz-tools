@@ -3,8 +3,8 @@
 
   Same card-based shell family as sql.vue / xml.vue / json.vue:
     .base64-page       → 1600px centered shell + soft shadow
-    .base64-toolbar    → page-level primary actions (Encode / Decode)
-    .base64-grid       → 1fr 1fr (collapses to 1fr ≤900px) for the
+    .tool-toolbar      → page-level primary actions (Encode / Decode)
+    .tool-grid         → 1fr 1fr (collapses to 1fr ≤900px) for the
                           source + result cards
     .base64-reference  → full-width card below holding the
                           educational content (explanation + encoding
@@ -34,7 +34,7 @@
     :subtitle="t('tools.base64.desc')"
   >
 
-    <div class="base64-toolbar">
+    <div class="tool-toolbar">
       <el-button type="primary" :icon="SwitchFilled" @click="encode">
         {{ t('base64Page.action.encode') }}
       </el-button>
@@ -43,7 +43,7 @@
       </el-button>
     </div>
 
-    <div class="base64-grid">
+    <div class="tool-grid">
       <CardPane class="base64-card" :title="t('base64Page.section.source')">
         <template #actions>
           <el-button size="small" :icon="Delete" link @click="clear">
@@ -392,35 +392,10 @@ const tableDemoData: TableDemo[] = [
    below has a 27-column demo table, so the wider shell keeps it
    from being squeezed into horizontal scroll on desktop.
    页面尺寸由 <ToolPage preset="wide-editor"> 提供。 */
-/* Top toolbar — primary transform actions live here so they're
-   visible before the user touches either card. Same recipe as
-   sql.vue / xml.vue: flex row, centered, 12px gap. */
-.base64-toolbar {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-.base64-toolbar :deep(.ep-button) {
-  padding-left: 10px;
-  padding-right: 10px;
-}
 
-/* Two-card input row — same 1fr 1fr → 1fr ≤900px grid as sql.vue
-   / xml.vue. align-items: stretch lets both cards share the row's
-   height; the textareas then fill each card via the flex chain
-   below. */
-.base64-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  align-items: stretch;
-}
-@media (max-width: 900px) {
-  .base64-grid {
-    grid-template-columns: 1fr;
-  }
-}
+/* .tool-toolbar / .tool-grid 已抽到 ~/styles/_tool-recipes.scss
+   全局 utility。模板里 <div class="tool-toolbar"> / <div class="tool-grid">
+   自动套用相同样式, 父 scoped 不用再写一份。 */
 
 /* .base64-card / .base64-card__header / .base64-card__title /
    .base64-card__actions 块已抽到 ~/components/tools/CardPane.vue

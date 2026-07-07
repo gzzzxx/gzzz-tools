@@ -21,7 +21,7 @@
     :subtitle="t('tools.sql.desc')"
   >
 
-    <div class="sql-toolbar">
+    <div class="tool-toolbar">
       <el-button type="primary" :icon="MagicStick" @click="format">
         {{ t('sqlPage.action.format') }}
       </el-button>
@@ -30,7 +30,7 @@
       </el-button>
     </div>
 
-    <div class="sql-grid">
+    <div class="tool-grid tool-grid--fullscreen">
       <CardPane class="sql-card" :title="t('sqlPage.section.source')">
         <template #actions>
           <el-button size="small" :icon="Delete" link @click="clear">
@@ -164,7 +164,7 @@ watch(() => form.data, autoFormat)
    horizontal two-pane tool, viewport-fixed so the page never
    triggers a page-level scrollbar (height = 100vh - header -
    page margins, with overflow:hidden to clip inner overflow).
-   flex-direction: column lets .sql-grid grow with flex:1.
+   flex-direction: column lets .tool-grid--fullscreen grow with flex:1.
    尺寸由 <ToolPage preset="wide-editor"> 提供; 这里只保留
    viewport-fixed 全屏双栏 (height / display / flex / overflow)。 */
 .sql-page {
@@ -175,42 +175,10 @@ watch(() => form.data, autoFormat)
   overflow: hidden;
 }
 
-/* Top toolbar. Button horizontal padding tightened from the
-   Element Plus default 15px to 10px — for 2-3 char labels the
-   default padding leaves the buttons looking loose, even at
-   default size. */
-.sql-toolbar {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-.sql-toolbar :deep(.ep-button) {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-/* Two-card row. flex:1 + min-height:0 so the cards eat the
-   leftover vertical space; align-items stretch is the default
-   — cards inherit the row's height, then their textarea fills
-   the card via its own flex chain. 1fr 1fr (no center column)
-   to match the JSON formatter's "equal width, no arrow" style
-   — the input/output relationship is implied by left/right
-   positioning alone, and dropping the arrow gives both cards
-   ~40px more horizontal space. */
-.sql-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  align-items: stretch;
-  flex: 1;
-  min-height: 0;
-}
-@media (max-width: 900px) {
-  .sql-grid {
-    grid-template-columns: 1fr;
-  }
-}
+/* .tool-toolbar / .tool-grid(.tool-grid--fullscreen) 已抽到
+   ~/styles/_tool-recipes.scss 组件 (全局 utility)。
+   模板里 <div class="tool-toolbar"> / <div class="tool-grid
+   tool-grid--fullscreen"> 自动套用相同样式, 父 scoped 不用再写一份。 */
 
 /* .sql-card / .sql-card__header / .sql-card__title / .sql-card__actions
    块已抽到 ~/components/tools/CardPane.vue 组件 (全局 .card-pane /
@@ -230,6 +198,5 @@ watch(() => form.data, autoFormat)
   // .sql-card__header 移动端 padding 10 12 已由 <CardPane> 组件
   //   headerMobilePadding="10px 12px" 默认值提供 — 不再需要在
   //   caller scoped 块里写一份冗余规则 (抽 CardPane 之前是必要的)
-  .sql-toolbar { gap: 12px; }
 }
 </style>

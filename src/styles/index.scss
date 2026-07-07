@@ -25,6 +25,10 @@
 //    every tool view inherits the same shell + heading look without
 //    duplicating the rules in each <style scoped>.
 @use "./tool-page" as *;
+// 5. Tool page "recipes" — .tool-toolbar / .tool-grid utility classes
+//    shared by the 5 dev-tool views (sql / xml / base64 / format /
+//    contrast). See _tool-recipes.scss for the per-caller mapping.
+@use "./tool-recipes" as *;
 
 // ---------------------------------------------------------------------
 // Global resets

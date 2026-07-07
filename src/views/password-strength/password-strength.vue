@@ -20,7 +20,7 @@
 -->
 <template>
   <ToolPage
-    class="pwd-tool"
+    class="pwd-page"
     preset="medium-form"
     :title="t('tools.passwordStrength.name')"
     :subtitle="t('tools.passwordStrength.desc')"
@@ -410,7 +410,7 @@ const rules = computed<Rule[]>(() => {
 }
 
 @media (max-width: 600px) {
-  /* .pwd-tool padding + .title font-size 已由全局 _tool-page.scss 提供 */
+  /* .pwd-page padding + .title font-size 已由全局 _tool-page.scss 提供 */
   .stat__value { font-size: 18px; }
 }
 </style>

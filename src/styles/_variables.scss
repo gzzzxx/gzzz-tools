@@ -62,6 +62,12 @@ $it-radius-lg:     12px;
   --it-bg:               #f5f7fa;
   --it-bg-elevated:      #ffffff;
 
+  // 结果 / 数据卡背景 — hash / timestamp 的 .result-card、text-stats 的
+  // .stat-card/.reading-card 共用这一档"比 elevated 略深"的填充色。别名到
+  // EP 的 --ep-fill-color-light（本身已随 dark 模式自动切换），所以 html.dark
+  // 块无需再写 override，两个模式下都跟原来逐像素等价。
+  --it-card-result-bg:   var(--ep-fill-color-light);
+
   // Text — deeper slate for stronger contrast against the bluer bg
   --it-text-primary:     #0f172a;
   --it-text-secondary:   #475569;

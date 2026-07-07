@@ -20,7 +20,7 @@
 -->
 <template>
   <ToolPage
-    class="qrcode-tool"
+    class="qrcode-page"
     preset="large-form"
     :title="t('tools.qrcode.name')"
     :subtitle="t('tools.qrcode.desc')"
@@ -346,7 +346,7 @@ async function copyImage() {
 }
 
 @media (max-width: 600px) {
-  /* .qrcode-tool padding + .title font-size 已由全局 _tool-page.scss 提供 */
+  /* .qrcode-page padding + .title font-size 已由全局 _tool-page.scss 提供 */
   .q-card { padding: 16px 14px; }
   .q-form-row__label { flex: 0 0 70px; font-size: 12px; }
   .q-preview-wrap { min-height: 220px; }

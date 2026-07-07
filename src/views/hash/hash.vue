@@ -11,7 +11,7 @@
 -->
 <template>
   <ToolPage
-    class="hash-tool"
+    class="hash-page"
     preset="medium-form"
     :title="t('tools.hash.name')"
     :subtitle="t('tools.hash.desc')"
@@ -165,7 +165,7 @@ function copy(key: keyof HashResults) {
 
 .result-card {
   /* border-radius 由 <CardPane radius="8px"> 提供 */
-  background: var(--ep-fill-color-light);
+  background: var(--it-card-result-bg);
 }
 .result-card.is-empty { opacity: 0.6; }
 
@@ -214,6 +214,6 @@ function copy(key: keyof HashResults) {
 }
 
 @media (max-width: 600px) {
-  /* .hash-tool padding + .title font-size 已由全局 _tool-page.scss 提供 */
+  /* .hash-page padding + .title font-size 已由全局 _tool-page.scss 提供 */
 }
 </style>

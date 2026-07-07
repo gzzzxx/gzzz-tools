@@ -26,6 +26,7 @@
 -->
 <template>
   <ToolPage
+    class="color-page"
     preset="large-form"
     :title="t('tools.color.name')"
     :subtitle="t('tools.color.desc')"

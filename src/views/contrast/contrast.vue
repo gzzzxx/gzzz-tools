@@ -70,7 +70,7 @@
       </el-tooltip>
     </div>
 
-    <div class="contrast-grid">
+    <div class="tool-grid">
       <CardPane class="contrast-card" :title="t('contrastPage.section.prev')">
         <template #actions>
           <el-button size="small" :icon="Delete" link @click="form.prev = ''">
@@ -213,42 +213,16 @@ watch(
   width: 140px;
 }
 
-/* Two-card input row. 1fr 1fr matches the formatter pattern; below
-   900px collapses to a single column so each card gets the full
-   width on mobile. align-items: stretch is the default so both
-   cards share the row's height — and the textareas inside fill
-   their cards via the flex chain below. */
-.contrast-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  align-items: stretch;
-}
-@media (max-width: 900px) {
-  .contrast-grid {
-    grid-template-columns: 1fr;
-  }
-}
+/* .tool-grid 已抽到 ~/styles/_tool-recipes.scss 全局 utility。
+   模板里 <div class="tool-grid"> 自动套用相同样式, 父 scoped
+   不用再写一份。 */
 
-/* Card + header — identical pattern to .sql-card / .xml-card. Plain
-   section (not el-card) so we keep full control over border + radius,
-   and so the textarea's flex-grow isn't fighting an extra wrapper. */
-.contrast-card {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--it-bg-elevated);
-  border: 1px solid var(--it-border);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-/* .contrast-card / .contrast-card__header / .contrast-card__title /
-   .contrast-card__actions / .contrast-result / .contrast-result__header
-   / .contrast-result__title 块已抽到 ~/components/tools/CardPane.vue
-   组件 (全局 .card-pane / .card-pane__header / .card-pane__title /
-   .card-pane__actions)。模板里 <CardPane class="contrast-card"
-   :title="..."> / <CardPane class="contrast-result" :title="...">
-   自动套用相同样式, 父 scoped 不用再写一份。 */
+/* .contrast-card / .contrast-result 容器 / header / title / actions
+   已抽到 ~/components/tools/CardPane.vue (全局 .card-pane /
+   .card-pane__header / .card-pane__title / .card-pane__actions)。
+   模板里 <CardPane class="contrast-card" :title="..."> / <CardPane
+   class="contrast-result" :title="..."> 自动套用相同样式, 父 scoped
+   不用再写一份。 */
 
 /* .contrast-textarea 23 行重复块已抽到 ~/components/tools/ToolTextarea.vue
    组件 (display: flex / font / padding / border / box-shadow 等

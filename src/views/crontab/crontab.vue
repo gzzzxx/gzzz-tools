@@ -14,7 +14,7 @@
 -->
 <template>
   <ToolPage
-    class="crontab-tool"
+    class="crontab-page"
     preset="large-form"
     :title="t('tools.crontab.name')"
     :subtitle="t('tools.crontab.desc')"
@@ -428,7 +428,7 @@ const diagramText = computed(() => {
   .c-form-row__label { flex-basis: 130px; padding-right: 8px; font-size: 13px; }
 }
 @media (max-width: 600px) {
-  /* .crontab-tool padding + .title font-size 已由全局 _tool-page.scss 提供 */
+  /* .crontab-page padding + .title font-size 已由全局 _tool-page.scss 提供 */
   .c-card { padding: 16px 14px; }
   .c-input { font-size: 22px; }
   .c-card__cron-string { font-size: 18px; }

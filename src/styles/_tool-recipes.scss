@@ -1,0 +1,80 @@
+// =====================================================================
+// _tool-recipes.scss — 工具页常用的"两件套" utility (Step 3 抽取).
+//
+// 替换 5 个工具页面里的 .xxx-toolbar + .xxx-grid 重复块
+// (sql / xml / base64 / format / contrast),提炼成 2 个全局 utility:
+//
+//   .tool-toolbar             居中工具栏 + 主操作按钮
+//   .tool-grid                双栏 grid (>900px 双栏, <900px 单栏)
+//   .tool-grid--fullscreen    grid 的全屏双栏修饰 (加 flex:1 + min-height:0)
+//
+// 设计原则 (跟 vue-gotchas 一致):
+//   - 只搬原 scoped 里实际写过的属性, 不"顺手补" flex-wrap 等
+//   - 用 BEM 长名 (.tool-toolbar / .tool-grid) 避免跟 caller scoped 类撞名
+//   - 全局 utility 不依赖 Vue scope attribute — Vue scoped 选择器能命中
+//     同组件作用域内的 utility class, 调用方不用 :deep()
+//
+// 调用方一览:
+//   - sql.vue      toolbar + grid(--fullscreen)  抽 2 处
+//   - xml.vue      toolbar + grid(--fullscreen)  抽 2 处
+//   - base64.vue   toolbar + grid                抽 2 处
+//   - format.vue   grid(--fullscreen)            抽 1 处
+//   - contrast.vue grid(无 --fullscreen)         抽 1 处
+//
+// contrast.vue 的 toolbar 故意不抽 — 它是 elevated 设置条
+// (bg/border/radius/padding/gap:18px 全有), 跟 sql/xml/base64 的"无背景
+// 简洁版"差太多, 抽出来反而要加 modifier, 不如保留 caller 的 .contrast-toolbar。
+// =====================================================================
+
+// === .tool-toolbar — 居中 + 主操作按钮的简单工具栏 =======================
+// 原 sql-toolbar / xml-toolbar / base64-toolbar 三处 100% 一致:
+//   display: flex; justify-content: center; gap: 12px; margin-bottom: 14px;
+//   + :deep(.ep-button) { padding-left/right: 10px }
+.tool-toolbar {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 14px;
+
+  // Element Plus button 的默认 horizontal padding (15px) 对 2-3 字标签
+  // 显得偏松, 5 个工具页 (sql/xml/base64) 都收紧到 10px。
+  //
+  // 注意: 这是全局样式表 (@use 引入), 不是 SFC scoped 样式, 所以
+  // 不能用 :deep() —— Vue 编译器不处理全局 CSS 里的 :deep(), 会原样
+  // 输出导致整条规则被浏览器丢弃。直接写后代选择器即可。
+  .ep-button {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+
+// === .tool-grid — 双栏 grid (≥900px 双栏, <900px 单栏) =================
+// 原 sql-grid / xml-grid / json-grid / base64-grid / contrast-grid 五处
+// 100% 一致的部分:
+//   display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+//   align-items: stretch;
+//   + @media (max-width: 900px) { grid-template-columns: 1fr }
+.tool-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: stretch;
+}
+
+@media (max-width: 900px) {
+  .tool-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+// === .tool-grid--fullscreen — 全屏双栏修饰 =============================
+// 原 sql-grid / xml-grid / json-grid 三处全屏双栏需要的额外属性:
+//   flex: 1; min-height: 0;
+// (让 grid 在父 .xxx-page (display: flex; flex-direction: column;
+// height: 100vh - 88px) 里 grow, 吃掉 header/toolbar 之后剩下的高度)。
+// base64 / contrast 不需要 — 它们是流动布局, 不强制 viewport 高度。
+.tool-grid--fullscreen {
+  flex: 1;
+  min-height: 0;
+}

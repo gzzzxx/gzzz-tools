@@ -19,7 +19,7 @@
 -->
 <template>
   <ToolPage
-    class="timer-tool"
+    class="timer-page"
     preset="large-form"
     :title="t('tools.timer.name')"
     :subtitle="t('tools.timer.desc')"
@@ -558,7 +558,7 @@ onBeforeUnmount(() => {
 
 /* Mobile */
 @media (max-width: 600px) {
-  /* .timer-tool padding + .title font-size 已由全局 _tool-page.scss 提供 */
+  /* .timer-page padding + .title font-size 已由全局 _tool-page.scss 提供 */
   /* .t-card 移动端 padding 20 16 已由 <CardPane bodyMobilePadding="20px 16px"> 提供 */
   .t-display__time { font-size: 44px; letter-spacing: 1px; }
   .t-tab { padding: 8px 16px; font-size: 14px; }
