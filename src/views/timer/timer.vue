@@ -52,7 +52,7 @@
         <span class="t-display__unit">{{ t('timerPage.unit.cs') }}</span>
       </div>
 
-      <div class="t-controls">
+      <div class="tool-actions">
         <el-button v-if="!sw.running" type="primary" size="large" @click="swStart">
           {{ t('timerPage.action.start') }}
         </el-button>
@@ -122,7 +122,7 @@
         >{{ formatRemaining(cd.remainingMs) }}</span>
       </div>
 
-      <div class="t-controls">
+      <div class="tool-actions">
         <el-button v-if="cd.phase === 'idle'" type="primary" size="large" @click="cdStart" :disabled="totalSeconds() === 0">
           {{ t('timerPage.action.start') }}
         </el-button>
@@ -488,7 +488,7 @@ onBeforeUnmount(() => {
   margin: 24px 0 28px;
 }
 .t-display__time {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-mono);
   font-size: 64px;
   font-weight: 300;
   color: var(--it-text-primary);
@@ -514,13 +514,9 @@ onBeforeUnmount(() => {
   50%      { opacity: 0.45; }
 }
 
-/* Action buttons */
-.t-controls {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
+/* Action buttons — 已抽到 ~/styles/_tool-recipes.scss 全局 utility
+   (.tool-actions, horizontal center + 12px gap + flex-wrap)。模板里
+   <div class="tool-actions"> 自动套用相同样式, 父 scoped 不用再写一份。 */
 
 /* Lap table */
 .t-laps {
@@ -552,7 +548,7 @@ onBeforeUnmount(() => {
   padding-bottom: 8px;
 }
 .t-mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
 }
 

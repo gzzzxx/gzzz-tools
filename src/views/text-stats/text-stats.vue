@@ -279,7 +279,7 @@ function analyze(text: string): Stat {
 .stat-card__label { color: var(--it-text-secondary); }
 
 .stat-card__value {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-mono);
   font-size: 14px;
   font-weight: 600;
   color: var(--it-text-primary);

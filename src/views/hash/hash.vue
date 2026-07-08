@@ -197,7 +197,7 @@ function copy(key: keyof HashResults) {
 }
 
 .result-value {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-mono);
   font-size: 13px;
   line-height: 1.4;
   color: var(--it-text-primary);

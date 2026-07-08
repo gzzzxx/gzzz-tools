@@ -27,7 +27,7 @@
   >
 
     <CardPane class="input-card" body-padding="20px" radius="8px">
-      <label class="pwd-label">{{ t('passwordStrengthPage.input.label') }}</label>
+      <label class="field-label">{{ t('passwordStrengthPage.input.label') }}</label>
       <el-input
         v-model="password"
         :type="showPassword ? 'text' : 'password'"
@@ -118,8 +118,10 @@
       </div>
     </CardPane>
 
-    <div v-else class="empty">
-      {{ t('passwordStrengthPage.empty') }}
+    <div v-else>
+      <EmptyState margin-top="24px">
+        {{ t('passwordStrengthPage.empty') }}
+      </EmptyState>
     </div>
   </ToolPage>
 </template>
@@ -310,13 +312,9 @@ const rules = computed<Rule[]>(() => {
 
 <style lang="scss" scoped>
 /* Page-level wrapper sizing is provided by <ToolPage preset="medium-form">. */
-.pwd-label {
-  display: block;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--it-text-primary);
-  margin-bottom: 8px;
-}
+/* .field-label 已抽到 ~/styles/_tool-recipes.scss 全局 utility。模板里
+   <label class="field-label"> 自动套用 13/600/primary + 8px margin-bottom,
+   父 scoped 不用再写一份。 */
 
 /* Input card — border-radius 由 <CardPane radius="8px"> 提供 */
 .input-card {
@@ -401,13 +399,10 @@ const rules = computed<Rule[]>(() => {
   color: var(--el-color-danger, #f56c6c);
 }
 
-.empty {
-  margin-top: 24px;
-  padding: 32px;
-  text-align: center;
-  color: var(--it-text-tertiary);
-  font-size: 14px;
-}
+/* .empty 已抽到 ~/components/tools/EmptyState.vue 组件 (margin-top=24px
+   通过 prop 传, 32px padding + 14px 居中 tertiary 文字由组件默认提供)。
+   模板里 <EmptyState margin-top="24px"> 自动套用相同样式, 父 scoped
+   不用再写一份。 */
 
 @media (max-width: 600px) {
   /* .pwd-page padding + .title font-size 已由全局 _tool-page.scss 提供 */

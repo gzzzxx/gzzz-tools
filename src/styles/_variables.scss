@@ -109,6 +109,16 @@ $it-radius-lg:     12px;
   --ghost-border:        rgba(56, 189, 248, 0.55);       // sky-400 55%
   --ghost-bg:            rgba(56, 189, 248, 0.06);       // sky-400 6%
   --drag-shadow:         rgba(2, 132, 199, 0.28);        // sky-600 28% box-shadow
+
+  // === Monospace font stack — used by every "code-like" surface in
+  // tool pages (hash digests, timer display, cron input, table code
+  // chips, qrcode metadata, etc). System-stack only — Fira Code is
+  // NOT pulled in here because (a) it's an external webfont we
+  // don't ship, (b) for non-code text (timestamps, hash hex) we
+  // just need a stable monospace, not ligatures. ToolTextarea and
+  // base64's quote block stay on Fira Code because they're real
+  // code surfaces and benefit from ligature rendering.
+  --font-mono:           ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 // Dark mode — toggled by adding `html.dark` (set in App.vue from

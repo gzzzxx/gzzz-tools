@@ -36,7 +36,7 @@
       <!-- ===== Left card: content + key + IV + result ===== -->
       <CardPane class="enc-card enc-card--main" body-padding="20px">
           <div class="enc-field">
-            <label class="enc-field__label">
+            <label class="field-label">
               {{ t('encryptionPage.field.data') }}
             </label>
             <el-input
@@ -51,7 +51,7 @@
           </div>
 
           <div class="enc-field">
-            <label class="enc-field__label">
+            <label class="field-label">
               {{ t('encryptionPage.field.key') }}
             </label>
             <el-input
@@ -61,7 +61,7 @@
           </div>
 
           <div class="enc-field">
-            <label class="enc-field__label">
+            <label class="field-label">
               {{ t('encryptionPage.field.iv') }}
             </label>
             <el-input
@@ -71,7 +71,7 @@
           </div>
 
           <div class="enc-field enc-field--last">
-            <label class="enc-field__label">
+            <label class="field-label">
               {{ t('encryptionPage.field.result') }}
             </label>
             <el-input
@@ -90,7 +90,7 @@
       <!-- ===== Right card: 4 config selects + 4 buttons ===== -->
       <CardPane class="enc-card enc-card--config" body-padding="20px">
           <div class="enc-field">
-            <label class="enc-field__label">
+            <label class="field-label">
               {{ t('encryptionPage.field.dataType') }}
             </label>
             <el-select v-model="form.dataType">
@@ -110,7 +110,7 @@
           </div>
 
           <div class="enc-field">
-            <label class="enc-field__label">
+            <label class="field-label">
               {{ t('encryptionPage.field.resultType') }}
             </label>
             <el-select v-model="form.resultType">
@@ -130,7 +130,7 @@
           </div>
 
           <div class="enc-field">
-            <label class="enc-field__label">
+            <label class="field-label">
               {{ t('encryptionPage.field.keyType') }}
             </label>
             <el-select v-model="form.keyType">
@@ -146,7 +146,7 @@
           </div>
 
           <div class="enc-field">
-            <label class="enc-field__label">
+            <label class="field-label">
               {{ t('encryptionPage.field.mode') }}
             </label>
             <el-select v-model="form.mode">
@@ -165,28 +165,17 @@
             </el-select>
           </div>
 
-          <div class="enc-buttons">
-            <el-button
-              type="success"
-              class="enc-buttons__btn"
-              @click="run('enc')"
-            >
+          <div class="tool-actions tool-actions--stacked">
+            <el-button type="success" @click="run('enc')">
               {{ t('encryptionPage.action.encrypt') }}
             </el-button>
-            <el-button
-              type="info"
-              class="enc-buttons__btn"
-              @click="run('dec')"
-            >
+            <el-button type="info" @click="run('dec')">
               {{ t('encryptionPage.action.decrypt') }}
             </el-button>
-            <el-button class="enc-buttons__btn" @click="copyData">
+            <el-button @click="copyData">
               {{ t('encryptionPage.action.copy') }}
             </el-button>
-            <el-button
-              class="enc-buttons__btn enc-buttons__btn--last"
-              @click="clear"
-            >
+            <el-button @click="clear">
               {{ t('encryptionPage.action.clear') }}
             </el-button>
           </div>
@@ -376,37 +365,20 @@ function clear() {
      bottom margin needed. */
   margin-bottom: 0;
 }
-.enc-field__label {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--it-text-primary);
-}
+/* .enc-field__label 已抽到 ~/styles/_tool-recipes.scss 全局 utility
+   (.field-label, 13/600/primary + 8px margin-bottom)。模板里
+   <label class="field-label"> 自动套用, 父 scoped 不用再写一份。 */
 .enc-field__textarea :deep(textarea) {
   font-family: 'Fira Code', 'Cascadia Code', Consolas, Menlo, monospace;
   font-size: 13px;
   line-height: 1.55;
 }
 
-/* ====================================================================
-   Buttons — full-width stacked inside the narrow config card.
-   4 buttons with 10px gap, last one keeps the same gap below (no
-   extra trailing margin). The .enc-buttons__btn--last flag is
-   load-bearing only to preserve the original's `margin-bottom:0`
-   on the Clear button.
-   ==================================================================== */
-.enc-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 4px;
-}
-.enc-buttons__btn {
-  width: 100%;
-  margin-left: 0 !important;
-}
-.enc-buttons__btn--last {
-  margin-bottom: 0 !important;
-}
+/* .enc-buttons / .enc-buttons__btn / .enc-buttons__btn--last 已抽到
+   ~/styles/_tool-recipes.scss 全局 utility (.tool-actions.tool-actions--
+   stacked) — 全宽子项 + 4px margin-top 由 modifier 默认提供。模板里
+   <div class="tool-actions tool-actions--stacked"> 自动套用相同 vertical
+   flex + 10px gap + 全宽按钮样式, 父 scoped 不用再写一份。 */
 
 /* ====================================================================
    Info cards — full-width strips below the form grid. Same chrome

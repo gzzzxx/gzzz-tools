@@ -42,7 +42,7 @@
           {{ validation.message }}
         </div>
 
-        <div class="c-card__divider" />
+        <div class="tool-divider" />
 
         <div class="c-card__form">
           <div class="c-form-row">
@@ -64,7 +64,7 @@
       <CardPane class="c-card" body-padding="20px 24px" body-mobile-padding="16px 14px">
         <pre class="c-card__diagram">{{ diagramText }}</pre>
 
-        <div class="c-card__divider" />
+        <div class="tool-divider" />
 
         <!-- Desktop / tablet: 4-col table -->
         <div v-if="!isSmallScreen" class="c-table-wrap">
@@ -266,7 +266,7 @@ const diagramText = computed(() => {
 .c-input {
   width: 100%;
   font-size: 30px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-mono);
   padding: 5px;
   text-align: center;
   color: var(--it-text-primary);
@@ -317,16 +317,15 @@ const diagramText = computed(() => {
   margin-bottom: 12px;
 }
 
-/* 1px neutral divider (same role as n-divider in it-tools). */
-.c-card__divider {
-  height: 1px;
-  background-color: var(--it-border);
-  margin: 16px 0;
-}
+/* .c-card__divider 已抽到 ~/styles/_tool-recipes.scss 全局 utility
+   (.tool-divider)。模板里 <div class="tool-divider"> 自动套用相同
+   1px + --it-border + 16px margin 样式, 父 scoped 不用再写一份。 */
 
 /* c-form-row — port of n-form labelPlacement="left" with
    label-width="170": right-aligned label, 12px gap to the
-   control, vertically centered. */
+   control, vertically centered. .c-form-row__label 保留是 horizontal
+   label 特异布局 (flex 0 0 170px + right-align + padding-right) — 跟
+   .field-label (vertical label) layout 完全不同, 不能简单替。 */
 .c-card__form {
   display: flex;
   flex-direction: column;
@@ -353,7 +352,7 @@ const diagramText = computed(() => {
   overflow: auto;
   padding: 10px 0;
   margin: 0;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-mono);
   font-size: 12.5px;
   line-height: 1.55;
   color: var(--it-text-primary);
@@ -395,7 +394,7 @@ const diagramText = computed(() => {
   border-bottom: none;
 }
 .c-table__code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-mono);
   font-size: 13px;
   background-color: var(--brand-primary-soft);
   color: var(--brand-primary);

@@ -37,6 +37,7 @@ declare module 'vue' {
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
+    EmptyState: typeof import('./components/tools/EmptyState.vue')['default']
     FollowBanner: typeof import('./components/cards/FollowBanner.vue')['default']
     JsonNode: typeof import('./components/json/JsonNode.vue')['default']
     JsonPreview: typeof import('./components/json/JsonPreview.vue')['default']

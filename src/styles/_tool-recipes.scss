@@ -78,3 +78,98 @@
   flex: 1;
   min-height: 0;
 }
+
+
+// =====================================================================
+// Step 5 抽取: 工具页"重复 4 件套" — field-label / divider / actions
+//
+// 替换原本散在 password-strength / qrcode / crontab / encryptionDetail
+// / timer 5 个工具页里的 .pwd-label / .q-form-row__label /
+// .c-form-row__label / .enc-field__label / .c-card__divider /
+// .q-divider / .t-controls / .q-actions / .enc-buttons / .empty /
+// .q-empty 11 块重复 CSS,提炼成 3 个全局 utility + 1 个组件:
+//
+//   .field-label         表单字段标签 (label + control 竖排的 label 部分)
+//   .tool-divider        1px 中性分割线 (内容分组用)
+//   .tool-actions        居中按钮组 (horizontal 默认, stacked 变体)
+//
+//   <EmptyState>         工具页"无内容"占位组件 (组件而非 utility,
+//                         因为它有 prop + 多种 padding 配置)
+//
+// 设计原则:
+//   - 只搬原 scoped 里实际写过的属性, 不"顺手补"
+//   - modifier 用 BEM (`--stacked` / `--gap-sm`) 避免 caller 重复发明轮子
+//   - 全部不依赖 Vue scope attribute — 同组件 scoped 选择器能命中
+// =====================================================================
+
+// === .field-label — 表单字段标签 =======================================
+// 原 pwd-label / q-form-row__label / c-form-row__label / enc-field__label
+// 4 处 100% 一致:
+//   display: block; font-size: 13px; font-weight: 600;
+//   color: var(--it-text-primary); margin-bottom: 8px;
+// (c-form-row 多了 "flex: 0 0 170px; text-align: right; padding-right: 12px"
+//  — 那是 horizontal label 的特异布局, 不在本 utility 范围, 仍由
+//  caller 自定义。)
+.field-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--it-text-primary);
+  margin-bottom: 8px;
+}
+
+
+// === .tool-divider — 1px 中性分割线 ====================================
+// 原 c-card__divider / q-divider 2 处 100% 一致:
+//   height: 1px; background-color: var(--it-border); margin: 16px 0;
+// (c-table 的 thead/td border-bottom 也用 var(--it-border), 但它们是
+//  table 内部 cell 边界, 不属于内容分组线, 不在本 utility 范围。)
+.tool-divider {
+  height: 1px;
+  background-color: var(--it-border);
+  margin: 16px 0;
+}
+
+
+// === .tool-actions — 居中按钮组 ========================================
+// 原 .t-controls (timer) / .q-actions (qrcode) / .enc-buttons
+// (encryptionDetail) 3 处核心规则一致 (display flex + center + gap),
+// 只有方向 / gap 数值差异:
+//
+//   .t-controls   horizontal, gap 12, flex-wrap, 无 margin
+//   .q-actions    horizontal, gap 8,  flex-wrap, 无 margin
+//   .enc-buttons  vertical (stacked), gap 10, margin-top 4px,
+//                 子按钮 width: 100% (config card 内的全宽按钮)
+//
+// 抽成 .tool-actions (horizontal 默认) + --gap-sm (8) + --stacked
+// (vertical + 全宽子项) modifier。--stacked 包含 margin-top 4px
+// (encryptionDetail 原本就有), 共享更一致。
+.tool-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+// gap 收紧到 8px — 用于按钮数量多且每按钮文字短的场景 (qrcode 三个
+// 下载按钮)。单纯 modifier, 不动其他属性。
+.tool-actions--gap-sm {
+  gap: 8px;
+}
+
+// 垂直变体 — 配合 config card 内的全宽按钮 (encryptionDetail 4 个
+// encrypt/decrypt/copy/clear)。margin-top: 4px 保留原值 (跟 button
+// 上方 field 保持 4px 间距, 跟 .tool-actions 默认无 margin 形成
+// 区分)。子项 width: 100% 让按钮在窄列里全宽。
+.tool-actions--stacked {
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+
+  // 全宽子项 — 用后代选择器直接命中 caller 的 <el-button>。
+  // 同 .tool-toolbar 注释: 全局 CSS 不用 :deep(), 直接写即可。
+  > .ep-button {
+    width: 100%;
+    margin-left: 0 !important;
+  }
+}
