@@ -100,7 +100,7 @@
         </el-col>
       </el-row>
 
-      <el-divider />
+      <div class="tool-divider" />
 
       <!-- Feedback checklist -->
       <div class="feedback">
@@ -318,7 +318,7 @@ const rules = computed<Rule[]>(() => {
 
 /* Input card — border-radius 由 <CardPane radius="8px"> 提供 */
 .input-card {
-  margin-bottom: 16px;
+  margin-bottom: var(--tool-section-gap, 20px);
 }
 
 /* Result card — border-radius 由 <CardPane radius="8px"> 提供 */

@@ -119,6 +119,21 @@ $it-radius-lg:     12px;
   // base64's quote block stay on Fira Code because they're real
   // code surfaces and benefit from ligature rendering.
   --font-mono:           ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  // === Code font stack — used by "real code" surfaces where ligature
+  // rendering matters (ToolTextarea / base64 quote / encryption
+  // form textareas). Three callers previously hardcoded this stack
+  // verbatim (see Step 6 in _tool-recipes.scss). OS fallback chain
+  // unchanged from the hardcoded version.
+  --font-mono-code:      'Fira Code', 'Cascadia Code', Consolas, Menlo, monospace;
+
+  // === Tool section gap — vertical spacing between sections inside
+  // a tool page (e.g. between the input card and the result card /
+  // stat grid). Default 20px, matching hash.vue + text-stats.vue's
+  // original margin-bottom. pwd.vue's 16 → 20 (slightly more room)
+  // and timestamp.vue's 24 → 20 (slightly more compact) are within
+  // the ±4px "no big visual change" budget.
+  --tool-section-gap:    20px;
 }
 
 // Dark mode — toggled by adding `html.dark` (set in App.vue from

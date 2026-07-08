@@ -24,10 +24,10 @@
     :title="t('tools.timer.name')"
     :subtitle="t('tools.timer.desc')"
   >
-    <div class="t-tabs" role="tablist">
+    <div class="tab-bar" role="tablist">
       <button
-        class="t-tab"
-        :class="{ 't-tab--active': mode === 'stopwatch' }"
+        class="tab-bar__item"
+        :class="{ 'tab-bar__item--active': mode === 'stopwatch' }"
         role="tab"
         :aria-selected="mode === 'stopwatch'"
         @click="setMode('stopwatch')"
@@ -35,8 +35,8 @@
         {{ t('timerPage.tab.stopwatch') }}
       </button>
       <button
-        class="t-tab"
-        :class="{ 't-tab--active': mode === 'countdown' }"
+        class="tab-bar__item"
+        :class="{ 'tab-bar__item--active': mode === 'countdown' }"
         role="tab"
         :aria-selected="mode === 'countdown'"
         @click="setMode('countdown')"
@@ -388,33 +388,11 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
 /* Page-level wrapper sizing is provided by <ToolPage preset="large-form">. */
-/* Mode tabs */
-.t-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 4px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid var(--it-border);
-}
-
-.t-tab {
-  background: none;
-  border: none;
-  padding: 10px 24px;
-  font-size: 15px;
-  color: var(--it-text-secondary);
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: color 0.15s, border-color 0.15s;
-}
-.t-tab:hover {
-  color: var(--it-text-primary);
-}
-.t-tab--active {
-  color: var(--brand-primary);
-  border-bottom-color: var(--brand-primary);
-  font-weight: 600;
-}
+/* Mode tabs — 已抽到 ~/styles/_tool-recipes.scss 全局 utility
+   (.tab-bar / .tab-bar__item / .tab-bar__item--active — 居中 + 1px
+   中性底 + 选中态 brand-primary)。模板里 <div class="tab-bar">
+   + <button class="tab-bar__item"> 自动套用相同样式, 父 scoped
+   不用再写一份。 */
 
 /* t-card 容器 — 背景 / 边框 / 圆角 / box-sizing 已抽到
    ~/components/tools/CardPane.vue 组件, 这里只保留 timer 特有
@@ -557,7 +535,10 @@ onBeforeUnmount(() => {
   /* .timer-page padding + .title font-size 已由全局 _tool-page.scss 提供 */
   /* .t-card 移动端 padding 20 16 已由 <CardPane bodyMobilePadding="20px 16px"> 提供 */
   .t-display__time { font-size: 44px; letter-spacing: 1px; }
-  .t-tab { padding: 8px 16px; font-size: 14px; }
+  /* 移动端 tab 紧凑 — .tab-bar__item 是全局 utility, 但作为
+     timer.vue template 内元素本身带 [data-v-xxx], 普通 scoped
+     选择器就能命中, 不需要 :deep()。 */
+  .tab-bar__item { padding: 8px 16px; font-size: 14px; }
   .t-lap-row { grid-template-columns: 28px 1fr 1fr; gap: 8px; font-size: 12px; }
   .t-num-field :deep(.el-input-number) { width: 80px; }
 }

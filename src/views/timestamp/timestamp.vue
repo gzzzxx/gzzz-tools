@@ -155,7 +155,7 @@ function copyToClipboard(text: string) {
 /* Page-level wrapper sizing is provided by <ToolPage preset="medium-form"> */
 /* border-radius 由 <CardPane radius="8px"> 提供 */
 .input-card {
-  margin-bottom: 24px;
+  margin-bottom: var(--tool-section-gap, 20px);
 }
 .result-row {
   margin-top: 12px;

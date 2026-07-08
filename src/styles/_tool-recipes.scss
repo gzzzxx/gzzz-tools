@@ -173,3 +173,142 @@
     margin-left: 0 !important;
   }
 }
+
+
+// =====================================================================
+// Step 6 抽取: prose 排版 — "说明 / 参考" 卡片正文 typography
+//
+// 替换原本散在 base64.vue (.base64-reference__body / __para / __term
+// / __list) 和 encryptionDetail.vue (.enc-info__body / __para / __term)
+// 的 2 块重复 typography, 提炼成 4 个全局 utility:
+//
+//   .prose-body     14px / 1.7 / primary text 的正文容器
+//   .prose-para     正文段落: margin-bottom 12px (下一个字段隔开)
+//   .prose-term     正文里的"术语强调" 内联 span (brand-primary + 600)
+//   .prose-list     正文里的项目列表 (margin + padding-left)
+//
+// 设计原则:
+//   - 只搬 base64.vue + encryptionDetail.vue 字面一致的 7 行属性
+//     (font-size / line-height / color / margin / padding-left),
+//     不补 :last-child { margin-bottom: 0 } (只有 encryptionDetail 有
+//     这行, 不到两处一致, 不抽)
+//   - 不补 padding / overflow-x (只有 base64 字面上有, encryptionDetail
+//     用 <CardPane body-padding> 提供, 两套不一致 — 留给 caller 自管)
+//   - BEM 长名 (.prose-body / .prose-para), 与 scoped 的 .xxx-body 撞不上
+// =====================================================================
+
+// === .prose-body — 正文 typography =====================================
+// 原 base64.vue 的 .base64-reference__body 和 encryptionDetail.vue 的
+// .enc-info__body 字面一致的 3 个属性 (font-size / line-height / color):
+//   font-size: 14px;
+//   line-height: 1.7;
+//   color: var(--it-text-primary);
+// (padding / overflow-x 各自 scoped 里写的, 这里不抽。)
+.prose-body {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--it-text-primary);
+}
+
+// === .prose-para — 段落间距 ===========================================
+// 原 .base64-reference__para / .enc-info__para 100% 一致:
+.prose-para {
+  margin: 0 0 12px;
+}
+
+// === .prose-term — inline term emphasis ===============================
+// 原 .base64-reference__term / .enc-info__term 100% 一致:
+//   color: var(--brand-primary);
+//   font-weight: 600;
+// 用法: 包裹正文里的术语 (Base64 / 分组密码 / SM4 等), 让品牌色自然
+// 突出术语而不必每次写 font-weight / color。
+.prose-term {
+  color: var(--brand-primary);
+  font-weight: 600;
+}
+
+// === .prose-list — 正文项目列表 ========================================
+// 原 .base64-reference__list 100% 一致 (encryptionDetail 没用到,
+// 先按 base64 的样式定, 后续 caller 需要可再加 modifier):
+.prose-list {
+  margin: 0 0 12px;
+  padding-left: 24px;
+}
+
+
+// =====================================================================
+// Step 7 抽取: .tool-chip — mono / brand-tint 的 inline code badge
+//
+// 替换 crontab.vue 的 .c-table__code (symbol table 的 example 列里
+// 用 inline `<code>` 显示 cron 表达式, 强调"这是能贴进去用的"):
+//
+//   .c-table__code:
+//     font-family: var(--font-mono);  ← 系统 mono stack
+//     font-size: 13px;
+//     background-color: var(--brand-primary-soft);  ← 品牌色轻染
+//     color: var(--brand-primary);
+//     padding: 1px 6px;
+//     border-radius: 3px;
+//
+// 设计原则:
+//   - 跟 styles/index.scss 里的全局 <code> 区分: 全局 <code> 没设
+//     font-family (走父容器字体), 用 EP 派生色 --el-color-primary-
+//     light-9; 本 .tool-chip 强制 mono + 用品牌 token, 给"真的像
+//     代码 chip"的语义。
+//   - 不挪全局 <code> 规则 — 删全局规则是另一个话题, 这次只抽工具页
+//     自己的 chip 样式。
+// =====================================================================
+
+.tool-chip {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background-color: var(--brand-primary-soft);
+  color: var(--brand-primary);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+
+// =====================================================================
+// Step 8 抽取: .tab-bar — 居中 tab 导航 + brand-color 选中态
+//
+// 替换 timer.vue 自造的 .t-tabs / .t-tab / .t-tab--active 3 块样式。
+// encryption.vue 仍用 <el-tabs> (functional API 差异较大, 没动),
+// 但视觉对齐 follow-up 留给后续。
+//
+// 设计原则:
+//   - 居中 (justify-content: center) + 1px 中性 border-bottom, 选中
+//     项用 brand-primary 颜色 + 600 字重 + 2px brand-primary 下边框
+//   - 不引入 :hover 改字色的"非显然"行为 — 想 hover 改色 call-er 自己加
+//   - 用 BEM 长名 .tab-bar / .tab-bar__item / .tab-bar__item--active,
+//     与 scoped 的 .t-tabs / .t-tab 撞不上
+// =====================================================================
+
+.tab-bar {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--it-border);
+}
+
+.tab-bar__item {
+  background: none;
+  border: none;
+  padding: 10px 24px;
+  font-size: 15px;
+  color: var(--it-text-secondary);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.tab-bar__item:hover {
+  color: var(--it-text-primary);
+}
+
+.tab-bar__item--active {
+  color: var(--brand-primary);
+  border-bottom-color: var(--brand-primary);
+  font-weight: 600;
+}

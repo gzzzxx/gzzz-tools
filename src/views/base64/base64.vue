@@ -79,48 +79,48 @@
     </div>
 
     <CardPane class="base64-reference">
-      <div class="base64-reference__body">
-        <p class="base64-reference__para">
+      <div class="base64-reference__body prose-body">
+        <p class="prose-para">
           <strong>Base64 编码说明</strong>
         </p>
-        <p class="base64-reference__para">
-          <span class="base64-reference__term">Base64 </span>
+        <p class="prose-para">
+          <span class="prose-term">Base64 </span>
           <span>是一种基于 64 个可打印字符来表示二进制数据的表示方法，由于 2^6=64，所以每 6 个比特为一个单元，对应某个可打印字符。</span>
         </p>
-        <p class="base64-reference__para">
-          <span class="base64-reference__term">Base64 </span>
+        <p class="prose-para">
+          <span class="prose-term">Base64 </span>
           <span>常用于在通常处理文本数据的场合，表示、传输、存储一些二进制数据，包括 MIME 的电子邮件及 XML 的一些复杂数据。</span>
         </p>
-        <p class="base64-reference__para">
-          <span class="base64-reference__term">Base64 </span>
+        <p class="prose-para">
+          <span class="prose-term">Base64 </span>
           <span>编码要求把 3 个 8 位字节（3*8=24）转化为 4 个 6 位的字节（4*6=24），之后在 6 位的前面补两个 0，形成 8 位一个字节的形式。 如果剩下的字符不足 3 个字节，则用 0 填充，输出字符使用 =，因此编码后输出的文本末尾可能会出现 1 或 2 个 =。</span>
         </p>
-        <p class="base64-reference__para">
+        <p class="prose-para">
           <span>为了保证所输出的编码位可读字符，</span>
-          <span class="base64-reference__term">Base64 </span>
+          <span class="prose-term">Base64 </span>
           <span>制定了一个编码表，以便进行统一转换。编码表的大小为</span>
-          <span class="base64-reference__term"> 2^6=64 </span>
+          <span class="prose-term"> 2^6=64 </span>
           <span>，这也是</span>
-          <span class="base64-reference__term"> Base64 </span>
+          <span class="prose-term"> Base64 </span>
           <span>名称的由来。</span>
         </p>
-        <p class="base64-reference__para">
+        <p class="prose-para">
           <span>在 </span>
-          <span class="base64-reference__term"> Base64 </span>
+          <span class="prose-term"> Base64 </span>
           <span>中的可打印字符包括字母</span>
-          <span class="base64-reference__term"> A-Z </span>
+          <span class="prose-term"> A-Z </span>
           <span>、</span>
-          <span class="base64-reference__term"> a-z </span>
+          <span class="prose-term"> a-z </span>
           <span>、数字</span>
-          <span class="base64-reference__term"> 0-9 </span>
+          <span class="prose-term"> 0-9 </span>
           <span>，这样共有 62 个字符，此外两个可打印符号在不同的系统中而不同。</span>
         </p>
-        <p class="base64-reference__para">
+        <p class="prose-para">
           <span>以下是</span>
-          <span class="base64-reference__term"> Base64 </span>
+          <span class="prose-term"> Base64 </span>
           <span>编码的基本步骤：</span>
         </p>
-        <ul class="base64-reference__list">
+        <ul class="prose-list">
           <li>将数据划分为 3 个字节一组（24位）。</li>
           <li>将每个字节转换为 8 位二进制形式。</li>
           <li>将 24 位数据按照 6 位一组进行划分，得到 4 个 6 位的组。</li>
@@ -128,22 +128,22 @@
           <li>如果数据不足 3 字节，进行填充。</li>
           <li>将所有转换后的 Base64 字符连接起来，形成最终的编码结果。</li>
         </ul>
-        <p class="base64-reference__para">
+        <p class="prose-para">
           <span>解码</span>
-          <span class="base64-reference__term"> Base64 </span>
+          <span class="prose-term"> Base64 </span>
           <span>编码的过程与编码相反，将每个 Base64 字符转换为对应的6位二进制值，然后将这些 6 位值组合成原始的二进制数据。</span>
         </p>
-        <p class="base64-reference__para">
-          <span class="base64-reference__term">Base64 </span>
+        <p class="prose-para">
+          <span class="prose-term">Base64 </span>
           <span>编码具有以下特点：</span>
         </p>
-        <ul class="base64-reference__list">
+        <ul class="prose-list">
           <li>编码后的数据长度总是比原始数据长约 1/3。</li>
           <li>编码后的数据可以包含 A-Z、a-z、0-9 和两个额外字符的任意组合。</li>
           <li>Base64 编码是一种可逆的编码方式，可以通过解码还原原始数据。</li>
         </ul>
 
-        <p class="base64-reference__para">
+        <p class="prose-para">
           <strong>Base64 编码表</strong>
         </p>
         <el-table
@@ -166,21 +166,21 @@
           <el-table-column label="字符" prop="8" />
         </el-table>
 
-        <p class="base64-reference__para">
+        <p class="prose-para">
           举例来说，一段引用自托马斯·霍布斯《利维坦》的文本：
         </p>
         <div class="base64-reference__quote">
           Man is distinguished, not only by his reason, but by this singular passion from other animals, which is a lust of the mind, that by a perseverance of delight in the continued and indefatigable generation of knowledge, exceeds the short vehemence of any carnal pleasure.
         </div>
 
-        <p class="base64-reference__para">
+        <p class="prose-para">
           使用 Base64 编码之后变成：
         </p>
         <div class="base64-reference__quote">
           TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCBieSB0aGlzIHNpbmd1bGFyIHBhc3Npb24gZnJvbSBvdGhlciBhbmltYWxzLCB3aGljaCBpcyBhIGx1c3Qgb2YgdGhlIG1pbmQsIHRoYXQgYnkgYSBwZXJzZXZlcmFuY2Ugb2YgZGVsaWdodCBpbiB0aGUgY29udGludWVkIGFuZCBpbmRlZmF0aWdhYmxlIGdlbmVyYXRpb24gb2Yga25vd2xlZGdlLCBleGNlZWRzIHRoZSBzaG9ydCB2ZWhlbWVuY2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4=
         </div>
 
-        <p class="base64-reference__para">
+        <p class="prose-para">
           编码 "Man" 的结果为 TWFu，转换过程如下：
         </p>
         <el-table
@@ -425,29 +425,26 @@ const tableDemoData: TableDemo[] = [
 }
 
 .base64-reference__body {
+  // 保留 caller-specific 字段 (base64 有 prose 容器需要 padding +
+  // overflow-x, encryptionDetail 是用 CardPane prop 提供 padding,
+  // 两套不一致所以不抽到全局). 14/1.7/primary typography 已抽到
+  // 全局 .prose-body, 模板里 <div class="base64-reference__body
+  // prose-body"> 自动套用。
   padding: 16px 20px 20px;
-  font-size: 14px;
-  line-height: 1.7;
-  color: var(--it-text-primary);
   overflow-x: auto;
 }
 
-/* Body typography — paragraphs with consistent spacing; the inline
-   "term" spans inherit the brand-primary color so "Base64" / "A-Z"
-   mentions pop visually the same way the original `el-text type=
-   primary"` did. */
-.base64-reference__para {
-  margin: 0 0 12px;
-}
-.base64-reference__term {
-  color: var(--brand-primary);
-  font-weight: 600;
-}
-.base64-reference__list {
-  margin: 0 0 12px;
-  padding-left: 24px;
-}
-.base64-reference__list li {
+/* .prose-para / .prose-term / .prose-list 已抽到
+   ~/styles/_tool-recipes.scss 全局 utility, 模板里 <p class=
+   "prose-para"> / <span class="prose-term"> / <ul class=
+   "prose-list"> 自动套用相同的段落间距 / 术语强调 / 项目列表样式,
+   父 scoped 不用再写一份。 */
+
+/* li margin — base64 的项目列表里每个 li 还要 2px 上下间距,
+   这条只 base64 自己需要 (encryptionDetail 没用到 prose-list),
+   不抽到全局 .prose-list。用 :deep() 穿透 scope 命中全局
+   .prose-list > li。 */
+.base64-reference :deep(.prose-list) li {
   margin: 2px 0;
 }
 
@@ -468,7 +465,7 @@ const tableDemoData: TableDemo[] = [
   background-color: var(--brand-primary-soft);
   border-left: 3px solid var(--brand-primary);
   border-radius: 0 4px 4px 0;
-  font-family: 'Fira Code', 'Cascadia Code', Consolas, Menlo, monospace;
+  font-family: var(--font-mono-code);
   font-size: 12.5px;
   line-height: 1.6;
   word-break: break-all;

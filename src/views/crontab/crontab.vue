@@ -81,7 +81,7 @@
               <tr v-for="row in helpers" :key="row.symbol">
                 <td><strong>{{ row.symbol }}</strong></td>
                 <td>{{ row.meaning }}</td>
-                <td><code class="c-table__code">{{ row.example }}</code></td>
+                <td><code class="tool-chip">{{ row.example }}</code></td>
                 <td>{{ row.equivalent }}</td>
               </tr>
             </tbody>
@@ -95,7 +95,7 @@
             <div>{{ t('crontabPage.symbol.meaning') }}: <strong>{{ row.meaning }}</strong></div>
             <div>
               {{ t('crontabPage.symbol.example') }}:
-              <strong><code class="c-table__code">{{ row.example }}</code></strong>
+              <strong><code class="tool-chip">{{ row.example }}</code></strong>
             </div>
             <div>{{ t('crontabPage.symbol.equivalent') }}: <strong>{{ row.equivalent }}</strong></div>
           </div>
@@ -393,14 +393,10 @@ const diagramText = computed(() => {
 .c-table tbody tr:last-child td {
   border-bottom: none;
 }
-.c-table__code {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  background-color: var(--brand-primary-soft);
-  color: var(--brand-primary);
-  padding: 1px 6px;
-  border-radius: 3px;
-}
+/* .c-table__code 已抽到 ~/styles/_tool-recipes.scss 全局 utility
+   (.tool-chip — mono + 13px + brand-primary-soft 填充 + brand-primary
+   文字 + 1px 6px padding + 3px radius)。模板里
+   <code class="tool-chip"> 自动套用相同样式, 父 scoped 不用再写一份。 */
 
 /* Mobile fallback: each row becomes a stacked mini-card */
 .c-card-list {

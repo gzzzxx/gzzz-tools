@@ -233,7 +233,7 @@ function analyze(text: string): Stat {
 /* Page-level wrapper sizing is provided by <ToolPage preset="large-form"> */
 /* border-radius 由 <CardPane radius="8px"> 提供 */
 .input-card {
-  margin-bottom: 20px;
+  margin-bottom: var(--tool-section-gap, 20px);
 }
 
 .input-meta {

@@ -185,44 +185,44 @@
     <!-- ============== Info blocks (no card headers — intro prose
          stands on its own, no need for a separate section title) ============== -->
     <section class="enc-info">
-      <CardPane class="enc-info__card" body-padding="20px">
-        <div class="enc-info__body">
-          <p class="enc-info__para">
+      <CardPane body-padding="20px">
+        <div class="enc-info__body prose-body">
+          <p class="prose-para">
             <strong>算法介绍</strong>
           </p>
-          <p class="enc-info__para">
+          <p class="prose-para">
             <strong>SM4.0</strong>
             <span>（原名SMS4.0）是一种</span>
-            <span class="enc-info__term">分组密码</span>
+            <span class="prose-term">分组密码</span>
             <span>标准，由</span>
-            <span class="enc-info__term">国家密码管理局</span>
+            <span class="prose-term">国家密码管理局</span>
             <span>于2012年3月21日发布。相关标准为"GM/T 0002-2012《SM4分组密码算法》（原SMS4分组密码算法）"。</span>
           </p>
-          <p class="enc-info__para">
+          <p class="prose-para">
             <span>在</span>
-            <span class="enc-info__term">商用密码</span>
+            <span class="prose-term">商用密码</span>
             <span>体系中，SM4主要用于</span>
-            <span class="enc-info__term">数据加密</span>
+            <span class="prose-term">数据加密</span>
             <span>，其算法公开，分组长度与密钥长度均为128bit，</span>
-            <span class="enc-info__term">加密算法</span>
+            <span class="prose-term">加密算法</span>
             <span>与密钥扩展算法都采用32轮非线性迭代结构，</span>
-            <span class="enc-info__term">S盒</span>
+            <span class="prose-term">S盒</span>
             <span>为固定的8比特输入8比特输出。</span>
           </p>
-          <p class="enc-info__para">
+          <p class="prose-para">
             SM4.0中的指令长度被提升到大于64K（即64×1024）的水平，这是SM 3.0规格（渲染指令长度允许大于512）的128倍。
           </p>
         </div>
       </CardPane>
 
-      <CardPane class="enc-info__card" body-padding="20px">
-        <div class="enc-info__body">
-          <p class="enc-info__para">
+      <CardPane body-padding="20px">
+        <div class="enc-info__body prose-body">
+          <p class="prose-para">
             <strong>相关概念</strong>
           </p>
-          <p class="enc-info__para">
+          <p class="prose-para">
             <span>在</span>
-            <span class="enc-info__term">密码学</span>
+            <span class="prose-term">密码学</span>
             <span>中，</span>
             <strong>分组加密</strong>
             <span>（英语：</span>
@@ -232,26 +232,26 @@
             <span>或</span>
             <strong>块密码</strong>
             <span>，是一种对称密钥算法。它将明文分成多个等长的模块（block），使用确定的算法和</span>
-            <span class="enc-info__term">对称密钥</span>
+            <span class="prose-term">对称密钥</span>
             <span>对每组分别加密解密。分组加密是极其重要的加密协议组成，其中典型的如</span>
-            <span class="enc-info__term">DES</span>
+            <span class="prose-term">DES</span>
             <span>和</span>
-            <span class="enc-info__term">AES</span>
+            <span class="prose-term">AES</span>
             <span>作为美国政府核定的标准加密算法，应用领域从电子邮件加密到银行交易转帐，非常广泛。</span>
           </p>
-          <p class="enc-info__para">
+          <p class="prose-para">
             国密即国家密码局认定的国产密码算法。主要有SM1，SM2，SM3，SM4。密钥长度和分组长度均为128位。
           </p>
-          <p class="enc-info__para">
+          <p class="prose-para">
             SM1为对称加密。其加密强度与AES相当。该算法不公开，调用该算法时，需要通过加密芯片的接口进行调用。
           </p>
-          <p class="enc-info__para">
+          <p class="prose-para">
             SM2为非对称加密，基于ECC。该算法已公开。由于该算法基于ECC，故其签名速度与秘钥生成速度都快于RSA。ECC 256位（SM2采用的就是ECC 256位的一种）安全强度比RSA 2048位高，但运算速度快于RSA。
           </p>
-          <p class="enc-info__para">
+          <p class="prose-para">
             SM3消息摘要。可以用MD5作为对比理解。该算法已公开。校验结果为256位。
           </p>
-          <p class="enc-info__para">
+          <p class="prose-para">
             SM4无线局域网标准的分组数据算法。对称加密，密钥长度和分组长度均为128位。
           </p>
         </div>
@@ -369,7 +369,7 @@ function clear() {
    (.field-label, 13/600/primary + 8px margin-bottom)。模板里
    <label class="field-label"> 自动套用, 父 scoped 不用再写一份。 */
 .enc-field__textarea :deep(textarea) {
-  font-family: 'Fira Code', 'Cascadia Code', Consolas, Menlo, monospace;
+  font-family: var(--font-mono-code);
   font-size: 13px;
   line-height: 1.55;
 }
@@ -392,27 +392,27 @@ function clear() {
   flex-direction: column;
   gap: 16px;
 }
-.enc-info__card {
-  background-color: var(--it-bg-elevated);
-  border: 1px solid var(--it-border);
-  border-radius: 4px;
-  overflow: hidden;
-}
-.enc-info__body {
-  font-size: 14px;
-  line-height: 1.7;
-  color: var(--it-text-primary);
-}
-.enc-info__para {
-  margin: 0 0 12px;
-}
-.enc-info__para:last-child {
+
+/* Card 容器 chrome (bg/border/radius/overflow) 已由 <CardPane> 提供,
+   原 .enc-info__card 块整体删掉 — 跟 CardPane 100% 重复, 是历史
+   包袱。
+   .prose-body / .prose-para / .prose-term 已抽到
+   ~/styles/_tool-recipes.scss 全局 utility, 模板里 <div class=
+   "enc-info__body prose-body"> / <p class="prose-para"> /
+   <span class="prose-term"> 自动套用相同的 14/1.7/primary +
+   margin + brand-color 强调样式, 父 scoped 不用再写一份。 */
+
+/* 末尾段落去掉下边距 — 只有 encryptionDetail 有这条, base64
+   .base64-reference__para 没有。属于 caller-specific 的微调,
+   不抽到全局 .prose-para。 */
+.enc-info__body :deep(.prose-para:last-child) {
   margin-bottom: 0;
 }
-.enc-info__term {
-  color: var(--brand-primary);
-  font-weight: 600;
-}
+
+/* card-pane__body gap — 这是 .enc-card--main / --config 的表单字段
+   间距的支撑 (4 个 .enc-field 直接是 .card-pane__body 的子节点,
+   .enc-field 内部 gap: 6px, 字段之间靠这里 gap: 10px 撑开)。
+   没有别的 caller 影响这个, 留着。 */
 :deep(.card-pane__body) {
   gap: 10px;
 }
@@ -440,6 +440,8 @@ function clear() {
 
 @media (max-width: 600px) {
   .enc-info__body { padding: 14px 16px; }
-  .enc-card__body { padding: 14px 16px; }
+  /* .enc-card__body 选择器是 CardPane 重构前的历史残留,
+     原 .enc-card__body 已并入 <CardPane body-mobile-padding> prop。
+     移除避免误导。 */
 }
 </style>

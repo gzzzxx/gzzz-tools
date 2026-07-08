@@ -21,7 +21,7 @@
 <template>
   <ToolPage
     class="encryption-page"
-    preset="wide-form"
+    preset="large-form"
     :title="title"
     :subtitle="subtitle"
   >
@@ -69,10 +69,10 @@ const handleClick = (tab: { props: { label: string } }) => {
 </script>
 
 <style lang="scss" scoped>
-/* Outer wrapper — same shell family as the other dev tools. 1400px
-   (slightly narrower than sql.vue's 1600px) since the form has a
-   3:1 column ratio and the narrower side doesn't need full 1600.
-   页面尺寸由 <ToolPage preset="wide-form"> 提供。 */
+/* Outer wrapper — same shell family as the other dev tools. 1200px
+   (narrower than sql.vue's 1600px) since the form has a 3:1 column
+   ratio and the narrower side doesn't need full 1600.
+   页面尺寸由 <ToolPage preset="large-form"> 提供。 */
 /* Tabs — el-tabs defaults to left-aligned; we center the nav row
    and tint the active indicator with the brand color so it matches
    the rest of the app's accent palette. */
