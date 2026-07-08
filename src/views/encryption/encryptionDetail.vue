@@ -34,7 +34,7 @@
     <!-- ============== Form (3fr 1fr, stack ≤992px) ============== -->
     <div class="enc-grid">
       <!-- ===== Left card: content + key + IV + result ===== -->
-      <CardPane class="enc-card enc-card--main" body-padding="20px">
+      <CardPane class="enc-card enc-card--main">
           <div class="enc-field">
             <label class="field-label">
               {{ t('encryptionPage.field.data') }}
@@ -88,7 +88,7 @@
       </CardPane>
 
       <!-- ===== Right card: 4 config selects + 4 buttons ===== -->
-      <CardPane class="enc-card enc-card--config" body-padding="20px">
+      <CardPane class="enc-card enc-card--config">
           <div class="enc-field">
             <label class="field-label">
               {{ t('encryptionPage.field.dataType') }}
@@ -185,7 +185,7 @@
     <!-- ============== Info blocks (no card headers — intro prose
          stands on its own, no need for a separate section title) ============== -->
     <section class="enc-info">
-      <CardPane body-padding="20px">
+      <CardPane>
         <div class="enc-info__body prose-body">
           <p class="prose-para">
             <strong>算法介绍</strong>
@@ -215,7 +215,7 @@
         </div>
       </CardPane>
 
-      <CardPane body-padding="20px">
+      <CardPane>
         <div class="enc-info__body prose-body">
           <p class="prose-para">
             <strong>相关概念</strong>

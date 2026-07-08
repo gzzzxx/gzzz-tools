@@ -46,7 +46,7 @@
     </div>
 
     <!-- =================== Stopwatch =================== -->
-    <CardPane v-if="mode === 'stopwatch'" class="t-card" body-padding="32px 24px" body-mobile-padding="20px 16px">
+    <CardPane v-if="mode === 'stopwatch'" class="t-card">
       <div class="t-display">
         <span class="t-display__time">{{ formatElapsed(sw.elapsedMs) }}</span>
         <span class="t-display__unit">{{ t('timerPage.unit.cs') }}</span>
@@ -82,7 +82,7 @@
     </CardPane>
 
     <!-- =================== Countdown =================== -->
-    <CardPane v-else class="t-card" body-padding="32px 24px" body-mobile-padding="20px 16px">
+    <CardPane v-else class="t-card">
       <template v-if="cd.phase === 'idle' || cd.phase === 'paused'">
         <div class="t-presets">
           <button

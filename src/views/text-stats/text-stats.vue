@@ -22,7 +22,7 @@
     :subtitle="t('tools.textStats.desc')"
   >
 
-    <CardPane class="input-card" body-padding="20px">
+    <CardPane class="input-card">
       <el-input
         v-model="input"
         type="textarea"
@@ -46,7 +46,7 @@
         :xs="24" :sm="12" :md="6"
         :style="{ marginBottom: '12px' }"
       >
-        <CardPane class="stat-card" body-padding="14px 16px">
+        <CardPane class="stat-card">
           <div class="stat-card__title">{{ t(`textStatsPage.group.${group.key}`) }}</div>
           <ul class="stat-card__list">
             <li v-for="key in group.items" :key="key" class="stat-card__item">
@@ -58,7 +58,7 @@
       </el-col>
     </el-row>
 
-    <CardPane class="reading-card" body-padding="14px 16px">
+    <CardPane class="reading-card">
       <div class="reading-row">
         <div class="reading-block">
           <div class="reading-block__label">{{ t('textStatsPage.reading.label') }}</div>

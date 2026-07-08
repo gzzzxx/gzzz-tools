@@ -31,7 +31,7 @@
     </div>
 
     <div class="tool-grid tool-grid--fullscreen">
-      <CardPane class="sql-card" :title="t('sqlPage.section.source')">
+      <CardPane class="sql-card" :title="t('sqlPage.section.source')" body-padding="0">
         <template #actions>
           <el-button size="small" :icon="Delete" link @click="clear">
             {{ t('sqlPage.action.clear') }}
@@ -43,7 +43,7 @@
         />
       </CardPane>
 
-      <CardPane class="sql-card" :title="t('sqlPage.section.result')">
+      <CardPane class="sql-card" :title="t('sqlPage.section.result')" body-padding="0">
         <template #actions>
           <el-button
             size="small"

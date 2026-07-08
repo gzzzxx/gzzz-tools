@@ -29,14 +29,14 @@
   >
 
     <div class="tool-grid tool-grid--fullscreen">
-      <CardPane class="json-card">
+      <CardPane class="json-card" body-padding="0">
         <ToolTextarea
           v-model="text"
           :placeholder="t('formatPage.input.placeholder')"
         />
       </CardPane>
 
-      <CardPane class="json-card">
+      <CardPane class="json-card" body-padding="0">
         <div class="json-card__body">
           <JsonEditorVue
             id="json-editor-result"

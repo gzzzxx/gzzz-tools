@@ -26,7 +26,7 @@
     :subtitle="t('tools.passwordStrength.desc')"
   >
 
-    <CardPane class="input-card" body-padding="20px">
+    <CardPane class="input-card">
       <label class="field-label">{{ t('passwordStrengthPage.input.label') }}</label>
       <el-input
         v-model="password"
@@ -49,7 +49,7 @@
       </el-input>
     </CardPane>
 
-    <CardPane v-if="password.length > 0" class="result-card" body-padding="20px">
+    <CardPane v-if="password.length > 0" class="result-card">
       <!-- Strength meter -->
       <div class="meter">
         <div class="meter__bar">

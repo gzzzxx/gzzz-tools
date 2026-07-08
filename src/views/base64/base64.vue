@@ -44,7 +44,7 @@
     </div>
 
     <div class="tool-grid">
-      <CardPane class="base64-card" :title="t('base64Page.section.source')">
+      <CardPane class="base64-card" :title="t('base64Page.section.source')" body-padding="0">
         <template #actions>
           <el-button size="small" :icon="Delete" link @click="clear">
             {{ t('base64Page.action.clear') }}
@@ -57,7 +57,7 @@
         />
       </CardPane>
 
-      <CardPane class="base64-card" :title="t('base64Page.section.result')">
+      <CardPane class="base64-card" :title="t('base64Page.section.result')" body-padding="0">
         <template #actions>
           <el-button
             size="small"
@@ -78,7 +78,7 @@
       </CardPane>
     </div>
 
-    <CardPane class="base64-reference">
+    <CardPane class="base64-reference" body-padding="0">
       <div class="base64-reference__body prose-body">
         <p class="prose-para">
           <strong>Base64 编码说明</strong>

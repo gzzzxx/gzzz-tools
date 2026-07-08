@@ -28,7 +28,7 @@
 
     <div class="qr-row">
       <!-- ============== Left: input + options ============== -->
-      <CardPane class="q-card" body-padding="20px 24px" body-mobile-padding="16px 14px">
+      <CardPane class="q-card">
         <label class="field-label">{{ t('qrcodePage.input.label') }}</label>
         <el-input
           v-model="text"
@@ -79,7 +79,7 @@
       </CardPane>
 
       <!-- ============== Right: preview + actions ============== -->
-      <CardPane class="q-card q-card--preview" body-padding="20px 24px" body-mobile-padding="16px 14px">
+      <CardPane class="q-card q-card--preview">
         <div class="q-preview-wrap">
           <canvas v-show="hasContent" ref="canvasRef" class="q-canvas" />
           <EmptyState v-if="!hasContent" padding="0">

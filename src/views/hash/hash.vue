@@ -16,7 +16,7 @@
     :title="t('tools.hash.name')"
     :subtitle="t('tools.hash.desc')"
   >
-    <CardPane class="input-card" body-padding="20px">
+    <CardPane class="input-card">
       <el-input
         v-model="input"
         type="textarea"
@@ -41,7 +41,7 @@
         :key="algo.key"
         class="result-card"
         :class="{ 'is-empty': !input }"
-        body-padding="8px 14px"
+        body-padding="10px"
       >
         <div class="result-row-flex">
           <div class="result-info">

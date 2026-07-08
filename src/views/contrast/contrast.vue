@@ -71,7 +71,7 @@
     </div>
 
     <div class="tool-grid">
-      <CardPane class="contrast-card" :title="t('contrastPage.section.prev')">
+      <CardPane class="contrast-card" :title="t('contrastPage.section.prev')" body-padding="0">
         <template #actions>
           <el-button size="small" :icon="Delete" link @click="form.prev = ''">
             {{ t('contrastPage.action.clear') }}
@@ -84,7 +84,7 @@
         />
       </CardPane>
 
-      <CardPane class="contrast-card" :title="t('contrastPage.section.current')">
+      <CardPane class="contrast-card" :title="t('contrastPage.section.current')" body-padding="0">
         <template #actions>
           <el-button size="small" :icon="Delete" link @click="form.current = ''">
             {{ t('contrastPage.action.clear') }}
@@ -98,7 +98,7 @@
       </CardPane>
     </div>
 
-    <CardPane class="contrast-result" :title="t('contrastPage.section.result')">
+    <CardPane class="contrast-result" :title="t('contrastPage.section.result')" body-padding="0">
       <Diff
         id="diff"
         :mode="form.mode"

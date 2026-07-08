@@ -20,7 +20,7 @@
     :title="t('tools.timestamp.name')"
     :subtitle="t('tools.timestamp.desc')"
   >
-    <CardPane class="input-card" body-padding="20px">
+    <CardPane class="input-card">
       <div class="date-picker-wrapper">
         <el-date-picker
           v-model="datePickerValue"
@@ -52,7 +52,7 @@
       </div>
     </CardPane>
     <div class="result-row">
-      <CardPane class="result-card">
+      <CardPane class="result-card" body-padding="0">
         <div class="result-label">{{ t('timestampPage.result.date') }}</div>
         <div class="result-row-flex">
           <span class="result-value result-mono">{{ formattedDate }}</span>
@@ -66,7 +66,7 @@
           />
         </div>
       </CardPane>
-      <CardPane class="result-card">
+      <CardPane class="result-card" body-padding="0">
         <div class="result-label">{{ t('timestampPage.result.timestamp') }}</div>
         <div class="result-row-flex">
           <span class="result-value result-mono">{{ formattedTimestamp }}</span>

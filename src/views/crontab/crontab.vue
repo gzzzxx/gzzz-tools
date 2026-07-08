@@ -22,7 +22,7 @@
 
     <div class="crontab-row">
       <!-- ============== Left: input + description + toggles ============== -->
-      <CardPane class="c-card" body-padding="20px 24px" body-mobile-padding="16px 14px">
+      <CardPane class="c-card">
         <div class="c-card__input-wrap">
           <input
             v-model="cron"
@@ -61,7 +61,7 @@
       </CardPane>
 
       <!-- ============== Right: diagram + symbol table ============== -->
-      <CardPane class="c-card" body-padding="20px 24px" body-mobile-padding="16px 14px">
+      <CardPane class="c-card">
         <pre class="c-card__diagram">{{ diagramText }}</pre>
 
         <div class="tool-divider" />

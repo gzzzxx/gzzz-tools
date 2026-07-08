@@ -42,7 +42,7 @@
 
     <div class="tool-grid tool-grid--fullscreen">
       <!-- ============== Source card ============== -->
-      <CardPane class="xml-card" :title="t('xmlPage.section.source')">
+      <CardPane class="xml-card" :title="t('xmlPage.section.source')" body-padding="0">
         <template #actions>
           <el-select v-model="indent" size="small" class="xml-card__indent">
             <el-option
@@ -63,7 +63,7 @@
       </CardPane>
 
       <!-- ============== Result card ============== -->
-      <CardPane class="xml-card" :title="t('xmlPage.section.result')">
+      <CardPane class="xml-card" :title="t('xmlPage.section.result')" body-padding="0">
         <template #actions>
           <el-button
             size="small"

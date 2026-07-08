@@ -22,7 +22,7 @@
     - title               卡片标题文字 (可选 — 不传且没有 #title slot 则不渲染 header)
     - headerPadding       header 内边距 (desktop), 默认 '8px 16px'
     - headerMobilePadding 移动端 (≤600px) header 内边距, 默认 '10px 12px'
-    - bodyPadding         body 内边距 (desktop), 默认 '0'
+    - bodyPadding         body 内边距 (desktop), 默认 '20px'
     - bodyMobilePadding   移动端 (≤600px) body 内边距, 默认 = bodyPadding
     - radius              border-radius, 默认 '4px' (现有 11 个 caller);
                            早期用 <el-card> 的 hash/pwd/timestamp/text-stats
@@ -71,8 +71,9 @@ const props = withDefaults(defineProps<{
   headerPadding?: string
   /** header 内边距 (mobile ≤600px)。默认 '10px 12px' (json.vue 是 '6px 12px') */
   headerMobilePadding?: string
-  /** body 内边距 (desktop)。默认 '0' (无 padding — caller 自己控制或用 el-card)。
-   *  crontab/qrcode 传 '20px 24px' 让整张卡有 padding。 */
+  /** body 内边距 (desktop)。默认 '20px' (最常见的输入表单卡片 padding)。
+   *  crontab/qrcode 传 '20px 24px'，timer 传 '32px 24px'，
+   *  sql/xml/base64/contrast/json 等用 ToolTextarea 的卡片传 '0'。 */
   bodyPadding?: string
   /** body 内边距 (mobile ≤600px)。默认 = bodyPadding (无变化)。
    *  timer.vue 传 '20px 16px' 覆盖 '32px 24px'。 */
@@ -85,7 +86,7 @@ const props = withDefaults(defineProps<{
   title: '',
   headerPadding: '8px 16px',
   headerMobilePadding: '10px 12px',
-  bodyPadding: '0',
+  bodyPadding: '20px',
   bodyMobilePadding: undefined,
   radius: '8px',
 })

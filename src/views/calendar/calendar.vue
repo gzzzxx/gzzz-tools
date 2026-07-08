@@ -28,7 +28,7 @@
     :subtitle="t('tools.calendar.desc')"
   >
 
-    <CardPane class="calendar-card">
+    <CardPane class="calendar-card" body-padding="0">
       <el-calendar>
         <template #date-cell="{ data }">
           <div>
