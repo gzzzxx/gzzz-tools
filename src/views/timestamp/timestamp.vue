@@ -39,7 +39,7 @@
       </div>
     </CardPane>
     <div class="result-row">
-      <CardPane class="result-card" body-padding="0">
+      <CardPane class="result-card" variant="result" body-padding="0">
         <div class="result-label">{{ t('timestampPage.result.date') }}</div>
         <div class="result-row-flex">
           <span class="result-value result-mono">{{ formattedDate }}</span>
@@ -53,7 +53,7 @@
           />
         </div>
       </CardPane>
-      <CardPane class="result-card" body-padding="0">
+      <CardPane class="result-card" variant="result" body-padding="0">
         <div class="result-label">{{ t('timestampPage.result.timestamp') }}</div>
         <div class="result-row-flex">
           <span class="result-value result-mono">{{ formattedTimestamp }}</span>
@@ -162,7 +162,6 @@ function copyToClipboard(text: string) {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: var(--it-card-result-bg);
 }
 .result-label {
   color: var(--it-text-secondary);

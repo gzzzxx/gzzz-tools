@@ -26,8 +26,11 @@
 <script setup lang="ts">
 import { computed, useSlots } from 'vue'
 
+export type CardPaneVariant = 'default' | 'result'
+
 const props = withDefaults(defineProps<{
   title?: string
+  variant?: CardPaneVariant
   headerPadding?: string
   headerMobilePadding?: string
   bodyPadding?: string
@@ -35,6 +38,7 @@ const props = withDefaults(defineProps<{
   radius?: string
 }>(), {
   title: '',
+  variant: 'default',
   headerPadding: '8px 16px',
   headerMobilePadding: '10px 12px',
   bodyPadding: '20px',
@@ -60,6 +64,9 @@ const bodyStyle = computed(() => ({
 
 const rootStyle = computed(() => ({
   '--cp-radius': props.radius,
+  '--cp-bg': props.variant === 'result'
+    ? 'var(--it-card-result-bg)'
+    : 'var(--it-bg-elevated)',
 }))
 </script>
 
@@ -67,7 +74,7 @@ const rootStyle = computed(() => ({
 .card-pane {
   display: flex;
   flex-direction: column;
-  background-color: var(--it-bg-elevated);
+  background-color: var(--cp-bg, var(--it-bg-elevated));
   border: 1px solid var(--it-border);
   border-radius: var(--cp-radius, 4px);
   overflow: hidden;

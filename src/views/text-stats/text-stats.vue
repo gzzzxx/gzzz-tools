@@ -32,7 +32,7 @@
         :xs="24" :sm="12" :md="6"
         :style="{ marginBottom: '12px' }"
       >
-        <CardPane class="stat-card">
+        <CardPane class="stat-card" variant="result">
           <div class="stat-card__title">{{ t(`textStatsPage.group.${group.key}`) }}</div>
           <ul class="stat-card__list">
             <li v-for="key in group.items" :key="key" class="stat-card__item">
@@ -44,7 +44,7 @@
       </el-col>
     </el-row>
 
-    <CardPane class="reading-card">
+    <CardPane class="reading-card" variant="result">
       <div class="reading-row">
         <div class="reading-block">
           <div class="reading-block__label">{{ t('textStatsPage.reading.label') }}</div>
@@ -201,11 +201,6 @@ function analyze(text: string): Stat {
 }
 
 .stat-row { margin-top: 4px; }
-
-.stat-card,
-.reading-card {
-  background: var(--it-card-result-bg);
-}
 
 .stat-card { height: 100%; }
 

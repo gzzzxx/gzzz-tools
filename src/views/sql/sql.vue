@@ -30,7 +30,7 @@
         />
       </CardPane>
 
-      <CardPane class="sql-card" :title="t('sqlPage.section.result')" body-padding="0">
+      <CardPane class="sql-card" :title="t('sqlPage.section.result')" variant="result" body-padding="0">
         <template #actions>
           <el-button
             size="small"

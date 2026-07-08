@@ -31,7 +31,7 @@
         />
       </CardPane>
 
-      <CardPane class="base64-card" :title="t('base64Page.section.result')" body-padding="0">
+      <CardPane class="base64-card" :title="t('base64Page.section.result')" variant="result" body-padding="0">
         <template #actions>
           <el-button
             size="small"

@@ -41,7 +41,7 @@
       </CardPane>
 
       <!-- 结果输出卡片 -->
-      <CardPane class="xml-card" :title="t('xmlPage.section.result')" body-padding="0">
+      <CardPane class="xml-card" :title="t('xmlPage.section.result')" variant="result" body-padding="0">
         <template #actions>
           <el-button
             size="small"

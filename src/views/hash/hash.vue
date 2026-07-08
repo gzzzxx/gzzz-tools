@@ -31,6 +31,7 @@
         :key="algo.key"
         class="result-card"
         :class="{ 'is-empty': !input }"
+        variant="result"
         body-padding="10px"
       >
         <div class="result-row-flex">
@@ -140,9 +141,6 @@ function copy(key: keyof HashResults) {
   gap: 8px;
 }
 
-.result-card {
-  background: var(--it-card-result-bg);
-}
 .result-card.is-empty { opacity: 0.6; }
 
 .result-row-flex {
@@ -173,8 +171,6 @@ function copy(key: keyof HashResults) {
 }
 
 .result-value {
-  font-size: 13px;
-  font-weight: 400;
   line-height: 1.4;
   word-break: break-all;
   user-select: all;
