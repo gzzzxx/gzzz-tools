@@ -298,7 +298,7 @@ function clear() {
   gap: 16px;
   align-items: stretch;
 }
-@media (max-width: 991.98px) {
+@media (max-width: 900px) {
   .enc-grid {
     grid-template-columns: 1fr;
   }

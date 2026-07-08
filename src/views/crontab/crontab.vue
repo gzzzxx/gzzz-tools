@@ -198,6 +198,8 @@ const diagramText = computed(() => {
   .crontab-row {
     grid-template-columns: 1fr;
   }
+  .c-form-row { max-width: 100%; }
+  .c-form-row__label { flex-basis: 130px; padding-right: 8px; font-size: 13px; }
 }
 
 .c-card__input-wrap {
@@ -338,10 +340,6 @@ const diagramText = computed(() => {
   color: var(--it-text-primary);
 }
 
-@media (max-width: 768px) {
-  .c-form-row { max-width: 100%; }
-  .c-form-row__label { flex-basis: 130px; padding-right: 8px; font-size: 13px; }
-}
 @media (max-width: 600px) {
   .c-input { font-size: 22px; }
   .c-card__cron-string { font-size: 18px; }
