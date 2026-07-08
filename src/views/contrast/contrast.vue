@@ -8,9 +8,9 @@
     :subtitle="t('tools.contrast.desc')"
   >
 
-    <div class="contrast-toolbar">
-      <div class="contrast-toolbar__group">
-        <label class="contrast-toolbar__label">
+    <div class="tool-toolbar">
+      <div class="tool-toolbar__group">
+        <label class="tool-bar-label">
           {{ t('contrastPage.options.type') }}
         </label>
         <el-select v-model="form.type" size="small" class="contrast-toolbar__select">
@@ -23,8 +23,8 @@
         </el-select>
       </div>
 
-      <div class="contrast-toolbar__group">
-        <label class="contrast-toolbar__label">
+      <div class="tool-toolbar__group">
+        <label class="tool-bar-label">
           {{ t('contrastPage.options.mode') }}
         </label>
         <el-radio-group v-model="form.mode" size="small">
@@ -41,9 +41,9 @@
         :content="t('contrastPage.options.foldingHint')"
         placement="top"
       >
-        <div class="contrast-toolbar__group contrast-toolbar__group--switch">
+        <div class="tool-toolbar__group">
           <el-switch v-model="form.folding" />
-          <span class="contrast-toolbar__hint">
+          <span class="tool-bar-hint">
             {{ t('contrastPage.options.folding') }}
           </span>
         </div>
@@ -137,38 +137,6 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-/* 设置工具栏 */
-.contrast-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 18px;
-  padding: 10px 16px;
-  margin-bottom: 14px;
-  background-color: var(--it-bg-elevated);
-  border: 1px solid var(--it-border);
-  border-radius: 4px;
-}
-.contrast-toolbar__group {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.contrast-toolbar__group--switch {
-  gap: 6px;
-}
-.contrast-toolbar__label {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--it-text-primary);
-  white-space: nowrap;
-}
-.contrast-toolbar__hint {
-  font-size: 13px;
-  color: var(--it-text-secondary);
-  white-space: nowrap;
-}
 .contrast-toolbar__select {
   width: 140px;
 }
@@ -182,7 +150,6 @@ watch(
 }
 
 @media (max-width: 600px) {
-  .contrast-toolbar { gap: 12px; padding: 10px 12px; }
   .contrast-toolbar__select { width: 120px; }
 }
 </style>

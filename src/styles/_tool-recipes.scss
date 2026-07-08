@@ -2,9 +2,11 @@
 // _tool-recipes.scss — 工具页常用的"两件套" utility (Step 3 抽取).
 //
 // 替换 5 个工具页面里的 .xxx-toolbar + .xxx-grid 重复块
-// (sql / xml / base64 / format / contrast),提炼成 2 个全局 utility:
+// (sql / xml / base64 / format / contrast),提炼成 3 个全局 utility:
 //
 //   .tool-toolbar             居中工具栏 + 主操作按钮
+//   .tool-toolbar__group      toolbar 内的 label + 控件分组 (contrast 用)
+//   .tool-toolbar / .tool-bar-label / .tool-bar-hint  详见下文
 //   .tool-grid                双栏 grid (>900px 双栏, <900px 单栏)
 //   .tool-grid--fullscreen    grid 的全屏双栏修饰 (加 flex:1 + min-height:0)
 //
@@ -19,25 +21,34 @@
 //   - xml.vue      toolbar + grid(--fullscreen)  抽 2 处
 //   - base64.vue   toolbar + grid                抽 2 处
 //   - format.vue   grid(--fullscreen)            抽 1 处
-//   - contrast.vue grid(无 --fullscreen)         抽 1 处
+//   - contrast.vue toolbar + grid                抽 2 处 (Step 11 合并)
 //
-// contrast.vue 的 toolbar 故意不抽 — 它是 elevated 设置条
-// (bg/border/radius/padding/gap:18px 全有), 跟 sql/xml/base64 的"无背景
-// 简洁版"差太多, 抽出来反而要加 modifier, 不如保留 caller 的 .contrast-toolbar。
+// contrast.vue 的 toolbar 合并说明: 原来 .contrast-toolbar 是 elevated
+// 设置条 (bg/border/radius/padding/gap:18px 全有), Step 11 跟 sql/xml/
+// base64 对齐为简洁版 (无背景/无边框/居中/gap:12)。视觉变化 = 灰底+边框
+// 消失, 工具栏间距从 18px 收到 12px, 跟其他三个工具页完全统一。
 // =====================================================================
 
 // === .tool-toolbar — 居中 + 主操作按钮的简单工具栏 =======================
-// 原 sql-toolbar / xml-toolbar / base64-toolbar 三处 100% 一致:
+// 原 sql-toolbar / xml-toolbar / base64-toolbar 三处 100% 一致, contrast
+// toolbar 在 Step 11 合并后也复用 (去掉 bg/border/radius/padding):
 //   display: flex; justify-content: center; gap: 12px; margin-bottom: 14px;
-//   + :deep(.ep-button) { padding-left/right: 10px }
+//   align-items: center; flex-wrap: wrap;   ← contrast 原本有, base64/sql/
+//                                              xml 不需要但加了对 2 个 button
+//                                              的视觉无影响, 保留作为 toolbar
+//                                              默认行为, 让窄屏下 3+ group
+//                                              (contrast) 能自然换行
+//   + .ep-button { padding-left/right: 10px }
 .tool-toolbar {
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 12px;
   margin-bottom: 14px;
 
   // Element Plus button 的默认 horizontal padding (15px) 对 2-3 字标签
-  // 显得偏松, 5 个工具页 (sql/xml/base64) 都收紧到 10px。
+  // 显得偏松, 5 个工具页 (sql/xml/base64/contrast) 都收紧到 10px。
   //
   // 注意: 这是全局样式表 (@use 引入), 不是 SFC scoped 样式, 所以
   // 不能用 :deep() —— Vue 编译器不处理全局 CSS 里的 :deep(), 会原样
@@ -46,6 +57,48 @@
     padding-left: 10px;
     padding-right: 10px;
   }
+}
+
+
+// === .tool-toolbar__group — toolbar 内的 label + 控件分组 ================
+// 原 contrast 的 .contrast-toolbar__group 100% 一致:
+//   display: flex; align-items: center; gap: 8px;
+// 调用方: contrast 三个 group (语言类型 / 对比模式 / 折叠开关)。
+// 组间间距由外层 .tool-toolbar 的 gap: 12px 控制, 组内 label 和控件
+// 用这个 gap: 8px 分隔。
+.tool-toolbar__group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
+// === .tool-bar-label — toolbar 内的水平 label ===========================
+// 原 contrast 的 .contrast-toolbar__label:
+//   font-size: 13px; font-weight: 600; color: var(--it-text-primary);
+//   white-space: nowrap;
+// 跟 .field-label 的区别: .field-label 是 block + margin-bottom (label 在
+// 控件上方, 表单字段用); .tool-bar-label 是 inline, 跟控件横排 (toolbar
+// 内嵌 group 用)。两个 utility 互不替代。
+// 调用方: contrast 三个 group 各自的 label。
+.tool-bar-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--it-text-primary);
+  white-space: nowrap;
+}
+
+
+// === .tool-bar-hint — toolbar 内的次要提示文字 ==========================
+// 原 contrast 的 .contrast-toolbar__hint:
+//   font-size: 13px; color: var(--it-text-secondary); white-space: nowrap;
+// 跟 .tool-bar-label 视觉一致, 但字色 secondary 用于次要提示 (折叠开关
+// 旁边的 "折叠" 文字)。共用 font-size / nowrap, 只换字色。
+// 调用方: contrast 折叠开关旁的 "折叠" 提示。
+.tool-bar-hint {
+  font-size: 13px;
+  color: var(--it-text-secondary);
+  white-space: nowrap;
 }
 
 
