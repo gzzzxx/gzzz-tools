@@ -387,7 +387,7 @@ function clear() {
    reference card.
    ==================================================================== */
 .enc-info {
-  margin-top: 16px;
+  margin-top: var(--tool-section-gap, 20px);
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -423,7 +423,7 @@ function clear() {
    fills the field width (the original scoped this on
    .ep-form-item__content .ep-select; we apply it at field level).
    ==================================================================== */
-:deep(.enc-field .ep-select) {
+.enc-field :deep(.ep-select) {
   width: 100% !important;
 }
 :deep(.ep-textarea__inner::-webkit-scrollbar) {

@@ -20,7 +20,7 @@
 <template>
   <ToolPage
     class="timer-page"
-    preset="large-form"
+    preset="medium-form"
     :title="t('tools.timer.name')"
     :subtitle="t('tools.timer.desc')"
   >
@@ -475,10 +475,10 @@ onBeforeUnmount(() => {
   transition: color 0.2s;
 }
 .t-display__time--warn {
-  color: var(--el-color-warning, #e6a23c);
+  color: var(--el-color-warning);
 }
 .t-display__time--alert {
-  color: var(--el-color-danger, #f56c6c);
+  color: var(--el-color-danger);
   animation: t-pulse 1s ease-in-out infinite;
 }
 .t-display__unit {

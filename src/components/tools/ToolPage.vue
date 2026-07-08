@@ -48,16 +48,12 @@ import { computed, useAttrs } from 'vue'
 
 export type ToolPagePreset =
   | 'wide-editor'
-  | 'wide-form'
   | 'large-form'
   | 'medium-form'
 
 const presetVars: Record<ToolPagePreset, Record<string, string>> = {
   'wide-editor': {
     '--tool-page-max-width': '1600px',
-  },
-  'wide-form': {
-    '--tool-page-max-width': '1400px',
   },
   'large-form': {
     '--tool-page-max-width': '1200px',

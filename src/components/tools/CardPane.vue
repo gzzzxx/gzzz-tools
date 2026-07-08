@@ -77,8 +77,9 @@ const props = withDefaults(defineProps<{
   /** body 内边距 (mobile ≤600px)。默认 = bodyPadding (无变化)。
    *  timer.vue 传 '20px 16px' 覆盖 '32px 24px'。 */
   bodyMobilePadding?: string
-  /** border-radius。默认 '4px'。hash/pwd/timestamp/text-stats 传
-   *  '8px' 保留原 <el-card class="xxx-card" border-radius: 8px> 视觉。 */
+  /** border-radius。默认 '8px' (it-tools.tech 风格)。
+   *  早期 <el-card border-radius: 8px> 风格的 hash/pwd/timestamp/text-stats
+   *  现在不用传了, 跟其他工具页一致用默认 8px。 */
   radius?: string
 }>(), {
   title: '',
@@ -86,7 +87,7 @@ const props = withDefaults(defineProps<{
   headerMobilePadding: '10px 12px',
   bodyPadding: '0',
   bodyMobilePadding: undefined,
-  radius: '4px',
+  radius: '8px',
 })
 
 const slots = useSlots()

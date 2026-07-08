@@ -22,7 +22,7 @@
     :subtitle="t('tools.textStats.desc')"
   >
 
-    <CardPane class="input-card" body-padding="20px" radius="8px">
+    <CardPane class="input-card" body-padding="20px">
       <el-input
         v-model="input"
         type="textarea"
@@ -46,19 +46,19 @@
         :xs="24" :sm="12" :md="6"
         :style="{ marginBottom: '12px' }"
       >
-        <CardPane class="stat-card" body-padding="14px 16px" radius="8px">
+        <CardPane class="stat-card" body-padding="14px 16px">
           <div class="stat-card__title">{{ t(`textStatsPage.group.${group.key}`) }}</div>
           <ul class="stat-card__list">
             <li v-for="key in group.items" :key="key" class="stat-card__item">
               <span class="stat-card__label">{{ t(`textStatsPage.label.${key}`) }}</span>
-              <span class="stat-card__value">{{ stats[key] }}</span>
+              <span class="stat-card__value result-mono">{{ stats[key] }}</span>
             </li>
           </ul>
         </CardPane>
       </el-col>
     </el-row>
 
-    <CardPane class="reading-card" body-padding="14px 16px" radius="8px">
+    <CardPane class="reading-card" body-padding="14px 16px">
       <div class="reading-row">
         <div class="reading-block">
           <div class="reading-block__label">{{ t('textStatsPage.reading.label') }}</div>
@@ -230,20 +230,13 @@ function analyze(text: string): Stat {
 </script>
 
 <style lang="scss" scoped>
-/* Page-level wrapper sizing is provided by <ToolPage preset="large-form"> */
-/* border-radius 由 <CardPane radius="8px"> 提供 */
+/* Page-level wrapper sizing is provided by <ToolPage preset="medium-form"> */
 .input-card {
   margin-bottom: var(--tool-section-gap, 20px);
 }
 
-.input-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 12px;
-  color: var(--it-text-secondary);
-  font-size: 13px;
-}
+/* .input-meta 已抽到 ~/styles/_tool-recipes.scss 全局 utility。
+   模板里 <div class="input-meta"> 自动套用相同样式。 */
 
 .stat-row { margin-top: 4px; }
 
@@ -278,13 +271,9 @@ function analyze(text: string): Stat {
 
 .stat-card__label { color: var(--it-text-secondary); }
 
-.stat-card__value {
-  font-family: var(--font-mono);
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--it-text-primary);
-  font-variant-numeric: tabular-nums;
-}
+/* .stat-card__value — mono / 14 / 600 / primary / tabular-nums 已由
+   ~/styles/_tool-recipes.scss 全局 .result-mono utility 提供, 模板
+   里 <span class="stat-card__value result-mono"> 自动套用。 */
 
 .reading-row {
   display: flex;

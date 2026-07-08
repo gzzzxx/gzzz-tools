@@ -16,7 +16,7 @@
     :title="t('tools.hash.name')"
     :subtitle="t('tools.hash.desc')"
   >
-    <CardPane class="input-card" body-padding="20px" radius="8px">
+    <CardPane class="input-card" body-padding="20px">
       <el-input
         v-model="input"
         type="textarea"
@@ -33,41 +33,39 @@
       </div>
     </CardPane>
 
-    <!-- Inline margin on el-col: CSS margin-bottom gets eaten by el-row's
-         flex-wrap, but inline style has specificity 1000 and can't be
-         overridden. (This is the cleanest of three tried approaches.) -->
-    <el-row :gutter="16" class="result-list">
-      <el-col
-        v-for="(algo, i) in algorithms"
+    <!-- result-list: 单列垂直堆叠 (el-row + el-col span=24 太重,
+         直接用 flex column + gap 隔开相邻卡片)。 -->
+    <div class="result-list">
+      <CardPane
+        v-for="algo in algorithms"
         :key="algo.key"
-        :span="24"
-        :style="{ marginBottom: i < algorithms.length - 1 ? '8px' : '0' }"
+        class="result-card"
+        :class="{ 'is-empty': !input }"
+        body-padding="8px 14px"
       >
-        <CardPane class="result-card" :class="{ 'is-empty': !input }" body-padding="8px 14px" radius="8px">
-          <div class="result-row-flex">
-            <div class="result-info">
-              <div class="result-label">
-                {{ algo.label }}
-                <span class="result-bits">{{ t('hashPage.result.bits', { n: algo.bits }) }}</span>
-              </div>
-              <div
-                class="result-value"
-                :class="{ 'result-value--wraps': algo.key === 'sha384' || algo.key === 'sha512' }"
-              >
-                {{ input ? results[algo.key] : '—' }}
-              </div>
+        <div class="result-row-flex">
+          <div class="result-info">
+            <div class="result-label">
+              {{ algo.label }}
+              <span class="result-bits">{{ t('hashPage.result.bits', { n: algo.bits }) }}</span>
             </div>
-            <el-button
-              :icon="DocumentCopy"
-              size="small"
-              circle
-              :disabled="!input || !results[algo.key]"
-              @click="copy(algo.key)"
-            />
+            <div
+              class="result-value result-mono"
+              :class="{ 'result-value--wraps': algo.key === 'sha384' || algo.key === 'sha512' }"
+            >
+              {{ input ? results[algo.key] : '—' }}
+            </div>
           </div>
-        </CardPane>
-      </el-col>
-    </el-row>
+          <el-button
+            :icon="DocumentCopy"
+            size="small"
+            circle
+            :disabled="!input || !results[algo.key]"
+            @click="copy(algo.key)"
+          />
+        </div>
+      </CardPane>
+    </div>
   </ToolPage>
 </template>
 
@@ -147,24 +145,19 @@ function copy(key: keyof HashResults) {
 /* Page-level wrapper sizing is provided by <ToolPage preset="medium-form"> */
 .input-card {
   margin-bottom: var(--tool-section-gap, 20px);
-  /* border-radius 由 <CardPane radius="8px"> 提供 */
 }
 
-.input-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 12px;
-  color: var(--it-text-secondary);
-  font-size: 13px;
-}
+/* .input-meta 已抽到 ~/styles/_tool-recipes.scss 全局 utility。
+   模板里 <div class="input-meta"> 自动套用相同样式。 */
 
 .result-list {
   margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .result-card {
-  /* border-radius 由 <CardPane radius="8px"> 提供 */
   background: var(--it-card-result-bg);
 }
 .result-card.is-empty { opacity: 0.6; }
@@ -196,11 +189,13 @@ function copy(key: keyof HashResults) {
   color: var(--it-text-secondary);
 }
 
+/* result-value — .result-mono (utility) 提供 mono / 600 / primary /
+   tabular-nums, 这里只覆盖 hash 特有的小字 (13px) + 非加粗 (400)
+   + 行高 (1.4) + 整块可复制 (user-select: all) + 长串换行。 */
 .result-value {
-  font-family: var(--font-mono);
   font-size: 13px;
+  font-weight: 400;
   line-height: 1.4;
-  color: var(--it-text-primary);
   word-break: break-all;
   user-select: all;
 }

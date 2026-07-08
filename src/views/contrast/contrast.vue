@@ -231,10 +231,10 @@ watch(
 
 /* Result card — full-width strip below the input grid. 容器 / header
    / title 已抽到 <CardPane>, 这里只保留特异值:
-     - margin-top: 16px (与 input grid 隔一行)
+     - margin-top: var(--tool-section-gap) (与 input grid 隔一行)
      - vue-diff 内部样式覆盖 (去除默认 border-radius 让主题背景充满 card) */
 .contrast-result {
-  margin-top: 16px;
+  margin-top: var(--tool-section-gap, 20px);
 }
 
 /* vue-diff renders its viewer as the inner element; remove the

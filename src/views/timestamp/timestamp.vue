@@ -1,3 +1,18 @@
+<!--
+  timestamp.vue — date ⇄ timestamp (seconds / milliseconds) converter.
+
+  Three input surfaces share one canonical Date:
+    1. <el-date-picker>   datetime picker, top of input card
+    2. <el-input> #1      numeric timestamp (auto-detects 10-digit sec
+                          vs 13-digit ms by length), middle
+    3. <el-input> #2      free-form date string, right of #1
+  Editing any one writes back to the other two and refreshes the
+  two result cards (formatted date + numeric timestamp).
+
+  Layout: input card on top, 1fr 1fr result row below. Both grids
+  collapse to single column ≤600px so the result cards don't
+  squeeze on phones.
+-->
 <template>
   <ToolPage
     class="timestamp-page"
@@ -5,79 +20,67 @@
     :title="t('tools.timestamp.name')"
     :subtitle="t('tools.timestamp.desc')"
   >
-    <CardPane class="input-card" body-padding="20px" radius="8px">
-      <el-row :gutter="20" style="margin-bottom: 16px;">
-        <el-col :span="24">
-          <div class="date-picker-wrapper">
-            <el-date-picker
-              v-model="datePickerValue"
-              type="datetime"
-              :placeholder="t('timestampPage.input.datePickerPlaceholder')"
-              format="YYYY-MM-DD HH:mm:ss"
-              value-format="YYYY-MM-DD HH:mm:ss"
-              style="width: 100%; max-width: 300px;"
-              @change="onDatePickerChange"
-              clearable
-              class="custom-date-picker"
-            />
-          </div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20" align="middle">
-        <el-col :span="12">
-          <el-input
-            v-model="timestamp"
-            :placeholder="t('timestampPage.input.timestampPlaceholder')"
-            @input="onTimestampInput"
-            prefix-icon="el-icon-time"
-            clearable
-          />
-        </el-col>
-        <el-col :span="12">
-          <el-input
-            v-model="dateString"
-            :placeholder="t('timestampPage.input.dateStringPlaceholder')"
-            @input="onDateInput"
-            prefix-icon="el-icon-date"
-            clearable
-          />
-        </el-col>
-      </el-row>
+    <CardPane class="input-card" body-padding="20px">
+      <div class="date-picker-wrapper">
+        <el-date-picker
+          v-model="datePickerValue"
+          type="datetime"
+          :placeholder="t('timestampPage.input.datePickerPlaceholder')"
+          format="YYYY-MM-DD HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
+          style="width: 100%; max-width: 300px;"
+          @change="onDatePickerChange"
+          clearable
+          class="custom-date-picker"
+        />
+      </div>
+      <div class="input-row">
+        <el-input
+          v-model="timestamp"
+          :placeholder="t('timestampPage.input.timestampPlaceholder')"
+          @input="onTimestampInput"
+          prefix-icon="el-icon-time"
+          clearable
+        />
+        <el-input
+          v-model="dateString"
+          :placeholder="t('timestampPage.input.dateStringPlaceholder')"
+          @input="onDateInput"
+          prefix-icon="el-icon-date"
+          clearable
+        />
+      </div>
     </CardPane>
-    <el-row :gutter="20" class="result-row">
-      <el-col :span="12">
-        <CardPane class="result-card" radius="8px">
-          <div class="result-label">{{ t('timestampPage.result.date') }}</div>
-          <div class="result-row-flex">
-            <span class="result-value">{{ formattedDate }}</span>
-            <el-button
-              v-if="formattedDate"
-              size="small"
-              :icon="DocumentCopy"
-              @click="copyToClipboard(formattedDate)"
-              class="copy-btn"
-              circle
-            />
-          </div>
-        </CardPane>
-      </el-col>
-      <el-col :span="12">
-        <CardPane class="result-card" radius="8px">
-          <div class="result-label">{{ t('timestampPage.result.timestamp') }}</div>
-          <div class="result-row-flex">
-            <span class="result-value">{{ formattedTimestamp }}</span>
-            <el-button
-              v-if="formattedTimestamp"
-              size="small"
-              :icon="DocumentCopy"
-              @click="copyToClipboard(formattedTimestamp)"
-              class="copy-btn"
-              circle
-            />
-          </div>
-        </CardPane>
-      </el-col>
-    </el-row>
+    <div class="result-row">
+      <CardPane class="result-card">
+        <div class="result-label">{{ t('timestampPage.result.date') }}</div>
+        <div class="result-row-flex">
+          <span class="result-value result-mono">{{ formattedDate }}</span>
+          <el-button
+            v-if="formattedDate"
+            size="small"
+            :icon="DocumentCopy"
+            @click="copyToClipboard(formattedDate)"
+            class="copy-btn"
+            circle
+          />
+        </div>
+      </CardPane>
+      <CardPane class="result-card">
+        <div class="result-label">{{ t('timestampPage.result.timestamp') }}</div>
+        <div class="result-row-flex">
+          <span class="result-value result-mono">{{ formattedTimestamp }}</span>
+          <el-button
+            v-if="formattedTimestamp"
+            size="small"
+            :icon="DocumentCopy"
+            @click="copyToClipboard(formattedTimestamp)"
+            class="copy-btn"
+            circle
+          />
+        </div>
+      </CardPane>
+    </div>
   </ToolPage>
 </template>
 
@@ -153,12 +156,20 @@ function copyToClipboard(text: string) {
 
 <style lang="scss" scoped>
 /* Page-level wrapper sizing is provided by <ToolPage preset="medium-form"> */
-/* border-radius 由 <CardPane radius="8px"> 提供 */
 .input-card {
   margin-bottom: var(--tool-section-gap, 20px);
 }
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: center;
+}
 .result-row {
   margin-top: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
 }
 .result-card {
   /* flex: 1 让 result-card 在 CardPane body (display: flex; flex-direction: column)
@@ -191,14 +202,14 @@ function copyToClipboard(text: string) {
   gap: 8px;
   flex-wrap: wrap;
 }
+/* result-value — .result-mono (utility) 提供 mono / 600 / primary /
+   tabular-nums, 这里只覆盖 timestamp 特有的大字 (1.15rem) + 加粗
+   (bold) + 居中对齐 + 长串换行 + 居中后按内容自身宽度。 */
 .result-value {
-  /* 不再 flex: 1 — 让 value 按内容自身宽度 + text-align 居中,
-     长 timestamp 会按 word-break 换行, 不再把按钮推到 row 最右. */
   flex: 0 1 auto;
   text-align: center;
   font-size: 1.15rem;
   font-weight: bold;
-  color: var(--it-text-primary);
   word-break: break-all;
 }
 .copy-btn {
@@ -220,6 +231,10 @@ function copyToClipboard(text: string) {
 }
 @media (max-width: 600px) {
   /* .timestamp-page padding 已由全局 _tool-page.scss 提供 */
+  .input-row,
+  .result-row {
+    grid-template-columns: 1fr;
+  }
   .result-card {
     min-height: 80px;
   }

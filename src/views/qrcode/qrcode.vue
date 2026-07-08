@@ -310,7 +310,7 @@ async function copyImage() {
 }
 
 .q-error {
-  color: var(--el-color-danger, #f56c6c);
+  color: var(--el-color-danger);
   font-size: 13px;
   text-align: center;
   margin-top: 12px;

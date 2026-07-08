@@ -290,7 +290,7 @@ const diagramText = computed(() => {
 .c-input--error,
 .c-input--error:hover,
 .c-input--error:focus {
-  border-color: var(--el-color-danger, #f56c6c);
+  border-color: var(--el-color-danger);
 }
 .c-input--error:focus {
   background-color: rgba(245, 108, 108, 0.13);
@@ -311,7 +311,7 @@ const diagramText = computed(() => {
 
 .c-card__feedback {
   text-align: center;
-  color: var(--el-color-danger, #f56c6c);
+  color: var(--el-color-danger);
   font-size: 14px;
   margin-top: -8px;
   margin-bottom: 12px;

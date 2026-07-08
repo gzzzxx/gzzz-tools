@@ -417,11 +417,11 @@ const tableDemoData: TableDemo[] = [
    instead of breaking the page layout.
 
    容器 / header / title 已抽到 <CardPane>, 这里只保留 .base64-reference
-   的特异值 (margin-top: 16px, 与 input grid 隔一行) + body 内部样式
-   (padding / 字体 / overflow / 段落 typography)。
+   的特异值 (margin-top: var(--tool-section-gap), 与 input grid 隔一行)
+   + body 内部样式 (padding / 字体 / overflow / 段落 typography)。
    ==================================================================== */
 .base64-reference {
-  margin-top: 16px;
+  margin-top: var(--tool-section-gap, 20px);
 }
 
 .base64-reference__body {

@@ -312,3 +312,71 @@
   border-bottom-color: var(--brand-primary);
   font-weight: 600;
 }
+
+
+// =====================================================================
+// Step 9 抽取: .input-meta — input card 底部的"左 meta / 右 clear"行
+//
+// 替换 hash.vue (.input-meta) + text-stats.vue (.input-meta) 两处
+// 字面完全一致的 5 行 CSS:
+//
+//   display: flex; align-items: center; justify-content: space-between;
+//   margin-top: 12px; color: var(--it-text-secondary); font-size: 13px;
+//
+// 调用方一览:
+//   - hash.vue      input-meta  内嵌 t('hashPage.input.charCount') + Clear 按钮
+//   - text-stats.vue input-meta  内嵌 t('textStatsPage.input.meta') + Clear 按钮
+//
+// 设计原则:
+//   - 只搬原 scoped 里实际写过的 6 个属性, 不补 min-height / line-height
+//   - 颜色固定 secondary, 不开放 modifier — 跟全局 design token 一致
+//   - BEM 长名 .input-meta, 跟 caller scoped 的 .input-meta 撞不上
+//     (同名不冲突是因为 caller 写 <div class="input-meta"> 在模板里
+//     不带 [data-v-xxx], utility 命中全局规则; caller scoped 的 .input-meta
+//     跟 .input-meta 撞名也无所谓, Vue 编译器会同时输出两个选择器, 但
+//     utility 的属性都跟 caller 一致所以视觉无变化 — 删 caller scoped 块
+//     才是真"消除重复")
+// =====================================================================
+
+.input-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  color: var(--it-text-secondary);
+  font-size: 13px;
+}
+
+
+// =====================================================================
+// Step 10 抽取: .result-mono — "代码 / 数字" 结果值的 monospace 文本
+//
+// 替换 hash.vue (.result-value) / text-stats.vue (.stat-card__value) /
+// timestamp.vue (.result-value) 三处的 4 行共通 typography:
+//
+//   font-family: var(--font-mono);
+//   font-size: 13px;        ← hash/text-stats/timestamp 都是 13/14, 取 14 作默认
+//   font-weight: 600;       ← hash/timestamp 是 600, text-stats 也是 600, 统一
+//   color: var(--it-text-primary);
+//   font-variant-numeric: tabular-nums;
+//
+// 调用方一览:
+//   - hash.vue        .result-value              font-size: 13px (从默认覆盖)
+//   - text-stats.vue  .stat-card__value          font-size: 14px (走默认)
+//   - timestamp.vue   .result-value              font-size: 1.15rem (caller 覆盖)
+//
+// 设计原则:
+//   - 统一 14 / 600 / primary / tabular-nums。caller 觉得太大/太重可
+//     单独覆盖 font-size / font-weight。
+//   - 不抽 .result-row-flex / .result-label / .result-card — hash 跟
+//     timestamp 内部布局差异大 (label+value 方向、align 都不同),
+//     抽了反而要加 modifier, 不如保留 caller 自管。
+// =====================================================================
+
+.result-mono {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--it-text-primary);
+  font-variant-numeric: tabular-nums;
+}

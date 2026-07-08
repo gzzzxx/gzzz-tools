@@ -26,7 +26,7 @@
     :subtitle="t('tools.passwordStrength.desc')"
   >
 
-    <CardPane class="input-card" body-padding="20px" radius="8px">
+    <CardPane class="input-card" body-padding="20px">
       <label class="field-label">{{ t('passwordStrengthPage.input.label') }}</label>
       <el-input
         v-model="password"
@@ -49,7 +49,7 @@
       </el-input>
     </CardPane>
 
-    <CardPane v-if="password.length > 0" class="result-card" body-padding="20px" radius="8px">
+    <CardPane v-if="password.length > 0" class="result-card" body-padding="20px">
       <!-- Strength meter -->
       <div class="meter">
         <div class="meter__bar">
@@ -316,12 +316,12 @@ const rules = computed<Rule[]>(() => {
    <label class="field-label"> 自动套用 13/600/primary + 8px margin-bottom,
    父 scoped 不用再写一份。 */
 
-/* Input card — border-radius 由 <CardPane radius="8px"> 提供 */
+/* Input card */
 .input-card {
   margin-bottom: var(--tool-section-gap, 20px);
 }
 
-/* Result card — border-radius 由 <CardPane radius="8px"> 提供 */
+/* Result card */
 
 /* Strength meter */
 .meter {
@@ -393,10 +393,10 @@ const rules = computed<Rule[]>(() => {
   color: var(--it-text-primary);
 }
 .feedback__row--pass .feedback__icon {
-  color: var(--el-color-success, #67c23a);
+  color: var(--el-color-success);
 }
 .feedback__row--fail .feedback__icon {
-  color: var(--el-color-danger, #f56c6c);
+  color: var(--el-color-danger);
 }
 
 /* .empty 已抽到 ~/components/tools/EmptyState.vue 组件 (margin-top=24px

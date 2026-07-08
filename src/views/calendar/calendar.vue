@@ -118,7 +118,7 @@ function solarToLunar(slotData: { day: string }) {
   color: var(--it-text-secondary);
 }
 .lunar.festival {
-  color: var(--el-color-danger, #f56c6c);
+  color: var(--el-color-danger);
 }
 
 /* ====================================================================
@@ -135,7 +135,7 @@ function solarToLunar(slotData: { day: string }) {
 
 /* 本月农历节日设置颜色 */
 :deep(.ep-calendar-table .current .lunar.festival) {
-  color: var(--el-color-danger, #f56c6c);
+  color: var(--el-color-danger);
 }
 :deep(.ep-calendar__body) {
   padding: 0;
