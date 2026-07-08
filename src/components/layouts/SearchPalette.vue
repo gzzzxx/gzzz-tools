@@ -1,15 +1,5 @@
-<!--
-  SearchPalette.vue — the dropdown panel that appears under the
-  header search box while the user is typing.
+<!-- 搜索下拉面板组件 -->
 
-  The parent (BaseHeader) controls `query` / `open` via v-model and
-  listens for `@select` to do the actual navigation. We just render
-  the filtered list and handle keyboard nav (↑↓ Enter Esc) — keyboard
-  events are forwarded from the input via the exposed `handleKeydown()`.
-
-  Empty query → friendly hint instead of the full tool list. Non-empty
-  query → filter by name / desc / path (case-insensitive, capped at 20).
--->
 <template>
   <transition name="search-palette-fade">
     <div v-if="open" class="search-palette" @mousedown.stop>
@@ -93,9 +83,7 @@ import { useLocalizedTools, type Tool } from '~/composables/useTools'
 import { getToolIcon } from '~/components/cards/toolIconRegistry'
 
 const props = defineProps<{
-  /** v-model:query — bound to the input value in BaseHeader */
   query: string
-  /** v-model:open — whether the dropdown is visible */
   open: boolean
 }>()
 
@@ -105,20 +93,11 @@ const emit = defineEmits<{
   (e: 'select', tool: Tool): void
 }>()
 
-// Has the user actually typed something? Empty / whitespace-only
-// doesn't count — the palette shows a "start typing" hint instead of
-// dropping the entire tool list on them the moment they focus.
 const { t } = useI18n({ useScope: 'global' })
 const hasQuery = computed(() => props.query.trim().length > 0)
 
-// "No result" copy interpolates the query. vue-i18n supports
-// named interpolation natively: `t('key', { q: 'foo' })` replaces
-// `{q}` in the message.
 const noResultText = computed(() => t('palette.hint.noResult', { q: props.query }))
 
-// Filtered list. Cap to 20 entries so a short query like "a" doesn't
-// render 50+ items in the dropdown. Use the locale-aware tool list so
-// the rendered name/desc match what the home grid shows.
 const { localizedTools } = useLocalizedTools()
 const filtered = computed<Tool[]>(() => {
   const q = props.query.trim().toLowerCase()
@@ -126,17 +105,12 @@ const filtered = computed<Tool[]>(() => {
     ? localizedTools.value.filter((tool) =>
         tool.name.toLowerCase().includes(q) ||
         tool.desc.toLowerCase().includes(q) ||
-        // Search across the opposite locale too, so users can still
-        // find tools by the original Chinese name when EN is active.
         tool.path.toLowerCase().includes(q),
       )
     : localizedTools.value
   return list.slice(0, 20)
 })
 
-// Which row is currently highlighted (for keyboard nav + Enter).
-// Reset to 0 every time the filter result changes so the user always
-// sees a sensible default selection.
 const activeIndex = ref(0)
 watch(filtered, () => {
   activeIndex.value = 0

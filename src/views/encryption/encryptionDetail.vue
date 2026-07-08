@@ -1,34 +1,5 @@
-<!--
-  encryptionDetail.vue — algorithm-agnostic encrypt / decrypt body.
+<!-- 加密详情组件，支持 SM4 和 AES 算法的加密解密操作 -->
 
-  Receives `algorithm` ('SM4' | 'AES') from the parent tab page and
-  dispatches to sm4Encrypt / sm4Decrypt / aesEncrypt / aesDecrypt on
-  click. Layout:
-
-    .enc-grid       → 3fr 1fr (the original el-col 18:6 ratio, just
-                       expressed as a CSS grid). Stacks to 1fr ≤992px
-                       to match the original mobile behavior.
-    .enc-card--main  → left card holds plaintext + key + IV + result
-    .enc-card--config→ right card holds the 4 config selects + 4 action
-                       buttons, full-width inside the narrow column.
-    .enc-info        → two info cards below the grid (algorithm intro
-                       + concepts).
-
-  Behavior preserved verbatim from the original:
-    - 3:1 column ratio + ≤992px stack
-    - run() dispatches by props.algorithm (defaults to SM4 if missing)
-    - copyData / clear semantics identical
-    - error / success toast messages on encrypt/decrypt/copy
-
-  Style change only: el-form-item chrome replaced with custom
-  .enc-field labels (cleaner, matches the rest of the app), the two
-  columns wrapped in card frames, info cards moved from el-card to
-  the project's standard card chrome.
-
-  Element Plus internal selectors use the `ep-` prefix because
-  <el-config-provider namespace="ep"> (App.vue) rewrites el-* at
-  runtime — same convention used everywhere else in the project.
--->
 <template>
   <div class="enc-detail">
     <!-- ============== Form (3fr 1fr, stack ≤992px) ============== -->
@@ -289,7 +260,6 @@ const form = reactive({
   mode: 'ECB' as 'ECB' | 'CBC' | 'CTR',
 })
 
-/** 同步跑加解密（纯前端，旧的 /sm4/* 后端接口已不再调用） */
 function run(op: 'enc' | 'dec') {
   form.algorithmName = (props.algorithm as 'SM4' | 'AES') ?? 'SM4'
   try {
@@ -322,12 +292,6 @@ function clear() {
 </script>
 
 <style lang="scss" scoped>
-/* ====================================================================
-   Form layout — 3:1 grid matching the original el-col 18:6 ratio.
-   Below 992px the columns stack full-width (the original mobile
-   breakpoint); the rowGutter behavior the old implementation did
-   with useMediaQuery collapses cleanly into the grid `gap`.
-   ==================================================================== */
 .enc-grid {
   display: grid;
   grid-template-columns: 3fr 1fr;
@@ -340,52 +304,21 @@ function clear() {
   }
 }
 
-/* Card 容器 / header / title / actions 块已抽到 ~/components/tools/CardPane.vue
-   组件 (全局 .card-pane / .card-pane__header / .card-pane__title /
-   .card-pane__actions)。模板里 <CardPane class="enc-card" body-padding="20px">
-   自动套用相同样式 + 20px body padding (caller 通过 prop 传)。
-
-   .enc-card 内的 field 布局 (label + control, 14px gap) 由 .enc-field 控制 —
-   这是 encryptionDetail 特有的字段布局, 不在 <CardPane> 通用范围。 */
-
-/* ====================================================================
-   Field — replaces el-form-item. Custom label above the control so
-   it matches the rest of the app (no floating label / no required-
-   asterisk overhead). The textarea variant grows to fill remaining
-   space inside its card; key/IV inputs are single-line.
-   ==================================================================== */
 .enc-field {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 .enc-field--last {
-  /* Replaces the original "margin-bottom:0 !important" on the last
-     el-form-item. The result textarea is the last input, no extra
-     bottom margin needed. */
   margin-bottom: 0;
 }
-/* .enc-field__label 已抽到 ~/styles/_tool-recipes.scss 全局 utility
-   (.field-label, 13/600/primary + 8px margin-bottom)。模板里
-   <label class="field-label"> 自动套用, 父 scoped 不用再写一份。 */
 .enc-field__textarea :deep(textarea) {
   font-family: var(--font-mono-code);
   font-size: 13px;
   line-height: 1.55;
 }
 
-/* .enc-buttons / .enc-buttons__btn / .enc-buttons__btn--last 已抽到
-   ~/styles/_tool-recipes.scss 全局 utility (.tool-actions.tool-actions--
-   stacked) — 全宽子项 + 4px margin-top 由 modifier 默认提供。模板里
-   <div class="tool-actions tool-actions--stacked"> 自动套用相同 vertical
-   flex + 10px gap + 全宽按钮样式, 父 scoped 不用再写一份。 */
 
-/* ====================================================================
-   Info cards — full-width strips below the form grid. Same chrome
-   as .enc-card; no header strip here either, the prose stands on
-   its own. Body uses the same typography pattern as base64.vue's
-   reference card.
-   ==================================================================== */
 .enc-info {
   margin-top: var(--tool-section-gap, 20px);
   display: flex;

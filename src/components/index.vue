@@ -1,11 +1,5 @@
-<!--
-  src/components/index.vue — home page.
-  Layout: Follow banner / 我的收藏 (vuedraggable reorder) / 全部工具.
-  Drag styling: --ghost on the source slot (dashed teal placeholder),
-  --drag on the floating mirror that follows the cursor (solid teal +
-  shadow + tilt). handle=".it-tool-card" so heart-button clicks don't
-  start a drag.
--->
+<!-- 首页组件，展示收藏工具和全部工具列表 -->
+
 <template>
   <div class="it-page-content home-page">
     <div class="home-page__grid home-page__grid--with-banner">
@@ -68,10 +62,6 @@ const { localizedTools } = useLocalizedTools()
 const { favoriteTools, setFavoriteOrder } = useFavorites()
 const { t } = useI18n({ useScope: 'global' })
 
-// Local mirror — vuedraggable mutates this via v-model during drag,
-// and we re-sync from favoriteTools whenever it changes externally
-// (e.g. heart-button toggle adds a new favorite). Order is only
-// persisted at drag end via setFavoriteOrder.
 const localFavorites = ref<Tool[]>(favoriteTools.value)
 watch(favoriteTools, (next) => {
   localFavorites.value = [...next]
@@ -94,10 +84,6 @@ function onDragEnd() {
 
   &__grid {
     display: grid;
-    // minmax(0, 1fr) on every breakpoint — without the explicit min:0,
-    // grid tracks default to min-content, so a long unbreakable string
-    // (tool name / desc) inside a card can blow the track wider than
-    // 1fr and create a horizontal scrollbar on the page.
     grid-template-columns: minmax(0, 1fr);
     width: 100%;
     box-sizing: border-box;
@@ -117,16 +103,11 @@ function onDragEnd() {
     display: flex;
     align-self: stretch;
   }
-  // Pin banner to column 1 on wide screens; `align-self: start` keeps
-  // it from stretching to match the tool grid's row height.
   &__cell--banner {
     @media (min-width: 1280px) { grid-column: 1; }
     align-self: start;
   }
 
-  // 2px transparent border on the base so ghost/drag border swap
-  // doesn't shift layout. --ghost = source slot during drag (dashed
-  // teal placeholder). --drag = floating mirror (solid teal + shadow).
   &__cell--draggable {
     position: relative;
     cursor: grab;
@@ -173,8 +154,6 @@ function onDragEnd() {
     opacity: 0.7;
     transition: opacity 0.2s ease;
   }
-  // Favorites header sits closer to the banner than the "all tools"
-  // section does (default 25px gap is too much visual weight here).
   &__section-title--favorites {
     margin-top: 18px;
     margin-bottom: 4px;

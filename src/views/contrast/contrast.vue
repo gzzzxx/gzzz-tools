@@ -1,25 +1,5 @@
-<!--
-  contrast.vue — code/text diff viewer.
+<!-- 代码/文本对比工具，支持多种语言和对比模式 -->
 
-  Same card-based layout family as sql.vue / xml.vue / json.vue:
-    .contrast-page  → max-width centered shell, soft shadow
-    .contrast-toolbar → page-level settings (language / mode / folding)
-    .contrast-grid  → 1fr 1fr (collapses to 1fr ≤900px) for the two
-                       input cards — "Original" + "Modified"
-    .contrast-result → full-width card holding the vue-diff output
-
-  Two-card pattern is the same as the formatters: each card owns its
-  header (title + Clear button), the textarea fills the card via
-  flex:1 (el-input's auto-height is overridden through :deep()), and
-  the result card sits below as a separate block so the diff itself
-  can render at its natural height without squeezing the inputs.
-
-  Theme sync stays identical to the original — vue-diff applies
-  `vue-diff-theme-{dark|light}` + `vue-diff-mode-{mode}` on its
-  outer wrapper, but the theme prop alone doesn't always repaint
-  after the user toggles dark mode later in the session, so we
-  re-write the wrapper className on every (isDark, mode) change.
--->
 <template>
   <ToolPage
     class="contrast-page"
@@ -121,15 +101,8 @@ import { useIsDark } from '~/composables/useIsDark'
 const { t } = useI18n({ useScope: 'global' })
 const isDark = useIsDark()
 
-// Theme follows the site-wide toggle. vue-diff applies its colors via the
-// vue-diff-theme-{dark|light} class on the wrapper, so we keep that in sync
-// here too — the prop alone doesn't repaint when the user toggles later.
 const theme = computed(() => (isDark.value ? 'dark' : 'light'))
 
-// Language options — labels stay as the canonical identifier (technical
-// names, no translation) since they're identifiers passed verbatim to
-// highlight.js. The dropdown keeps the technical spelling in both locales
-// so the same value round-trips to `form.type`.
 const languageOptions = [
   { label: 'CSS',        value: 'css' },
   { label: 'XML',        value: 'xml' },
@@ -148,10 +121,7 @@ const form = reactive({
   folding: false,
 })
 
-// Re-write the vue-diff wrapper's className on (theme, mode) changes —
-// vue-diff binds these via h() inside its render function so they
-// *should* be reactive, but in practice the wrapper class doesn't
-// always repaint after a late dark-mode toggle, so we set it directly.
+// 手动同步主题和模式类名，确保切换后正确重绘
 watch(
   [isDark, () => form.mode],
   ([dark, mode]) => {
@@ -167,17 +137,7 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-/* Outer wrapper — same shape as sql.vue / xml.vue / json.vue: wide
-   (1600px) centered shell with a soft drop shadow. No fixed height
-   here (unlike sql.vue) because the diff result can be tall and
-   shouldn't squeeze the two input cards above; the page grows with
-   content and the browser scrolls naturally.
-   页面尺寸由 <ToolPage preset="wide-editor"> 提供。 */
-/* Toolbar — page-level settings (language / mode / folding). Sits
-   in its own elevated strip so the controls feel like "settings",
-   not like primary actions on the data. Uses an inline label +
-   control pair (label-on-left) so the group is self-explanatory
-   without needing a separate card chrome around it. */
+/* 设置工具栏 */
 .contrast-toolbar {
   display: flex;
   align-items: center;
@@ -213,41 +173,15 @@ watch(
   width: 140px;
 }
 
-/* .tool-grid 已抽到 ~/styles/_tool-recipes.scss 全局 utility。
-   模板里 <div class="tool-grid"> 自动套用相同样式, 父 scoped
-   不用再写一份。 */
-
-/* .contrast-card / .contrast-result 容器 / header / title / actions
-   已抽到 ~/components/tools/CardPane.vue (全局 .card-pane /
-   .card-pane__header / .card-pane__title / .card-pane__actions)。
-   模板里 <CardPane class="contrast-card" :title="..."> / <CardPane
-   class="contrast-result" :title="..."> 自动套用相同样式, 父 scoped
-   不用再写一份。 */
-
-/* .contrast-textarea 23 行重复块已抽到 ~/components/tools/ToolTextarea.vue
-   组件 (display: flex / font / padding / border / box-shadow 等
-   fill-the-card + monospace 样式)。模板里 <ToolTextarea v-model="..."
-   :rows="10"> 自动套用相同样式, 父 scoped 不用再写一份。 */
-
-/* Result card — full-width strip below the input grid. 容器 / header
-   / title 已抽到 <CardPane>, 这里只保留特异值:
-     - margin-top: var(--tool-section-gap) (与 input grid 隔一行)
-     - vue-diff 内部样式覆盖 (去除默认 border-radius 让主题背景充满 card) */
 .contrast-result {
   margin-top: var(--tool-section-gap, 20px);
 }
 
-/* vue-diff renders its viewer as the inner element; remove the
-   wrapper's default top border-radius so the theme background flows
-   edge-to-edge inside the card. */
 .contrast-result :deep(.vue-diff-wrapper) {
   border-radius: 0;
 }
 
 @media (max-width: 600px) {
-  // .contrast-page padding + .contrast-title font-size 已由全局 _tool-page.scss 提供
-  // .contrast-card__header / .contrast-result__header 移动端 padding 10 12 已由
-  //   <CardPane> 组件全局 .card-pane__header 默认提供
   .contrast-toolbar { gap: 12px; padding: 10px 12px; }
   .contrast-toolbar__select { width: 120px; }
 }

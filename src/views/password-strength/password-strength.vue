@@ -1,23 +1,5 @@
-<!--
-  password-strength.vue — local-only password strength analyzer.
+<!-- 密码强度检测工具，本地分析密码强度和预估破解时间 -->
 
-  Why hand-rolled instead of pulling in zxcvbn (~400 KB with its
-  dictionary bundle): the developer-tools audience gets most of the
-  value from length + charset variety + entropy + common-pattern
-  detection, all of which fit in <5 KB. The remaining zxcvbn-only
-  signal (frequency-ranked guesses from a 30k dictionary) matters
-  mainly for *guessing time* accuracy, which we expose only as an
-  informational estimate anyway.
-
-  Scoring policy:
-  - 5 sub-scores (length ≥8, length ≥12, lower+upper mixed,
-    digit, symbol) sum to a raw 0–5 score.
-  - Patterns (common password, sequential, repeated) pull the
-    final score back down — a 12-char `aaaaaaaaaaaa` shouldn't
-    rank the same as `Tr0ub4dor&3xl`.
-  - Final score is clamped to 0–4 (the 5-step UI ladder).
-  - Crack time is informational only: guesses ≈ 10^entropy / rate.
--->
 <template>
   <ToolPage
     class="pwd-page"
@@ -141,12 +123,6 @@ const { t, locale } = useI18n({ useScope: 'global' })
 const password = ref('')
 const showPassword = ref(false)
 
-// =============== Pattern detection ===============
-
-// Top-100 most-leaked passwords (subset of well-known lists — enough
-// to flag the obvious cases without shipping a multi-MB dictionary).
-// Locale-reactive so users can see Chinese common-password matches
-// too (the most common 12306 / qq.com passwords are CN-specific).
 const COMMON_PASSWORDS = computed(() => {
   void locale.value
   return new Set([
@@ -168,8 +144,6 @@ const COMMON_PASSWORDS = computed(() => {
   ])
 })
 
-/** Detect runs of 3+ sequential chars: abc, 123, zyx, 789.
- *  Lowercase ASCII letters and digits, ascending or descending. */
 function hasSequential(pwd: string): boolean {
   for (let i = 0; i + 2 < pwd.length; i++) {
     const a = pwd.charCodeAt(i), b = pwd.charCodeAt(i + 1), c = pwd.charCodeAt(i + 2)
@@ -178,12 +152,9 @@ function hasSequential(pwd: string): boolean {
   return false
 }
 
-/** Detect 3+ identical consecutive chars: aaa, 1111. */
 function hasRepeated(pwd: string): boolean {
   return /(.)\1{2,}/.test(pwd)
 }
-
-// =============== Charset detection ===============
 
 function detectCharsets(pwd: string) {
   return {
@@ -213,15 +184,11 @@ interface Stats {
 const stats = computed<Stats>(() => {
   const pwd = password.value
   const cs = detectCharsets(pwd)
-  // Charset size for entropy: a password draws from the union of
-  // its detected classes; the math is log2(charset) * length, not
-  // sum-of-class-bits, which would over-credit mixed-class pwd.
   let charsetSize = 0
   if (cs.lower)  charsetSize += 26
   if (cs.upper)  charsetSize += 26
   if (cs.digit)  charsetSize += 10
   if (cs.symbol) charsetSize += 33
-  // Entropy floored at 0 (empty pwd → log2(1) = 0, fine).
   const entropy = charsetSize > 0 ? pwd.length * Math.log2(charsetSize) : 0
   return {
     length: pwd.length,
@@ -238,11 +205,6 @@ const stats = computed<Stats>(() => {
   }
 })
 
-// Score: 0-4. Raw 0-5 from rules, then pull down by pattern hits.
-// We don't fully zero out on pattern hits (a 20-char common
-// password that's also long still deserves *some* credit for
-// length) — we just cap the ceiling at the pattern-adjusted
-// level.
 const score = computed(() => {
   const s = stats.value
   let raw = 0
@@ -259,15 +221,10 @@ const score = computed(() => {
   return Math.min(4, Math.max(0, Math.round(raw * 4 / 5)))
 })
 
-// Per-level color: tracks --el-color-danger / --el-color-warning /
-// --el-color-success so it stays consistent with Element Plus's
-// status palette in light/dark mode.
 const meterColor = computed(() => {
   return ['#f56c6c', '#f89898', '#e6a23c', '#85ce61', '#67c23a'][score.value]
 })
 
-// Crack time estimate (informational). Modern offline attack ~10^10
-// guesses/sec; rounded to a friendly unit.
 const crackTime = computed(() => {
   const guesses = Math.pow(2, stats.value.entropy)
   const seconds = guesses / 1e10
@@ -282,7 +239,6 @@ const crackTime = computed(() => {
   return t('passwordStrengthPage.crackTime.centuries')
 })
 
-// Charset summary (count of classes + which ones are present).
 const charsetSummary = computed(() => {
   const s = stats.value
   if (s.charsetCount === 0) return '—'
@@ -311,19 +267,10 @@ const rules = computed<Rule[]>(() => {
 </script>
 
 <style lang="scss" scoped>
-/* Page-level wrapper sizing is provided by <ToolPage preset="medium-form">. */
-/* .field-label 已抽到 ~/styles/_tool-recipes.scss 全局 utility。模板里
-   <label class="field-label"> 自动套用 13/600/primary + 8px margin-bottom,
-   父 scoped 不用再写一份。 */
-
-/* Input card */
 .input-card {
   margin-bottom: var(--tool-section-gap, 20px);
 }
 
-/* Result card */
-
-/* Strength meter */
 .meter {
   margin-bottom: 24px;
 }
@@ -339,8 +286,6 @@ const rules = computed<Rule[]>(() => {
   background-color: var(--it-border);
   transition: background-color 0.25s ease-out;
 }
-/* .meter__segment--on color is set inline so each level uses
-   its own hue (red→orange→yellow→light-green→green). */
 .meter__label {
   font-size: 16px;
   font-weight: 600;
@@ -348,7 +293,6 @@ const rules = computed<Rule[]>(() => {
   transition: color 0.25s;
 }
 
-/* Stats row */
 .stat-row {
   margin-top: 4px;
 }
@@ -379,7 +323,6 @@ const rules = computed<Rule[]>(() => {
   margin-left: 2px;
 }
 
-/* Feedback list */
 .feedback {
   display: flex;
   flex-direction: column;
@@ -399,13 +342,7 @@ const rules = computed<Rule[]>(() => {
   color: var(--el-color-danger);
 }
 
-/* .empty 已抽到 ~/components/tools/EmptyState.vue 组件 (margin-top=24px
-   通过 prop 传, 32px padding + 14px 居中 tertiary 文字由组件默认提供)。
-   模板里 <EmptyState margin-top="24px"> 自动套用相同样式, 父 scoped
-   不用再写一份。 */
-
 @media (max-width: 600px) {
-  /* .pwd-page padding + .title font-size 已由全局 _tool-page.scss 提供 */
   .stat__value { font-size: 18px; }
 }
 </style>

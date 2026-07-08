@@ -1,17 +1,5 @@
-<!--
-  crontab.vue — 1:1 visual clone of it-tools.tech/crontab-generator.
+<!-- Cron 表达式生成器/解析器，支持中英文描述 -->
 
-  Structure: two-column layout (5fr/7fr at ≥900px, single column below):
-    Left  card: large monospace input → description line → divider
-               → 3 toggles (label-left, n-form shape)
-    Right card: ASCII field diagram (pre) → divider → symbol table
-               (responsive: 4-col table on ≥768px, vertical cards
-               per row on <768px — mirrors it-tools' isSmallScreen)
-
-  Description + validation are delegated to cronstrue + cron-validator
-  (the same libraries it-tools uses), with i18n via cronstrue/i18n so
-  the description text follows the UI locale.
--->
 <template>
   <ToolPage
     class="crontab-page"
@@ -21,7 +9,7 @@
   >
 
     <div class="crontab-row">
-      <!-- ============== Left: input + description + toggles ============== -->
+      <!-- 左侧：输入 + 描述 + 开关 -->
       <CardPane class="c-card">
         <div class="c-card__input-wrap">
           <input
@@ -60,7 +48,7 @@
         </div>
       </CardPane>
 
-      <!-- ============== Right: diagram + symbol table ============== -->
+      <!-- 右侧：示意图 + 符号表 -->
       <CardPane class="c-card">
         <pre class="c-card__diagram">{{ diagramText }}</pre>
 
@@ -114,8 +102,6 @@ import { useI18n } from 'vue-i18n'
 
 const { t, locale } = useI18n({ useScope: 'global' })
 
-// --- state ------------------------------------------------------------
-
 const cron = ref('40 * * * *')
 const cronstrueConfig = reactive({
   verbose: true,
@@ -123,11 +109,6 @@ const cronstrueConfig = reactive({
   dayOfWeekStartIndexZero: true,
 })
 
-// --- responsive: mirror it-tools' isSmallScreen (max-width: 768px) ---
-
-// matchMedia fires synchronously at construction time on modern
-// browsers, so the initial value is correct on the first render. We
-// keep the mql handle around for the change listener.
 const mql = typeof window !== 'undefined'
   ? window.matchMedia('(max-width: 768px)')
   : null
@@ -136,19 +117,12 @@ function onMqChange(e: MediaQueryListEvent) { isSmallScreen.value = e.matches }
 onMounted(() => mql?.addEventListener('change', onMqChange))
 onBeforeUnmount(() => mql?.removeEventListener('change', onMqChange))
 
-// --- validation -------------------------------------------------------
-
-// Same flags as it-tools' crontab-generator. NB: cron-validator 1.4
-// doesn't accept @-aliases as valid (it-tools' 1.3 either), so
-// the @-alias rows in the symbol table are static, not user input.
 const isCronValid = (v: string) => isValidCron(v, {
   allowBlankDay: true,
   alias: true,
   seconds: true,
 })
 
-// { isValid, message } — mirrors it-tools' useValidation shape
-// without pulling in the full form-integration composable.
 const validation = computed<{ isValid: boolean; message: string }>(() => {
   const value = cron.value.trim()
   if (!value) return { isValid: false, message: t('crontabPage.error.empty') }
@@ -156,15 +130,8 @@ const validation = computed<{ isValid: boolean; message: string }>(() => {
   return { isValid: true, message: '' }
 })
 
-// --- description ------------------------------------------------------
-
-// cronstrue + cronstrue/i18n both share the same options shape; we
-// pick the i18n variant when the UI is in zh-CN, plain `cronstrue`
-// otherwise. Both throw on invalid input, so we route through
-// `validation` first to keep the description line a single space
-// (matching it-tools' output: " " for invalid).
 const cronString = computed(() => {
-  void locale.value  // re-run on language switch
+  void locale.value
   if (!validation.value.isValid) return ' '
   try {
     const opts = { ...cronstrueConfig, throwExceptionOnParseError: true }
@@ -176,13 +143,6 @@ const cronString = computed(() => {
   }
 })
 
-// --- static content (helpers + diagram) -------------------------------
-
-// Full 12-row symbol table from it-tools: 4 base forms (*, -, ,, /)
-// + 8 @-aliases (@yearly/@annually/@monthly/@weekly/@daily/
-// @midnight/@hourly/@reboot). Reboot is the only one with an
-// empty example / equivalent — the cron schedule for "at startup"
-// can't be expressed as a 5-field cron, so both fields are blank.
 const helpers = computed(() => [
   { symbol: '*',     meaning: t('crontabPage.symbol.anyValue'),
     example: '* * * *',     equivalent: t('crontabPage.symbol.everyMinute') },
@@ -210,10 +170,6 @@ const helpers = computed(() => [
     example: '',            equivalent: '' },
 ])
 
-// Pre-formatted ASCII diagram. it-tools hardcodes this in the
-// template; we keep the exact 6-line cascade and let i18n
-// translate the labels (the pipe + hyphen tree is pure ASCII so
-// it survives any locale).
 const diagramText = computed(() => {
   void locale.value
   return [
@@ -230,17 +186,7 @@ const diagramText = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-/* Page-level wrapper sizing is provided by <ToolPage preset="large-form">. */
-/* c-card 容器 — 背景 / 边框 / 圆角 / 20-24 padding 已抽到
-   ~/components/tools/CardPane.vue 组件 (bodyPadding="20px 24px"),
-   这里不需要再写一份。c-card 只保留特异样式 (没有任何 — 现在它
-   是个普通 CardPane 实例, 由 CardPane 自身 + body 内容决定高度)。 */
-
-/* ====================================================================
-   Two-card row — left input card + right diagram/table card. The
-   5/7 ratio matches the it-tools reference; <900px we collapse to
-   a single column so neither card gets awkwardly narrow.
-   ==================================================================== */
+/* 双栏布局，5/7 比例，900px 以下堆叠 */
 .crontab-row {
   display: grid;
   grid-template-columns: 5fr 7fr;
@@ -259,10 +205,7 @@ const diagramText = computed(() => {
   margin: 0 auto;
 }
 
-/* c-input — the large monospace centered input, copied verbatim
-   from it-tools' scoped <style> (30px / monospace / 5px padding /
-   center-aligned), with a primary-tinted focus ring added so the
-   focus indicator matches the rest of the app. */
+/* 大字体居中输入框 */
 .c-input {
   width: 100%;
   font-size: 30px;
@@ -296,10 +239,7 @@ const diagramText = computed(() => {
   background-color: rgba(245, 108, 108, 0.13);
 }
 
-/* c-card__cron-string — it-tools' .cron-string verbatim, minus
-   opacity (so it reads cleanly against the project text color
-   tokens). min-height reserves the same vertical space when
-   invalid so toggles below don't jump. */
+/* 描述文本 */
 .c-card__cron-string {
   text-align: center;
   font-size: 22px;
@@ -317,15 +257,7 @@ const diagramText = computed(() => {
   margin-bottom: 12px;
 }
 
-/* .c-card__divider 已抽到 ~/styles/_tool-recipes.scss 全局 utility
-   (.tool-divider)。模板里 <div class="tool-divider"> 自动套用相同
-   1px + --it-border + 16px margin 样式, 父 scoped 不用再写一份。 */
-
-/* c-form-row — port of n-form labelPlacement="left" with
-   label-width="170": right-aligned label, 12px gap to the
-   control, vertically centered. .c-form-row__label 保留是 horizontal
-   label 特异布局 (flex 0 0 170px + right-align + padding-right) — 跟
-   .field-label (vertical label) layout 完全不同, 不能简单替。 */
+/* 表单行布局 */
 .c-card__form {
   display: flex;
   flex-direction: column;
@@ -346,8 +278,7 @@ const diagramText = computed(() => {
   font-size: 14px;
 }
 
-/* c-card__diagram — it-tools' <pre> verbatim, plus a monospace
-   font so the pipe tree aligns. */
+/* ASCII 示意图 */
 .c-card__diagram {
   overflow: auto;
   padding: 10px 0;
@@ -359,9 +290,7 @@ const diagramText = computed(() => {
   white-space: pre;
 }
 
-/* c-table — direct port of it-tools' CTable.vue. Replaces the
-   Tailwind class soup (bg-#ffffff / dark:bg-#333333 / etc.) with
-   project CSS variables so light/dark switches automatically. */
+/* 符号表格 */
 .c-table-wrap {
   overflow-x: auto;
   border-radius: 4px;
@@ -393,12 +322,7 @@ const diagramText = computed(() => {
 .c-table tbody tr:last-child td {
   border-bottom: none;
 }
-/* .c-table__code 已抽到 ~/styles/_tool-recipes.scss 全局 utility
-   (.tool-chip — mono + 13px + brand-primary-soft 填充 + brand-primary
-   文字 + 1px 6px padding + 3px radius)。模板里
-   <code class="tool-chip"> 自动套用相同样式, 父 scoped 不用再写一份。 */
-
-/* Mobile fallback: each row becomes a stacked mini-card */
+/* 移动端堆叠卡片 */
 .c-card-list {
   display: flex;
   flex-direction: column;
@@ -414,10 +338,6 @@ const diagramText = computed(() => {
   color: var(--it-text-primary);
 }
 
-/* Responsive — at 768px the form row goes full-width and the label
-   shrinks so 3 toggles don't push the label off-screen; at 600px
-   the page padding tightens and the 30px input drops to 22px (it
-   overflows on phones otherwise). */
 @media (max-width: 768px) {
   .c-form-row { max-width: 100%; }
   .c-form-row__label { flex-basis: 130px; padding-right: 8px; font-size: 13px; }

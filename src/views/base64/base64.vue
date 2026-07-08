@@ -1,31 +1,5 @@
-<!--
-  base64.vue — string Base64 encoder / decoder.
+<!-- Base64 编码/解码工具，两栏卡片布局，附带编码说明 -->
 
-  Same card-based shell family as sql.vue / xml.vue / json.vue:
-    .base64-page       → 1600px centered shell + soft shadow
-    .tool-toolbar      → page-level primary actions (Encode / Decode)
-    .tool-grid         → 1fr 1fr (collapses to 1fr ≤900px) for the
-                          source + result cards
-    .base64-reference  → full-width card below holding the
-                          educational content (explanation + encoding
-                          table + "Man → TWFu" demo table)
-
-  Action split follows the sql.vue / xml.vue pattern:
-    - Primary transform actions (Encode / Decode) live in the top
-      toolbar so the user sees what they can do before touching either box.
-    - Contextual actions (Clear on source, Copy on result) sit in
-      each card's header, right next to what they act on.
-
-  Encode/decode/copy/clear logic preserved verbatim from the original
-  (js-base64's Base64.encode / Base64.decode; clipboard.writeText).
-  Table data + span-method layouts preserved verbatim — only the
-  outer chrome changes.
-
-  The reference card's body content is hardcoded Chinese (educational
-  text, not UI chrome) — preserving it as-is since the scope is
-  style refactor, not bilingual expansion. UI labels (button text,
-  placeholders, section titles) get proper i18n keys.
--->
 <template>
   <ToolPage
     class="base64-page"
@@ -263,10 +237,6 @@ function clear() {
   form.result = ''
 }
 
-// --- encoding-table + "Man" demo-table data --------------------------
-// Preserved verbatim from the original layout — only the surrounding
-// chrome (el-card → our own .base64-reference section) changes.
-
 interface Table {
   1: string; 2: string; 3: string; 4: string
   5: string; 6: string; 7: string; 8: string
@@ -296,9 +266,6 @@ interface DemoSpanMethodProps {
   columnIndex: number
 }
 
-// Span layout for the 8-column encoding table: column 3 (the visual
-// gap between the 4 code/char pairs) spans all 16 rows so the four
-// quadrants separate cleanly.
 const objectSpanMethod = ({
   columnIndex,
   rowIndex,
@@ -312,13 +279,6 @@ const objectSpanMethod = ({
   }
 }
 
-// Span layout for the 27-column "Man" demo table. Layout is:
-//   col 1-3  : row label (文本 / ASCII / 二进制位 / 索引 / Base64)
-//   col 4-11 : bits + index for "M"
-//   col 12-19: bits + index for "a"
-//   col 20-27: bits + index for "n"
-// The function forces the bits/index groups to align with the bit
-// columns they describe. Logic preserved verbatim from the original.
 const demoObjectSpanMethod = ({
   rowIndex,
   columnIndex,
@@ -387,78 +347,24 @@ const tableDemoData: TableDemo[] = [
 </script>
 
 <style lang="scss" scoped>
-/* Outer wrapper — same shape as sql.vue / xml.vue: wide (1600px)
-   centered shell with a soft drop shadow. The reference card
-   below has a 27-column demo table, so the wider shell keeps it
-   from being squeezed into horizontal scroll on desktop.
-   页面尺寸由 <ToolPage preset="wide-editor"> 提供。 */
-
-/* .tool-toolbar / .tool-grid 已抽到 ~/styles/_tool-recipes.scss
-   全局 utility。模板里 <div class="tool-toolbar"> / <div class="tool-grid">
-   自动套用相同样式, 父 scoped 不用再写一份。 */
-
-/* .base64-card / .base64-card__header / .base64-card__title /
-   .base64-card__actions 块已抽到 ~/components/tools/CardPane.vue
-   组件 (全局 .card-pane / .card-pane__header / .card-pane__title /
-   .card-pane__actions)。模板里 <CardPane class="base64-card" :title="...">
-   自动套用相同样式, 父 scoped 不用再写一份。 */
-
-/* .base64-textarea 23 行重复块 (display: flex / font / padding /
-   border / box-shadow 等 fill-the-card + monospace 样式) 已抽到
-   ~/components/tools/ToolTextarea.vue 组件。模板里
-   <ToolTextarea v-model="..." :rows="10"> 自动套用相同样式,
-   父 scoped 不用再写一份。 */
-
-/* ====================================================================
-   Reference card — full-width strip below the input grid. Holds the
-   educational content: Base64 explanation text + the 8×16 encoding
-   table + the 27-column "Man" demo table. overflow-x:auto on the
-   body so the demo table can scroll horizontally on narrow screens
-   instead of breaking the page layout.
-
-   容器 / header / title 已抽到 <CardPane>, 这里只保留 .base64-reference
-   的特异值 (margin-top: var(--tool-section-gap), 与 input grid 隔一行)
-   + body 内部样式 (padding / 字体 / overflow / 段落 typography)。
-   ==================================================================== */
 .base64-reference {
   margin-top: var(--tool-section-gap, 20px);
 }
 
 .base64-reference__body {
-  // 保留 caller-specific 字段 (base64 有 prose 容器需要 padding +
-  // overflow-x, encryptionDetail 是用 CardPane prop 提供 padding,
-  // 两套不一致所以不抽到全局). 14/1.7/primary typography 已抽到
-  // 全局 .prose-body, 模板里 <div class="base64-reference__body
-  // prose-body"> 自动套用。
   padding: 16px 20px 20px;
   overflow-x: auto;
 }
 
-/* .prose-para / .prose-term / .prose-list 已抽到
-   ~/styles/_tool-recipes.scss 全局 utility, 模板里 <p class=
-   "prose-para"> / <span class="prose-term"> / <ul class=
-   "prose-list"> 自动套用相同的段落间距 / 术语强调 / 项目列表样式,
-   父 scoped 不用再写一份。 */
-
-/* li margin — base64 的项目列表里每个 li 还要 2px 上下间距,
-   这条只 base64 自己需要 (encryptionDetail 没用到 prose-list),
-   不抽到全局 .prose-list。用 :deep() 穿透 scope 命中全局
-   .prose-list > li。 */
 .base64-reference :deep(.prose-list) li {
   margin: 2px 0;
 }
 
-/* Tables inside the reference body — full width by default; the
-   27-column demo table will trigger horizontal scroll on the body
-   container when the viewport can't fit it. */
 .base64-reference__table {
   width: 100%;
   margin: 8px 0 16px;
 }
 
-/* Quote / example-text blocks (Hobbes quote + its Base64 output) —
-   monospace + soft bg + left accent border so they read as "code
-   sample" not as regular prose. */
 .base64-reference__quote {
   margin: 6px 0 16px;
   padding: 12px 16px;
@@ -473,9 +379,6 @@ const tableDemoData: TableDemo[] = [
 }
 
 @media (max-width: 600px) {
-  // .base64-page padding + .base64-title font-size 已由全局 _tool-page.scss 提供
-  // .base64-card__header / .base64-reference__header 移动端 padding 10 12
-  //   已由 <CardPane> 组件全局 .card-pane__header 默认提供
   .base64-reference__body { padding: 12px 14px 16px; }
 }
 </style>

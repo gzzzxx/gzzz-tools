@@ -1,14 +1,5 @@
-<!--
-  hash.vue — compute multiple hash digests of a text input at once.
+<!-- Hash 哈希计算工具，支持 MD5/SHA-1/SHA-256/SHA-384/SHA-512 -->
 
-  Single page (not tabs): all hash algorithms do the same thing
-  (text → digest), so showing them side-by-side is clearer than
-  routing per algorithm (cf. SM4/AES which have different params).
-
-  MD5 is pure-JS (Web Crypto doesn't support it; see ~/utils/md5.ts).
-  SHA-1/256/384/512 use Web Crypto (crypto.subtle.digest), async.
-  Auto-recompute on input change — cheap for small text, no debounce.
--->
 <template>
   <ToolPage
     class="hash-page"
@@ -33,8 +24,7 @@
       </div>
     </CardPane>
 
-    <!-- result-list: 单列垂直堆叠 (el-row + el-col span=24 太重,
-         直接用 flex column + gap 隔开相邻卡片)。 -->
+    <!-- 结果列表 -->
     <div class="result-list">
       <CardPane
         v-for="algo in algorithms"
@@ -117,7 +107,6 @@ watch(input, async (text) => {
     results.md5 = results.sha1 = results.sha256 = results.sha384 = results.sha512 = ''
     return
   }
-  // MD5 is sync — show it first so the user sees something immediately.
   results.md5 = md5(text)
   const [sha1, sha256, sha384, sha512] = await Promise.all([
     sha('SHA-1',   text),
@@ -125,8 +114,6 @@ watch(input, async (text) => {
     sha('SHA-384', text),
     sha('SHA-512', text),
   ])
-  // Stale-watch guard: the digests may resolve after the user cleared or
-  // edited the input; in that case, leave the cleared state alone.
   if (input.value !== text) return
   results.sha1 = sha1
   results.sha256 = sha256
@@ -142,13 +129,9 @@ function copy(key: keyof HashResults) {
 </script>
 
 <style lang="scss" scoped>
-/* Page-level wrapper sizing is provided by <ToolPage preset="medium-form"> */
 .input-card {
   margin-bottom: var(--tool-section-gap, 20px);
 }
-
-/* .input-meta 已抽到 ~/styles/_tool-recipes.scss 全局 utility。
-   模板里 <div class="input-meta"> 自动套用相同样式。 */
 
 .result-list {
   margin-top: 4px;
@@ -189,9 +172,6 @@ function copy(key: keyof HashResults) {
   color: var(--it-text-secondary);
 }
 
-/* result-value — .result-mono (utility) 提供 mono / 600 / primary /
-   tabular-nums, 这里只覆盖 hash 特有的小字 (13px) + 非加粗 (400)
-   + 行高 (1.4) + 整块可复制 (user-select: all) + 长串换行。 */
 .result-value {
   font-size: 13px;
   font-weight: 400;
@@ -200,9 +180,6 @@ function copy(key: keyof HashResults) {
   user-select: all;
 }
 
-/* SHA-384/SHA-512 wrap to 2 lines at this container width; min-height
-   keeps the empty-state card the same height as the filled state so
-   nothing below shifts when the user starts typing. */
 .result-value--wraps {
   min-height: 2.8em;
   box-sizing: border-box;

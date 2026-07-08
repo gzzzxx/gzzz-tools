@@ -1,29 +1,5 @@
-<!--
-  color.vue — multi-picker color playground (vue-color 上游 demo 容器).
+<!-- 颜色选择器工具，支持多种 picker 模式和颜色格式展示 -->
 
-  对比其他工具页面 (双栏 / 1输入-N输出 / 居中 t-card):
-    - 11 种 picker 网格展示: 不走"单功能"工具模式, 而是把各种 picker
-      横向铺开供用户选
-    - .text 动态反色: 让 current-color / picker-title 文字在任意
-      用户选色背景下都可读
-
-  与其他工具页面的统一点:
-    - <ToolPage> 卡片外壳: max-width 1600px 居中, 跟随 light/dark
-      主题 (var(--ep-bg-color) + var(--it-text-primary))
-    - title / subtitle 走 i18n (复用 tools.color.name /
-      tools.color.desc, 已在 locales 配好)
-
-  内部布局 (100% 保留原版, 不做重排或紧凑化):
-    - 外层 .picker-containers 嵌套 3 行 .row
-    - 第一行 3 col: 第一个 col 顶部是 hex/rgb/hsv 文字 + ChromePicker
-    - 第二行 3 col: Compact/Grayscale/Material (stack) | Hue/Slider/Twitter (stack) | Swatches
-    - 第三行 3 col: RGBSliders | HSVSliders | HSLSliders
-    - 全部 picker-title 文字保留 (&lt;ChromePicker /&gt; 这种代码名)
-
-  URL 参数:
-    - ?hex=XXXXXX   初始选色 (覆盖默认)
-    - ?picker=a,b,c  指定启用的 picker 列表 (默认全部)
--->
 <template>
   <ToolPage
     class="color-page"
@@ -31,11 +7,6 @@
     :title="t('tools.color.name')"
     :subtitle="t('tools.color.desc')"
   >
-    <!-- .wrapper 内部色块容器: background-color 跟随用户选色,
-         跟 .text 反色文字配对 — 保证 current-color / picker-title
-         文字在任意选色下都可读 (color 工具核心 UX)。
-         外层 <ToolPage> 仍然跟随 light/dark 主题, 内部色块不破坏
-         卡片化。 -->
     <div class="wrapper" :style="{ backgroundColor: hex }">
       <div class="picker-containers">
       <div class="row">
@@ -126,9 +97,6 @@ const DEFAULT_COLOR_DARK = '#004035';
 
 import { parseSearchParams } from './utils'
 const pickers = ['chrome', 'sketch', 'photoshop', 'compact', 'grayscale', 'material', 'slider', 'twitter', 'swatches', 'hue', 'sliders'] as const;
-// typeof guards: vite-ssg build (prerender) 在 node 环境跑, document /
-// location 都不可用, 这里加 typeof 检查让 SSR / SSG 阶段拿到 fallback
-// 而不是抛错。
 const searchParams = parseSearchParams(
   typeof location !== 'undefined' ? location.search : '',
 );
@@ -146,12 +114,7 @@ function invertColor({ r, g, b, a}: { r: number; g: number; b: number, a: number
 }
 
 const hasInitialColor = !!searchParams.hex;
-// typeof guard: vite-ssg build (prerender) 在 node 环境跑, document
-// 不可用, 这里加 typeof 检查让 SSR / SSG 阶段拿到 fallback 而不是抛错。
 const isDarkInitial = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
-// initialColor — 用于 tinycolor / color defineModel 的 default,
-// 也供 setup script 切主题时重置 tinycolor 参考。优先级: URL hex
-// (?hex=XXXXXX) > 当前主题默认色。
 const initialColor = `${searchParams.hex ?? isDarkInitial ? DEFAULT_COLOR_DARK : DEFAULT_COLOR}`;
 </script>
 
@@ -189,21 +152,12 @@ pickers.forEach((picker) => {
   }
 });
 
-// 主题感知 — 复用 ~/composables/useIsDark.ts。useIsDark 用一个共享的
-// MutationObserver 监听 html.dark class 变化（首次调用时同步读一次
-// 当前值），所有 caller 共享同一个 ref + observer — 比 BaseHeader.vue
-// 自造的 per-component 模式更省。
 const isDark = useIsDark();
 
 const tinyColor = defineModel('tinyColor', {
   default: tinycolor(initialColor)
 });
 
-// 主题切换 → 自动重置 tinycolor 为对应主题默认色
-// 让 .wrapper 背景 (v-bind(hex)) 跟随主题变化 — 切到 light mode 时
-// 背景自动变浅, 切到 dark mode 时自动变深。User 主动用 picker 选色后
-// 会立即覆盖, 选色状态会持续到下次主题切换或下次选色。
-// URL 显式指定 ?hex= 时不重置 (让 URL 控制优先级最高)。
 watch(isDark, (newIsDark) => {
   if (hasInitialColor) return;
   tinyColor.value = tinycolor(newIsDark ? DEFAULT_COLOR_DARK : DEFAULT_COLOR);
@@ -242,11 +196,6 @@ const updateHue = (newHue: number) => {
 </script>
 
 <style lang="scss" scoped>
-/* .wrapper — 内部色块容器, background-color 跟随用户当前选色,
-   跟 .text 反色文字配对 — 保证 current-color / picker-title
-   文字在任意选色下都可读 (color 工具核心 UX)。
-   外层 <ToolPage> 仍然跟随 light/dark 主题, 内部色块不破坏
-   卡片化 — 是"外卡片化 + 内动态色块"双层结构。 */
 .wrapper {
   display: flex;
   padding: 3%;
@@ -254,14 +203,10 @@ const updateHue = (newHue: number) => {
   border-radius: 4px;
 }
 
-/* .picker-containers — 在 .wrapper (flex 父) 内 grow, 吃满 3% padding
-   之后剩余的所有横向空间。 */
 .picker-containers {
   flex: 1;
 }
 
-/* .text — 动态反色, 让 current-color / picker-title 文字在
-   .wrapper (动态色块) 背景下都可读。 */
 .text {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   font-optical-sizing: auto;
@@ -270,8 +215,6 @@ const updateHue = (newHue: number) => {
   color: v-bind(textColor);
 }
 
-/* picker 网格 — 完全保留原版 3 行结构 + 3% gap / 3% margin。
-   不做紧凑化或重排, 跟原 color 页面的视觉保持一致。 */
 .row {
   width: 100%;
   display: flex;

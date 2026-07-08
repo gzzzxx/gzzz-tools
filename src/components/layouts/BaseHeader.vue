@@ -1,10 +1,5 @@
-<!--
-  src/components/layouts/BaseHeader.vue — horizontal top bar.
-  Layout: [≡ toggle-sider] [🏠 home] [🔍 search] [...spacer...] [lang] [github] [x] [info] [theme] [sponsor]
-  Emits:
-    - toggle-sider: parent flips its isSiderCollapsed ref → sidebar 240↔64
-    - toggle-theme: parent runs the dark/light view-transition animation
--->
+<!-- 顶部导航栏组件 -->
+
 <template>
   <header class="app-header">
     <div class="app-header__left">
@@ -202,45 +197,21 @@ const emit = defineEmits<{
 const router = useRouter()
 const { t, locale } = useI18n({ useScope: 'global' })
 
-// ----------------------------------------------------------------
-// Locale (language switch). `useI18n({ useScope: 'global' })` gives
-// us the top-level locale ref — the same one App.vue and the locale
-// bootstrap watch for persistence. Setting it here flips the whole
-// app's UI in one go.
-// ----------------------------------------------------------------
-
-// Menu labels are intentionally fixed at "中文 / English" so the
-// dropdown is language-agnostic — the switcher itself doesn't
-// translate.
 const langOptions: { value: AppLocale; label: string }[] = [
   { value: 'zh-CN', label: '中文' },
   { value: 'en-US', label: 'English' },
 ]
-// "current language's own name" — driven by i18n so the trigger
-// reads "中文" in zh-CN mode, "English" in en-US mode.
 const currentLangLabel = computed(() => t(`lang.${locale.value}`))
 function onLangPick(value: AppLocale) {
   locale.value = value
 }
 
-// Per-tooltip computeds: same string is used as both `content` and
-// `aria-label` (screen readers don't need the icon to announce what
-// the button does, but the aria-label and visible tooltip should
-// stay in sync). The about button only uses one t() key, so it
-// doesn't need a computed wrapper.
 const toggleSiderTooltip = computed(() =>
   props.isSiderCollapsed
     ? t('header.search.toggleSider.expand')
     : t('header.search.toggleSider.collapse'),
 )
 
-// ----------------------------------------------------------------
-// Search box
-// The input is bound to `searchQuery`; the dropdown is shown by
-// `paletteOpen`. Keyboard navigation (↑↓ Enter Esc) is handled
-// inside SearchPalette.handleKeydown — we just forward the event
-// from the input here so the palette doesn't have to reach for it.
-// ----------------------------------------------------------------
 const searchWrapRef = ref<HTMLDivElement | null>(null)
 const searchInputRef = ref<HTMLInputElement | null>(null)
 const paletteRef = ref<InstanceType<typeof SearchPalette> | null>(null)
@@ -260,9 +231,6 @@ const onKeydown = (e: KeyboardEvent) => {
   }
 }
 
-// Forward raw keydown to the palette so it can manage its own
-// active-row + Enter / Esc behavior. The palette's v-model:open
-// flip on Esc will close the dropdown automatically.
 function onSearchKeydown(e: KeyboardEvent) {
   paletteRef.value?.handleKeydown(e)
 }
@@ -273,19 +241,12 @@ function onClearSearch() {
 }
 
 function onToolSelected(tool: Tool) {
-  // Selection ends the search session: clear the query, close the
-  // dropdown, release focus from the input, then navigate. The
-  // mousedown.prevent on the list row would otherwise leave the
-  // input focused on the new page with stale text inside.
   searchQuery.value = ''
   paletteOpen.value = false
   searchInputRef.value?.blur()
   router.push(tool.path)
 }
 
-// Click-outside: close the dropdown when the user clicks anywhere
-// outside the search wrapper. mousedown (not click) so a selection
-// that fires immediately doesn't race with the input blur.
 const onDocumentMouseDown = (e: MouseEvent) => {
   const target = e.target as Node | null
   if (!target) return
@@ -294,8 +255,6 @@ const onDocumentMouseDown = (e: MouseEvent) => {
   }
 }
 
-// Theme toggle — read state for the icon; the actual flip + animation
-// lives in App.vue so the View Transitions API runs at the document root.
 const isDark = ref(false)
 const syncThemeFromDom = () => {
   isDark.value = document.documentElement.classList.contains('dark')
@@ -308,14 +267,11 @@ const onThemeClick = (event: MouseEvent) => {
   emit('toggle-theme', { clientX: event.clientX, clientY: event.clientY })
 }
 
-// Sponsor button — opens the project GitHub repo in a new tab.
 const GITHUB_REPO_URL = 'https://github.com/gzzzxx/gzzz-tool-show'
 function goGithub() {
   window.open(GITHUB_REPO_URL, '_blank', 'noopener,noreferrer')
 }
 
-// "Sponsor / 打赏" icon — gift box (see toolIconRegistry.ts).
-// Resolved once at setup, not per-render.
 const sponsorGift = getUiIcon('gift')
 
 let themeObserver: MutationObserver | null = null
@@ -375,11 +331,6 @@ onUnmounted(() => {
 }
 
 .app-header__center {
-  // Center the search box at the visual midline of the header.
-  // Pulling the wrapper out of the flex flow lets the right group grow
-  // leftward (sponsor button widening) without ever touching the
-  // search box. pointer-events:none lets clicks fall through to the
-  // icon buttons underneath; the search box itself re-enables them.
   position: absolute;
   left: 45%;
   top: 50%;
@@ -393,9 +344,6 @@ onUnmounted(() => {
 }
 
 .app-header__search {
-  // Anchoring context for the floating SearchPalette dropdown.
-  // pointer-events: auto re-enables clicks inside the
-  // pointer-events: none .app-header__center wrapper above.
   position: relative;
   width: 100%;
   max-width: 480px;
@@ -403,10 +351,7 @@ onUnmounted(() => {
 }
 
 @media (max-width: 1023.98px) {
-  // Below 1024px the right group + widening button would overlap the
-  // centered search box. Drop back into the flex flow so the layout
-  // can reflow safely on tighter viewports.
-  .app-header__center {
+    .app-header__center {
     position: static;
     transform: none;
     width: auto;
@@ -445,12 +390,6 @@ color: var(--brand-primary);
 
 .app-header__lang-text { font-size: 13px; font-weight: 500; color: var(--ah-mute); }
 
-// Language switch button — variable-width label ("中文" / "English")
-// can't fit a fixed 36×36 icon-btn sizing, so it expands to wrap the
-// full label with horizontal padding. The hover background now covers
-// the whole word instead of cutting "English" mid-character, and the
-// 4px gap to the next icon-btn (set on .app-header__right) keeps the
-// spacing consistent with the other header buttons.
 .app-header__lang-btn {
   width: auto;
   padding: 0 10px;
@@ -472,9 +411,6 @@ color: var(--brand-primary);
 .app-header__lang-btn :deep(.el-dropdown__caret) { display: none; }
 
 .app-header__search {
-  // Anchoring context for the floating SearchPalette dropdown.
-  // pointer-events: auto re-enables clicks inside the
-  // pointer-events: none .app-header__center wrapper above.
   position: relative;
   width: 100%;
   max-width: 480px;

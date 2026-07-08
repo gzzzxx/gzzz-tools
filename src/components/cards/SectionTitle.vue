@@ -1,10 +1,5 @@
-<!--
-  SectionTitle.vue — the small "Crypto" / "Converter" / etc. heading
-  that sits above a row of tool cards. Visual style is owned by the
-  global .it-section-title class in src/styles/_cards.scss; this file
-  is mostly a thin wrapper so the home page can render headings with
-  consistent semantics and an optional right-aligned slot for icons.
--->
+<!-- 工具分类标题组件 -->
+
 <template>
   <div class="section-title-row">
     <h3 class="it-section-title section-title">{{ title }}</h3>
@@ -29,8 +24,6 @@ defineProps<{ title: string }>()
 }
 
 .section-title {
-  // The shared class already sets margin-top: $it-section-gap; keep
-  // flex-shrink: 0 so long titles don't squeeze the optional slot.
   flex: 1 1 auto;
 }
 

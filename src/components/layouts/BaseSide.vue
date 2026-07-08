@@ -1,9 +1,5 @@
-<!--
-  BaseSide.vue — persistent left sidebar (it-tools style).
-  Mounted by App.vue in two contexts: persistent aside (PC) or el-drawer
-  (mobile). This component is context-agnostic; it only renders itself
-  and emits `update:isCollapsed` / `navigate` for the parent to react.
--->
+<!-- 左侧边栏导航组件 -->
+
 <template>
   <aside :class="['base-side', { 'base-side--collapsed': isCollapsed }]">
     <div class="base-side__brand">
@@ -22,13 +18,7 @@
     </div>
 
     <div v-show="!isCollapsed" class="base-side__body">
-      <!--
-        "我的收藏" group — pinned to the very top, only visible when
-        the user actually has at least one favorited tool. Mirrors
-        the regular category structure (header + collapsible list)
-        so behavior matches, with a small heart icon prefix to mark
-        it as a different kind of group.
-      -->
+  
       <div
         v-if="favoriteTools.length > 0"
         class="base-side__category base-side__category--favorites"
@@ -182,19 +172,9 @@ const emit = defineEmits<{
   (e: 'navigate', path: string): void
 }>()
 
-// Category labels and per-tool display name are both locale-driven.
-// The category key (e.g. 'crypto') is stable for the collapse state
-// to key off; switching language never breaks saved state.
-//
-// Use the active language's tool list so each <a> shows the right
-// translated name without the parent having to do any lookups.
 const { t } = useI18n({ useScope: 'global' })
 const { localizedTools } = useLocalizedTools()
 
-// Stable category key → display name (translated via t()).
-// Per-category tool list is filtered from the registry by `category`,
-// so adding a tool to a category means setting `category: 'dev'` in
-// the registry — no edit here.
 import { tools } from '~/tools/registry'
 import type { ToolCategory } from '~/tools/registry'
 
@@ -221,9 +201,6 @@ const categories = computed(() =>
   })),
 )
 
-// Persisted per-category collapse state — survives reloads. Keyed
-// by the stable category `key` (not the display name) so renaming
-// a category or switching language never breaks saved state.
 const collapsedCategories = useStorage<Record<string, boolean>>(
   'base-side:collapsed-categories',
   {},
@@ -236,15 +213,8 @@ function toggleCategory(key: string) {
   }
 }
 
-// Favorites — pinned to the top of the sidebar when the user has
-// any. Resolved through the locale-aware tool list so each link
-// shows the right translated name. Stale paths (tools removed
-// from the catalog) are dropped at the composable layer.
 const { favoriteTools } = useFavorites()
 
-// Favorites group has its own persisted collapse state so the user
-// can keep it pinned open / closed independently of the regular
-// category groups.
 const isFavoritesCollapsed = useStorage<boolean>(
   'base-side:collapsed-favorites',
   false,
@@ -335,7 +305,6 @@ const isFavoritesCollapsed = useStorage<boolean>(
   overflow: hidden;
 }
 
-// Teal→green ribbon under the logo (mirrors the reference site's swoosh).
 .base-side__brand-curve {
   margin-top: 18px;
   height: 6px;
@@ -381,12 +350,6 @@ const isFavoritesCollapsed = useStorage<boolean>(
 
 .base-side__category { margin-top: 4px; }
 
-// Heart icon prefix on the "我的收藏" group header. Uses the
-// project accent (--it-favorite → teal primary in light mode,
-// lighter teal in dark mode) so it matches the brand instead of
-// Element Plus's default success green. The favorites group reads
-// as "personal / pinned" via the heart glyph; the color just keeps
-// it on-brand with the rest of the UI.
 .base-side__favorites-icon {
   flex-shrink: 0;
   color: var(--it-favorite);

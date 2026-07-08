@@ -37,8 +37,7 @@
         }"
         @click="showSubNode = !showSubNode"
       />
-      <!-- 显示有几个item -->
-      <!-- :data-array-length="`${jsonValueKeys.length} items`" -->
+
 
       <span
         v-show="showSubNode"

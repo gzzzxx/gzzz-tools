@@ -1,23 +1,5 @@
-<!--
-  qrcode.vue — text/URL → QR code, with live canvas preview + PNG/SVG
-  export + clipboard copy.
+<!-- 二维码生成工具，支持文本/URL转二维码，实时预览和多种格式导出 -->
 
-  Layout mirrors crontab.vue's two-card pattern: left card holds the
-  text input + options (error-correction / size / margin / colors),
-  right card holds the canvas preview + download buttons.
-
-  Why qrcode (the npm lib) over hand-rolled encoding:
-  - Mature, well-typed, ~25 KB gzipped (Vite picks lib/browser.js
-    automatically via the package's `browser` field).
-  - One library covers all three output formats we need:
-    toCanvas (live preview), toDataURL (PNG download + clipboard),
-    toString (SVG download). No need to ship two libs.
-
-  Live preview: a single watch over the six input deps re-renders
-  the canvas. qrcode encoding is sub-millisecond for typical text,
-  so we don't bother debouncing — typing at 80 wpm still leaves the
-  loop idle most of the time.
--->
 <template>
   <ToolPage
     class="qrcode-page"
@@ -138,8 +120,7 @@ const moduleCount = ref(0)
 
 const hasContent = computed(() => text.value.trim().length > 0)
 
-// Shared render options — single source of truth so live preview,
-// PNG download, SVG download, and clipboard copy all match.
+// 统一渲染配置，确保预览、下载和复制使用相同参数
 const renderOpts = computed(() => ({
   errorCorrectionLevel: ecLevel.value,
   width: size.value,
@@ -151,10 +132,7 @@ function toErrorMessage(e: unknown) {
   return e instanceof Error ? e.message : String(e)
 }
 
-// Live preview: render on first mount + on any input change.
-// qrcode throws if the text is too long for the chosen error-
-// correction level — we surface that as inline feedback instead
-// of crashing the page.
+// 实时预览：输入变化时重新渲染二维码
 watch(
   [text, renderOpts],
   async () => {
@@ -165,11 +143,6 @@ watch(
     const canvas = canvasRef.value
     if (!canvas) return
     try {
-      // QRCode.create() returns the matrix without drawing it;
-      // we read modules.size for the diagnostic label, then
-      // render via toCanvas for the visible preview. Sharing
-      // the same options object between the two guarantees the
-      // label matches what the user sees.
       const matrix = QRCode.create(text.value, renderOpts.value)
       moduleCount.value = matrix.modules.size
       await QRCode.toCanvas(canvas, text.value, renderOpts.value)
@@ -195,7 +168,6 @@ function triggerDownload(blob: Blob, filename: string) {
   document.body.appendChild(a)
   a.click()
   document.body.removeChild(a)
-  // Defer revoke so Safari has time to start the download
   setTimeout(() => URL.revokeObjectURL(url), 1000)
 }
 
@@ -222,10 +194,6 @@ async function copyImage() {
 </script>
 
 <style lang="scss" scoped>
-/* Page-level wrapper sizing is provided by <ToolPage preset="large-form">. */
-/* Two-card row — stretch (default) so left/right CardPane 等高,
-   跟左栏内容多时右栏不再"挂底部". 旧 align-items: start 改 stretch
-   是为了配合下面 .q-preview-wrap { flex: 1 } 把 canvas 居中显示. */
 .qr-row {
   display: grid;
   grid-template-columns: 5fr 7fr;
@@ -237,17 +205,6 @@ async function copyImage() {
   }
 }
 
-/* q-card 容器 — 背景 / 边框 / 圆角 / 20-24 padding 已抽到
-   ~/components/tools/CardPane.vue 组件 (bodyPadding="20px 24px"),
-   这里不需要再写一份。.q-card 只保留特异样式 (无 — 之前也没有
-   .q-card 自身的特异样式, 全部样式来自 .q-card > 内部元素)。 */
-
-/* Left card */
-/* .field-label 已抽到 ~/styles/_tool-recipes.scss 全局 utility (13/600/
-   primary + 8px margin-bottom)。模板里 <label class="field-label"> 自动
-   套用, 这里只保留 horizontal layout 的特异值 (固定宽 90px + 取消
-   .field-label 默认的 8px margin-bottom — row layout 不需要)。
-   移动端缩窄到 70px 在底部 @media 内统一处理。 */
 .q-form-row .field-label {
   flex: 0 0 90px;
   margin-bottom: 0;
@@ -264,8 +221,6 @@ async function copyImage() {
   gap: 12px;
   min-height: 32px;
 }
-/* Slider row needs vertical centering so the input chip aligns
-   with the slider track. */
 .q-form-row:has(.el-slider) {
   align-items: center;
 }
@@ -276,13 +231,9 @@ async function copyImage() {
   flex-direction: column;
 }
 
-/* Checkerboard bg so light-on-light QR mistakes are visible. */
 .q-preview-wrap {
   position: relative;
   min-height: 280px;
-  /* flex: 1 让 preview-wrap 吃满 CardPane body 的剩余高度 —
-     配合 .qr-row 的 stretch 把右栏拉到与左栏等高, canvas
-     视觉上居中显示 (meta + actions 沉底). */
   flex: 1;
   display: flex;
   align-items: center;
@@ -303,8 +254,6 @@ async function copyImage() {
   display: block;
   max-width: 100%;
   height: auto;
-  /* Shadow so the QR lifts off the checkerboard even when its
-     colors match the page bg. */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   border-radius: 2px;
 }
@@ -322,12 +271,6 @@ async function copyImage() {
   color: var(--it-text-tertiary);
   text-align: center;
 }
-
-/* .q-divider / .q-actions / .q-empty 已分别抽到 ~/styles/_tool-recipes.scss
-   (.tool-divider / .tool-actions.tool-actions--gap-sm) 和
-   ~/components/tools/EmptyState.vue 组件。模板里
-   <div class="tool-divider"> / <div class="tool-actions tool-actions--gap-sm">
-   / <EmptyState padding="0"> 自动套用相同样式, 父 scoped 不用再写一份。 */
 
 @media (max-width: 600px) {
   .q-form-row .field-label { flex: 0 0 70px; font-size: 12px; }

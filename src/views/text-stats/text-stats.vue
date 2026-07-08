@@ -1,19 +1,5 @@
-<!--
-  text-stats.vue — chars / words / lines / paragraphs / CJK
-  breakdown / reading time, all derived from the input string
-  synchronously so a single computed over the input ref fans out
-  to every card with no debounce.
+<!-- 文本统计工具，支持字符、单词、行数、段落、中日韩字符和阅读时间分析 -->
 
-  Counting policy (in analyze() below):
-  - Chars: UTF-16 code units (text.length), matches the editor view.
-  - Bytes: UTF-8 encoded length (TextEncoder, available everywhere).
-  - Words: whitespace-split, but each CJK ideograph is its own word
-    so 我喜欢你 → 4, not 1. A buffer-flush guard skips pure
-    punctuation runs (e.g. a fullwidth "。" glued to the previous
-    CJK run) so it doesn't inflate the count.
-  - Sentences: split on [.!?。！？…]+.
-  - Reading time: 400 CJK chars/min + 250 EN words/min, weighted.
--->
 <template>
   <ToolPage
     class="text-stats-page"
@@ -117,17 +103,11 @@ const formattedReadingTime = computed(() => {
     : t('textStatsPage.reading.minutes', { n: m, s })
 })
 
-// --- pure analysis -----------------------------------------------------
-
 const CJK_RE = /[\u3400-\u9fff\uF900-\uFAFF]/
 const WHITESPACE_RE = /\s/
 const SENTENCE_END_RE = /[.!?。！？…]+/
 const PUNCTUATION_RE = /[.,;:!?。，；：！？、…—"'()\[\]{}<>«»`~@#\$%\^&*_+\-=/\\|]/
 
-// Cheap letter/digit test for word-count flush boundaries. O(buffer),
-// runs only on whitespace / CJK / EOS. ASCII range is compared as
-// strings — `c` is a single code unit so the coercion is well-defined
-// and faster than charCodeAt.
 const isWordContent = (s: string): boolean => {
   for (let i = 0; i < s.length; i++) {
     const c = s[i]
@@ -188,9 +168,6 @@ function analyze(text: string): Stat {
     else others++
   }
 
-  // A paragraph is ≥1 non-blank line separated from the next by a
-  // blank line — single-newline wraps stay inside the same paragraph
-  // (matches word-processor view).
   const rawLines = text.split(/\r\n|\r|\n/)
   let paragraphs = 0, inPara = false
   for (const line of rawLines) {
@@ -200,18 +177,7 @@ function analyze(text: string): Stat {
   }
 
   const words = countWords(text)
-  // CJK chars are already in `words` (each ideograph = 1 word), so
-  // subtract them out before applying the English rate — otherwise
-  // Chinese gets double-billed (once at 400 chars/min, once at 250
-  // wpm) and reading time comes out roughly 2× too long.
   const nonCjkWords = words - cjk
-  // English / digit time uses `max(wpm, cpm)`:
-  // - wpm (250 wpm) models prose like "Hello world" — a few words
-  //   separated by spaces carry per-word fixation overhead.
-  // - cpm (1000 chars/min) models dense alphanumeric like a 50-char
-  //   serial number — there's only one "word" but 50 chars, so wpm
-  //   returns near-zero and we'd display "0 秒".
-  // Taking the max means each rate wins on its home turf.
   const wpmMs = (nonCjkWords / 250) * 60_000
   const cpmMs = (ascii / 1000) * 60_000
   return {
@@ -230,13 +196,9 @@ function analyze(text: string): Stat {
 </script>
 
 <style lang="scss" scoped>
-/* Page-level wrapper sizing is provided by <ToolPage preset="medium-form"> */
 .input-card {
   margin-bottom: var(--tool-section-gap, 20px);
 }
-
-/* .input-meta 已抽到 ~/styles/_tool-recipes.scss 全局 utility。
-   模板里 <div class="input-meta"> 自动套用相同样式。 */
 
 .stat-row { margin-top: 4px; }
 

@@ -1,21 +1,5 @@
-<!--
-  ToolCard.vue — single tool tile on the home page.
+<!-- 首页工具卡片组件 -->
 
-  Renders as a <div> wrapper (the global .it-tool-card) containing a
-  <router-link>. We deliberately avoid el-card and el-icon here: both
-  inject extra wrappers / sizing rules that fight a CSS Grid layout
-  with `gap` and `height: 100%`. The icon is a plain inline SVG sized
-  via width/height — no font magic, no flex surprises.
-
-  All visual styling lives in the global .it-tool-card class in
-  src/styles/_cards.scss; this file only adds the link reset, the
-  tiny local "NEW" pill, and the favorites heart button.
-
-  The heart lives INSIDE the head row (so it inherits the flex
-  layout, never overlaps the icon, and survives without positioning
-  tricks). The click handler uses `.stop.prevent` so toggling a
-  favorite doesn't navigate through the wrapping router-link.
--->
 <template>
   <div class="it-tool-card tool-card">
     <router-link
@@ -90,17 +74,11 @@ const props = defineProps<{ tool: Tool }>()
 const iconSize = 28
 const favIconSize = 18
 
-// Icons come from the shared registry (see toolIconRegistry.ts); the
-// home grid and the search palette both render the same way so they
-// never drift apart.
 const iconPath = computed(() => getToolIcon(props.tool.icon))
 
-// Favorites — global composable, persisted to localStorage.
 const { isFavorite, toggle } = useFavorites()
 const isFav = computed(() => isFavorite(props.tool.path))
 
-// Tooltip flips between "add" and "remove" copy based on current
-// state. Both branches use the same ToolCard-keyed i18n namespace.
 const { t } = useI18n({ useScope: 'global' })
 const favTooltip = computed(() =>
   isFav.value ? t('toolcard.favorite.remove') : t('toolcard.favorite.add'),
@@ -112,26 +90,13 @@ function onToggleFav() {
 </script>
 
 <style lang="scss" scoped>
-// Outer wrapper is the global .it-tool-card. We don't restyle it here —
-// keeping this <style> minimal means the only thing scoped CSS touches
-// is the link reset. The link itself is plain <a> with no flex/height
-// logic, so it doesn't fight the global class.
-//
-// (Vue 3 scoped CSS adds a data-v hash to selectors; we deliberately
-// avoid touching .it-tool-card from here to keep the cascade simple.)
 .tool-card__link {
   display: flex;
   flex-direction: column;
-  justify-content: center;  // Center the (head + name + desc) stack inside
-                              // the 100%-height link wrapper. Without this
-                              // the stack anchors to the top because the
-                              // link already fills the parent .it-tool-card.
+  justify-content: center;
   text-decoration: none;
   color: inherit;
   height: 100%;
-  // Default flex item min-width is auto (= content min-width), which lets
-  // a long unbreakable token in the desc push the whole card past the
-  // grid track and trigger a horizontal page scrollbar.
   min-width: 0;
 }
 
@@ -142,9 +107,6 @@ function onToggleFav() {
 }
 
 .tool-card__head-right {
-  // Holds the optional NEW pill + the always-present heart. Using
-  // a flex wrapper with a small gap so the heart never crashes
-  // into the pill when both are visible.
   display: flex;
   align-items: center;
   gap: 6px;
@@ -152,8 +114,6 @@ function onToggleFav() {
 }
 
 .tool-card__icon {
-  // `flex-shrink: 0` so the SVG never collapses inside the flex column
-  // when the card is height-stretched to match its row siblings.
   flex-shrink: 0;
   display: block;
 }
@@ -168,13 +128,6 @@ function onToggleFav() {
   line-height: 1.4;
 }
 
-// Heart button — sits inside the head row, never overlaps the icon.
-// No `position: absolute` needed because the head's space-between
-// already pins it to the right edge. Colors come from --it-favorite
-// (defined in _variables.scss) so the filled heart always matches
-// the project accent (teal primary), not Element Plus's default
-// success green — same teal the sidebar's "我的收藏" group header
-// uses, so the two favorite affordances look like one family.
 .tool-card__fav {
   display: inline-flex;
   align-items: center;

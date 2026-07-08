@@ -1,22 +1,4 @@
-<!--
-  timer.vue — Stopwatch + Countdown in a single tabbed card.
-
-  Why tabs over two separate routes: the tool's mental model is "a
-  timer" (one knob, two modes); merging them keeps the entry list
-  short and lets the user flip between modes without losing the
-  page. Same pattern used by it-tools.tech/timer.
-
-  Timing: requestAnimationFrame instead of setInterval. setInterval
-  drifts ~10–30ms per second on throttled tabs; rAF fires when the
-  tab is actually rendering so the displayed time matches wall-clock
-  even after backgrounding. The timer auto-pauses via rAF cancellation
-  on unmount — see onBeforeUnmount at the bottom.
-
-  Audio cue: WebAudio oscillator instead of an <audio> tag so we
-  don't ship an mp3 with the bundle. Three short 880 Hz beeps, ~150ms
-  each, 250ms apart — distinct from generic notification "ding"s
-  and audible on laptop speakers without being obnoxious.
--->
+<!-- 计时器工具，包含秒表和倒计时两种模式 -->
 <template>
   <ToolPage
     class="timer-page"
@@ -164,9 +146,7 @@ interface Lap {
 const sw = reactive({
   elapsedMs: 0,
   running: false,
-  /** performance.now() of the most recent resume. */
   startedAt: 0,
-  /** Elapsed ms accumulated before the current run (paused-at value). */
   baseElapsedMs: 0,
   laps: [] as Lap[],
   rafId: 0,
@@ -218,14 +198,10 @@ const cd = reactive({
   remainingMs: 5 * 60 * 1000,
   phase: 'idle' as CountdownPhase,
   startedAt: 0,
-  /** Remaining ms at the moment the most recent run started/paused. */
   baseRemainingMs: 5 * 60 * 1000,
   rafId: 0,
 })
 
-// Locale-reactive preset list. Reading `locale.value` inside the
-// computed re-runs the expression on language switch, so labels
-// translate without us subscribing to them explicitly.
 const presets = computed(() => {
   void locale.value
   return [
@@ -291,10 +267,6 @@ function cdReset() {
 
 function onCountdownDone() {
   beep()
-  // Browsers require permission before showing notifications.
-  // We don't request it here (would interrupt the user mid-count);
-  // we only fire one when permission was already granted (e.g.
-  // user clicked "allow" elsewhere).
   if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
     try {
       new Notification(t('tools.timer.name'), {
@@ -306,11 +278,7 @@ function onCountdownDone() {
   ElMessage.success(t('timerPage.notify.done'))
 }
 
-// =================== Audio ===================
-
-// WebAudio is the lightest cross-browser beep source — no asset
-// bundle, no autoplay restriction on user-gesture triggers. The
-// context is created lazily so SSR / no-script pages don't error.
+// WebAudio 蜂鸣提示，延迟创建避免 SSR 错误
 let audioCtx: AudioContext | null = null
 function beep() {
   try {
@@ -337,12 +305,7 @@ function beep() {
   } catch { /* audio not available; visual cue (pulse) still fires */ }
 }
 
-// =================== Formatting ===================
-
-// `pad` 从 ~/utils/datetime 导入 — 跟 timestamp.vue 共用同一份.
-// Decompose ms into h/m/s/cs. `ceil` rounds up the centisecond
-// count (used by countdown so 0.5s reads "00:01", not "00:00"
-// — last second visibly holds instead of flickering).
+// 将毫秒分解为时分秒毫秒
 function parts(ms: number, ceil = false) {
   const totalCs = ceil ? Math.ceil(ms / 10) : Math.floor(ms / 10)
   const cs = totalCs % 100
@@ -357,25 +320,19 @@ function parts(ms: number, ceil = false) {
   }
 }
 
-/** `HH:MM:SS.cs` — stopwatch elapsed + lap times. */
 function formatElapsed(ms: number) {
   const { h, m, s, cs } = parts(ms)
   return `${pad(h)}:${pad(m)}:${pad(s)}.${pad(cs)}`
 }
 
-/** `MM:SS` under 1h, `HH:MM:SS` otherwise — countdown. */
 function formatRemaining(ms: number) {
   const { h, m, s } = parts(ms, true)
   return h > 0 ? `${pad(h)}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`
 }
 
-// =================== Mode switching ===================
-
 function setMode(m: Mode) {
   if (mode.value === m) return
   mode.value = m
-  // Pause whichever side was running so the rAF loop doesn't
-  // keep firing while the user is reading the other tab.
   if (sw.running) swPause()
   if (cd.phase === 'running') cdPause()
 }
@@ -387,18 +344,6 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
-/* Page-level wrapper sizing is provided by <ToolPage preset="large-form">. */
-/* Mode tabs — 已抽到 ~/styles/_tool-recipes.scss 全局 utility
-   (.tab-bar / .tab-bar__item / .tab-bar__item--active — 居中 + 1px
-   中性底 + 选中态 brand-primary)。模板里 <div class="tab-bar">
-   + <button class="tab-bar__item"> 自动套用相同样式, 父 scoped
-   不用再写一份。 */
-
-/* t-card 容器 — 背景 / 边框 / 圆角 / box-sizing 已抽到
-   ~/components/tools/CardPane.vue 组件, 这里只保留 timer 特有
-   的居中布局 (max-width: 600px + margin: 0 auto)。body padding
-   由 <CardPane body-padding="32px 24px" body-mobile-padding="20px 16px">
-   传 prop 提供。 */
 .t-card {
   max-width: 600px;
   margin: 0 auto;

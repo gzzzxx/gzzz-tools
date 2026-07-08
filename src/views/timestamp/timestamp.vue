@@ -1,18 +1,5 @@
-<!--
-  timestamp.vue — date ⇄ timestamp (seconds / milliseconds) converter.
+<!-- 时间戳转换工具，支持日期和时间戳互转 -->
 
-  Three input surfaces share one canonical Date:
-    1. <el-date-picker>   datetime picker, top of input card
-    2. <el-input> #1      numeric timestamp (auto-detects 10-digit sec
-                          vs 13-digit ms by length), middle
-    3. <el-input> #2      free-form date string, right of #1
-  Editing any one writes back to the other two and refreshes the
-  two result cards (formatted date + numeric timestamp).
-
-  Layout: input card on top, 1fr 1fr result row below. Both grids
-  collapse to single column ≤600px so the result cards don't
-  squeeze on phones.
--->
 <template>
   <ToolPage
     class="timestamp-page"
@@ -155,7 +142,6 @@ function copyToClipboard(text: string) {
 </script>
 
 <style lang="scss" scoped>
-/* Page-level wrapper sizing is provided by <ToolPage preset="medium-form"> */
 .input-card {
   margin-bottom: var(--tool-section-gap, 20px);
 }
@@ -172,14 +158,8 @@ function copyToClipboard(text: string) {
   gap: 16px;
 }
 .result-card {
-  /* flex: 1 让 result-card 在 CardPane body (display: flex; flex-direction: column)
-     里 grow 到父高 — 不然 result-card 高度被 min-height 钉死在 120px,
-     justify-content: center 只能在这 120px 内"假装"居中, 视觉上仍然贴顶. */
   display: flex;
   flex-direction: column;
-  /* 整体内容 (label + row) 在 box 内水平+垂直居中. 改 align-items:
-     center 替代 flex-start — 之前 label 顶左对齐, 数字顶左对齐, 看起来
-     整个内容"挤左上". */
   justify-content: center;
   align-items: center;
   background: var(--it-card-result-bg);
@@ -193,18 +173,11 @@ function copyToClipboard(text: string) {
 .result-row-flex {
   display: flex;
   align-items: center;
-  /* 居中展示 value + 复制按钮: 之前用 space-between 把按钮推到
-     最右, 数字顶到最左, 视觉上偏左. 改 center 后 value + button
-     作为一组在 row 水平居中. flex-wrap 让超长 timestamp 换行
-     不会撑破 row. */
   justify-content: center;
   min-height: 38px;
   gap: 8px;
   flex-wrap: wrap;
 }
-/* result-value — .result-mono (utility) 提供 mono / 600 / primary /
-   tabular-nums, 这里只覆盖 timestamp 特有的大字 (1.15rem) + 加粗
-   (bold) + 居中对齐 + 长串换行 + 居中后按内容自身宽度。 */
 .result-value {
   flex: 0 1 auto;
   text-align: center;
@@ -230,7 +203,6 @@ function copyToClipboard(text: string) {
   color: var(--ep-color-primary);
 }
 @media (max-width: 600px) {
-  /* .timestamp-page padding 已由全局 _tool-page.scss 提供 */
   .input-row,
   .result-row {
     grid-template-columns: 1fr;
