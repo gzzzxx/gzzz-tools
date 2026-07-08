@@ -1,44 +1,6 @@
-// =====================================================================
-// _tool-recipes.scss — 工具页常用的"两件套" utility (Step 3 抽取).
-//
-// 替换 5 个工具页面里的 .xxx-toolbar + .xxx-grid 重复块
-// (sql / xml / base64 / format / contrast),提炼成 3 个全局 utility:
-//
-//   .tool-toolbar             居中工具栏 + 主操作按钮
-//   .tool-toolbar__group      toolbar 内的 label + 控件分组 (contrast 用)
-//   .tool-toolbar / .tool-bar-label / .tool-bar-hint  详见下文
-//   .tool-grid                双栏 grid (>900px 双栏, <900px 单栏)
-//   .tool-grid--fullscreen    grid 的全屏双栏修饰 (加 flex:1 + min-height:0)
-//
-// 设计原则 (跟 vue-gotchas 一致):
-//   - 只搬原 scoped 里实际写过的属性, 不"顺手补" flex-wrap 等
-//   - 用 BEM 长名 (.tool-toolbar / .tool-grid) 避免跟 caller scoped 类撞名
-//   - 全局 utility 不依赖 Vue scope attribute — Vue scoped 选择器能命中
-//     同组件作用域内的 utility class, 调用方不用 :deep()
-//
-// 调用方一览:
-//   - sql.vue      toolbar + grid(--fullscreen)  抽 2 处
-//   - xml.vue      toolbar + grid(--fullscreen)  抽 2 处
-//   - base64.vue   toolbar + grid                抽 2 处
-//   - format.vue   grid(--fullscreen)            抽 1 处
-//   - contrast.vue toolbar + grid                抽 2 处 (Step 11 合并)
-//
-// contrast.vue 的 toolbar 合并说明: 原来 .contrast-toolbar 是 elevated
-// 设置条 (bg/border/radius/padding/gap:18px 全有), Step 11 跟 sql/xml/
-// base64 对齐为简洁版 (无背景/无边框/居中/gap:12)。视觉变化 = 灰底+边框
-// 消失, 工具栏间距从 18px 收到 12px, 跟其他三个工具页完全统一。
-// =====================================================================
+// 工具页常用样式 utility
 
-// === .tool-toolbar — 居中 + 主操作按钮的简单工具栏 =======================
-// 原 sql-toolbar / xml-toolbar / base64-toolbar 三处 100% 一致, contrast
-// toolbar 在 Step 11 合并后也复用 (去掉 bg/border/radius/padding):
-//   display: flex; justify-content: center; gap: 12px; margin-bottom: 14px;
-//   align-items: center; flex-wrap: wrap;   ← contrast 原本有, base64/sql/
-//                                              xml 不需要但加了对 2 个 button
-//                                              的视觉无影响, 保留作为 toolbar
-//                                              默认行为, 让窄屏下 3+ group
-//                                              (contrast) 能自然换行
-//   + .ep-button { padding-left/right: 10px }
+// 居中工具栏
 .tool-toolbar {
   display: flex;
   justify-content: center;
@@ -47,12 +9,6 @@
   gap: 12px;
   margin-bottom: 14px;
 
-  // Element Plus button 的默认 horizontal padding (15px) 对 2-3 字标签
-  // 显得偏松, 5 个工具页 (sql/xml/base64/contrast) 都收紧到 10px。
-  //
-  // 注意: 这是全局样式表 (@use 引入), 不是 SFC scoped 样式, 所以
-  // 不能用 :deep() —— Vue 编译器不处理全局 CSS 里的 :deep(), 会原样
-  // 输出导致整条规则被浏览器丢弃。直接写后代选择器即可。
   .ep-button {
     padding-left: 10px;
     padding-right: 10px;
@@ -60,27 +16,14 @@
 }
 
 
-// === .tool-toolbar__group — toolbar 内的 label + 控件分组 ================
-// 原 contrast 的 .contrast-toolbar__group 100% 一致:
-//   display: flex; align-items: center; gap: 8px;
-// 调用方: contrast 三个 group (语言类型 / 对比模式 / 折叠开关)。
-// 组间间距由外层 .tool-toolbar 的 gap: 12px 控制, 组内 label 和控件
-// 用这个 gap: 8px 分隔。
+// toolbar 内的 label + 控件分组
 .tool-toolbar__group {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-
-// === .tool-bar-label — toolbar 内的水平 label ===========================
-// 原 contrast 的 .contrast-toolbar__label:
-//   font-size: 13px; font-weight: 600; color: var(--it-text-primary);
-//   white-space: nowrap;
-// 跟 .field-label 的区别: .field-label 是 block + margin-bottom (label 在
-// 控件上方, 表单字段用); .tool-bar-label 是 inline, 跟控件横排 (toolbar
-// 内嵌 group 用)。两个 utility 互不替代。
-// 调用方: contrast 三个 group 各自的 label。
+// toolbar 内的水平 label
 .tool-bar-label {
   font-size: 13px;
   font-weight: 600;
@@ -88,13 +31,7 @@
   white-space: nowrap;
 }
 
-
-// === .tool-bar-hint — toolbar 内的次要提示文字 ==========================
-// 原 contrast 的 .contrast-toolbar__hint:
-//   font-size: 13px; color: var(--it-text-secondary); white-space: nowrap;
-// 跟 .tool-bar-label 视觉一致, 但字色 secondary 用于次要提示 (折叠开关
-// 旁边的 "折叠" 文字)。共用 font-size / nowrap, 只换字色。
-// 调用方: contrast 折叠开关旁的 "折叠" 提示。
+// toolbar 内的次要提示文字
 .tool-bar-hint {
   font-size: 13px;
   color: var(--it-text-secondary);
@@ -102,12 +39,7 @@
 }
 
 
-// === .tool-grid — 双栏 grid (≥900px 双栏, <900px 单栏) =================
-// 原 sql-grid / xml-grid / json-grid / base64-grid / contrast-grid 五处
-// 100% 一致的部分:
-//   display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
-//   align-items: stretch;
-//   + @media (max-width: 900px) { grid-template-columns: 1fr }
+// 双栏 grid (≥900px 双栏, <900px 单栏)
 .tool-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -121,48 +53,14 @@
   }
 }
 
-// === .tool-grid--fullscreen — 全屏双栏修饰 =============================
-// 原 sql-grid / xml-grid / json-grid 三处全屏双栏需要的额外属性:
-//   flex: 1; min-height: 0;
-// (让 grid 在父 .xxx-page (display: flex; flex-direction: column;
-// height: 100vh - 88px) 里 grow, 吃掉 header/toolbar 之后剩下的高度)。
-// base64 / contrast 不需要 — 它们是流动布局, 不强制 viewport 高度。
+// 全屏双栏修饰
 .tool-grid--fullscreen {
   flex: 1;
   min-height: 0;
 }
 
 
-// =====================================================================
-// Step 5 抽取: 工具页"重复 4 件套" — field-label / divider / actions
-//
-// 替换原本散在 password-strength / qrcode / crontab / encryptionDetail
-// / timer 5 个工具页里的 .pwd-label / .q-form-row__label /
-// .c-form-row__label / .enc-field__label / .c-card__divider /
-// .q-divider / .t-controls / .q-actions / .enc-buttons / .empty /
-// .q-empty 11 块重复 CSS,提炼成 3 个全局 utility + 1 个组件:
-//
-//   .field-label         表单字段标签 (label + control 竖排的 label 部分)
-//   .tool-divider        1px 中性分割线 (内容分组用)
-//   .tool-actions        居中按钮组 (horizontal 默认, stacked 变体)
-//
-//   <EmptyState>         工具页"无内容"占位组件 (组件而非 utility,
-//                         因为它有 prop + 多种 padding 配置)
-//
-// 设计原则:
-//   - 只搬原 scoped 里实际写过的属性, 不"顺手补"
-//   - modifier 用 BEM (`--stacked` / `--gap-sm`) 避免 caller 重复发明轮子
-//   - 全部不依赖 Vue scope attribute — 同组件 scoped 选择器能命中
-// =====================================================================
-
-// === .field-label — 表单字段标签 =======================================
-// 原 pwd-label / q-form-row__label / c-form-row__label / enc-field__label
-// 4 处 100% 一致:
-//   display: block; font-size: 13px; font-weight: 600;
-//   color: var(--it-text-primary); margin-bottom: 8px;
-// (c-form-row 多了 "flex: 0 0 170px; text-align: right; padding-right: 12px"
-//  — 那是 horizontal label 的特异布局, 不在本 utility 范围, 仍由
-//  caller 自定义。)
+// 表单字段标签
 .field-label {
   display: block;
   font-size: 13px;
@@ -171,32 +69,14 @@
   margin-bottom: 8px;
 }
 
-
-// === .tool-divider — 1px 中性分割线 ====================================
-// 原 c-card__divider / q-divider 2 处 100% 一致:
-//   height: 1px; background-color: var(--it-border); margin: 16px 0;
-// (c-table 的 thead/td border-bottom 也用 var(--it-border), 但它们是
-//  table 内部 cell 边界, 不属于内容分组线, 不在本 utility 范围。)
+// 1px 中性分割线
 .tool-divider {
   height: 1px;
   background-color: var(--it-border);
   margin: 16px 0;
 }
 
-
-// === .tool-actions — 居中按钮组 ========================================
-// 原 .t-controls (timer) / .q-actions (qrcode) / .enc-buttons
-// (encryptionDetail) 3 处核心规则一致 (display flex + center + gap),
-// 只有方向 / gap 数值差异:
-//
-//   .t-controls   horizontal, gap 12, flex-wrap, 无 margin
-//   .q-actions    horizontal, gap 8,  flex-wrap, 无 margin
-//   .enc-buttons  vertical (stacked), gap 10, margin-top 4px,
-//                 子按钮 width: 100% (config card 内的全宽按钮)
-//
-// 抽成 .tool-actions (horizontal 默认) + --gap-sm (8) + --stacked
-// (vertical + 全宽子项) modifier。--stacked 包含 margin-top 4px
-// (encryptionDetail 原本就有), 共享更一致。
+// 居中按钮组
 .tool-actions {
   display: flex;
   justify-content: center;
@@ -204,23 +84,17 @@
   flex-wrap: wrap;
 }
 
-// gap 收紧到 8px — 用于按钮数量多且每按钮文字短的场景 (qrcode 三个
-// 下载按钮)。单纯 modifier, 不动其他属性。
+// gap 收紧到 8px
 .tool-actions--gap-sm {
   gap: 8px;
 }
 
-// 垂直变体 — 配合 config card 内的全宽按钮 (encryptionDetail 4 个
-// encrypt/decrypt/copy/clear)。margin-top: 4px 保留原值 (跟 button
-// 上方 field 保持 4px 间距, 跟 .tool-actions 默认无 margin 形成
-// 区分)。子项 width: 100% 让按钮在窄列里全宽。
+// 垂直变体 — 全宽子项
 .tool-actions--stacked {
   flex-direction: column;
   gap: 10px;
   margin-top: 4px;
 
-  // 全宽子项 — 用后代选择器直接命中 caller 的 <el-button>。
-  // 同 .tool-toolbar 注释: 全局 CSS 不用 :deep(), 直接写即可。
   > .ep-button {
     width: 100%;
     margin-left: 0 !important;
@@ -228,90 +102,32 @@
 }
 
 
-// =====================================================================
-// Step 6 抽取: prose 排版 — "说明 / 参考" 卡片正文 typography
-//
-// 替换原本散在 base64.vue (.base64-reference__body / __para / __term
-// / __list) 和 encryptionDetail.vue (.enc-info__body / __para / __term)
-// 的 2 块重复 typography, 提炼成 4 个全局 utility:
-//
-//   .prose-body     14px / 1.7 / primary text 的正文容器
-//   .prose-para     正文段落: margin-bottom 12px (下一个字段隔开)
-//   .prose-term     正文里的"术语强调" 内联 span (brand-primary + 600)
-//   .prose-list     正文里的项目列表 (margin + padding-left)
-//
-// 设计原则:
-//   - 只搬 base64.vue + encryptionDetail.vue 字面一致的 7 行属性
-//     (font-size / line-height / color / margin / padding-left),
-//     不补 :last-child { margin-bottom: 0 } (只有 encryptionDetail 有
-//     这行, 不到两处一致, 不抽)
-//   - 不补 padding / overflow-x (只有 base64 字面上有, encryptionDetail
-//     用 <CardPane body-padding> 提供, 两套不一致 — 留给 caller 自管)
-//   - BEM 长名 (.prose-body / .prose-para), 与 scoped 的 .xxx-body 撞不上
-// =====================================================================
-
-// === .prose-body — 正文 typography =====================================
-// 原 base64.vue 的 .base64-reference__body 和 encryptionDetail.vue 的
-// .enc-info__body 字面一致的 3 个属性 (font-size / line-height / color):
-//   font-size: 14px;
-//   line-height: 1.7;
-//   color: var(--it-text-primary);
-// (padding / overflow-x 各自 scoped 里写的, 这里不抽。)
+// 正文 typography
 .prose-body {
   font-size: 14px;
   line-height: 1.7;
   color: var(--it-text-primary);
 }
 
-// === .prose-para — 段落间距 ===========================================
-// 原 .base64-reference__para / .enc-info__para 100% 一致:
+// 段落间距
 .prose-para {
   margin: 0 0 12px;
 }
 
-// === .prose-term — inline term emphasis ===============================
-// 原 .base64-reference__term / .enc-info__term 100% 一致:
-//   color: var(--brand-primary);
-//   font-weight: 600;
-// 用法: 包裹正文里的术语 (Base64 / 分组密码 / SM4 等), 让品牌色自然
-// 突出术语而不必每次写 font-weight / color。
+// 术语强调
 .prose-term {
   color: var(--brand-primary);
   font-weight: 600;
 }
 
-// === .prose-list — 正文项目列表 ========================================
-// 原 .base64-reference__list 100% 一致 (encryptionDetail 没用到,
-// 先按 base64 的样式定, 后续 caller 需要可再加 modifier):
+// 正文项目列表
 .prose-list {
   margin: 0 0 12px;
   padding-left: 24px;
 }
 
 
-// =====================================================================
-// Step 7 抽取: .tool-chip — mono / brand-tint 的 inline code badge
-//
-// 替换 crontab.vue 的 .c-table__code (symbol table 的 example 列里
-// 用 inline `<code>` 显示 cron 表达式, 强调"这是能贴进去用的"):
-//
-//   .c-table__code:
-//     font-family: var(--font-mono);  ← 系统 mono stack
-//     font-size: 13px;
-//     background-color: var(--brand-primary-soft);  ← 品牌色轻染
-//     color: var(--brand-primary);
-//     padding: 1px 6px;
-//     border-radius: 3px;
-//
-// 设计原则:
-//   - 跟 styles/index.scss 里的全局 <code> 区分: 全局 <code> 没设
-//     font-family (走父容器字体), 用 EP 派生色 --el-color-primary-
-//     light-9; 本 .tool-chip 强制 mono + 用品牌 token, 给"真的像
-//     代码 chip"的语义。
-//   - 不挪全局 <code> 规则 — 删全局规则是另一个话题, 这次只抽工具页
-//     自己的 chip 样式。
-// =====================================================================
-
+// inline code badge
 .tool-chip {
   font-family: var(--font-mono);
   font-size: 13px;
@@ -321,22 +137,7 @@
   border-radius: 3px;
 }
 
-
-// =====================================================================
-// Step 8 抽取: .tab-bar — 居中 tab 导航 + brand-color 选中态
-//
-// 替换 timer.vue 自造的 .t-tabs / .t-tab / .t-tab--active 3 块样式。
-// encryption.vue 仍用 <el-tabs> (functional API 差异较大, 没动),
-// 但视觉对齐 follow-up 留给后续。
-//
-// 设计原则:
-//   - 居中 (justify-content: center) + 1px 中性 border-bottom, 选中
-//     项用 brand-primary 颜色 + 600 字重 + 2px brand-primary 下边框
-//   - 不引入 :hover 改字色的"非显然"行为 — 想 hover 改色 call-er 自己加
-//   - 用 BEM 长名 .tab-bar / .tab-bar__item / .tab-bar__item--active,
-//     与 scoped 的 .t-tabs / .t-tab 撞不上
-// =====================================================================
-
+// 居中 tab 导航
 .tab-bar {
   display: flex;
   justify-content: center;
@@ -366,31 +167,7 @@
   font-weight: 600;
 }
 
-
-// =====================================================================
-// Step 9 抽取: .input-meta — input card 底部的"左 meta / 右 clear"行
-//
-// 替换 hash.vue (.input-meta) + text-stats.vue (.input-meta) 两处
-// 字面完全一致的 5 行 CSS:
-//
-//   display: flex; align-items: center; justify-content: space-between;
-//   margin-top: 12px; color: var(--it-text-secondary); font-size: 13px;
-//
-// 调用方一览:
-//   - hash.vue      input-meta  内嵌 t('hashPage.input.charCount') + Clear 按钮
-//   - text-stats.vue input-meta  内嵌 t('textStatsPage.input.meta') + Clear 按钮
-//
-// 设计原则:
-//   - 只搬原 scoped 里实际写过的 6 个属性, 不补 min-height / line-height
-//   - 颜色固定 secondary, 不开放 modifier — 跟全局 design token 一致
-//   - BEM 长名 .input-meta, 跟 caller scoped 的 .input-meta 撞不上
-//     (同名不冲突是因为 caller 写 <div class="input-meta"> 在模板里
-//     不带 [data-v-xxx], utility 命中全局规则; caller scoped 的 .input-meta
-//     跟 .input-meta 撞名也无所谓, Vue 编译器会同时输出两个选择器, 但
-//     utility 的属性都跟 caller 一致所以视觉无变化 — 删 caller scoped 块
-//     才是真"消除重复")
-// =====================================================================
-
+// input card 底部的 meta 行
 .input-meta {
   display: flex;
   align-items: center;
@@ -400,32 +177,7 @@
   font-size: 13px;
 }
 
-
-// =====================================================================
-// Step 10 抽取: .result-mono — "代码 / 数字" 结果值的 monospace 文本
-//
-// 替换 hash.vue (.result-value) / text-stats.vue (.stat-card__value) /
-// timestamp.vue (.result-value) 三处的 4 行共通 typography:
-//
-//   font-family: var(--font-mono);
-//   font-size: 13px;        ← hash/text-stats/timestamp 都是 13/14, 取 14 作默认
-//   font-weight: 600;       ← hash/timestamp 是 600, text-stats 也是 600, 统一
-//   color: var(--it-text-primary);
-//   font-variant-numeric: tabular-nums;
-//
-// 调用方一览:
-//   - hash.vue        .result-value              font-size: 13px (从默认覆盖)
-//   - text-stats.vue  .stat-card__value          font-size: 14px (走默认)
-//   - timestamp.vue   .result-value              font-size: 1.15rem (caller 覆盖)
-//
-// 设计原则:
-//   - 统一 14 / 600 / primary / tabular-nums。caller 觉得太大/太重可
-//     单独覆盖 font-size / font-weight。
-//   - 不抽 .result-row-flex / .result-label / .result-card — hash 跟
-//     timestamp 内部布局差异大 (label+value 方向、align 都不同),
-//     抽了反而要加 modifier, 不如保留 caller 自管。
-// =====================================================================
-
+// 结果值的 monospace 文本
 .result-mono {
   font-family: var(--font-mono);
   font-size: 14px;

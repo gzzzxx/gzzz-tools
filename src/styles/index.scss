@@ -1,47 +1,14 @@
-// =====================================================================
-// index.scss — global stylesheet entry point
-// Imported once from src/main.ts.
-//
-// Order matters:
-//   1. element-plus dark theme variables  (provides --el-color-* etc.)
-//   2. our own _variables / _cards       (provides --it-* tokens)
-//   3. global resets & link styles       (consume both layers above)
-//
-// Important: we intentionally do NOT override --el-color-primary. The
-// user has decided to keep the default Element Plus blue as the theme
-// accent; tool cards only *reference* it via `var(--el-color-primary)`
-// for the hover-border effect.
-// =====================================================================
-
-// 1. Element Plus dark theme (CSS variable layer — toggled by html.dark)
+// 全局样式入口
 @use "element-plus/theme-chalk/src/dark/css-vars.scss" as *;
-
-// 2. Shared design tokens (SCSS + CSS custom properties)
 @use "./variables" as *;
-// 3. Reusable layout primitives (cards / banner / section title)
 @use "./cards" as *;
-// 4. Tool page shared chrome — see _tool-page.scss for what's covered.
-//    Provides .tool-page / .tool-page__title / .tool-page__subtitle so
-//    every tool view inherits the same shell + heading look without
-//    duplicating the rules in each <style scoped>.
 @use "./tool-page" as *;
-// 5. Tool page "recipes" — .tool-toolbar / .tool-grid utility classes
-//    shared by the 5 dev-tool views (sql / xml / base64 / format /
-//    contrast). See _tool-recipes.scss for the per-caller mapping.
 @use "./tool-recipes" as *;
 
-// ---------------------------------------------------------------------
-// Global resets
-// ---------------------------------------------------------------------
 html,
 body {
   background-color: var(--it-bg);
   color: var(--it-text-primary);
-  // Safety net against accidental horizontal overflow on narrow viewports:
-  // any child (a stray SVG with no width, a long unbreakable string inside
-  // a grid item, etc.) gets clipped instead of creating a page-level
-  // horizontal scrollbar. `clip` over `hidden` so we don't establish a
-  // scroll container — important for sticky-positioned headers.
   overflow-x: clip;
 }
 
@@ -49,17 +16,12 @@ body {
   font-family: Inter, system-ui, -apple-system, "Helvetica Neue",
     "PingFang SC", "Microsoft YaHei", "微软雅黑", Helvetica, Arial,
     sans-serif;
-  font-weight: 400; // base weight; titles bump to 500 / 600 explicitly
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
 }
 
-// ---------------------------------------------------------------------
-// Global link style
-// Inherit the project brand primary for the default link color so we stay
-// consistent with the rest of the UI (ElButton / ElTag / etc.).
-// ---------------------------------------------------------------------
 a {
   color: var(--brand-primary);
   text-decoration: none;
@@ -70,9 +32,6 @@ a {
   }
 }
 
-// ---------------------------------------------------------------------
-// Inline <code> chips — keep the existing project style (subtle tint).
-// ---------------------------------------------------------------------
 code {
   border-radius: 2px;
   padding: 2px 4px;

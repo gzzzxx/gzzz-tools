@@ -1,71 +1,5 @@
-// =====================================================================
-// _tool-page.scss — 工具页面共享样式 (Step 1 + Step 2 抽取)
-//
-// 抽取所有 15 个工具页面 (base64 / json / sql / xml / contrast /
-// encryption / hash / calendar / timer / crontab / password-strength /
-// text-stats / qrcode / timestamp) 中 100% 一致的样式:
-//
-//   - 外壳的 background / border-radius / box-shadow / box-sizing
-//   - 居中大标题的 text-align / font-size / font-weight
-//   - 居中副标题的 text-align / color / font-size
-//   - @media (max-width: 600px) 的 padding: 8px 2px + title font-size: 1.5rem
-//
-// 不一致的字段通过 <ToolPage preset="..."> 注入为 CSS 变量。这样各页面
-// 不再重复写同一组 sizing 变量, 但 _tool-page.scss 仍然只负责消费变量:
-//
-//   --tool-page-max-width   (默认 1600px)  各页面 700-1600 不等
-//   --tool-page-margin-y    (默认 20px)    各页面 16 / 20 / 40
-//   --tool-page-padding     (默认 24px 16px) 各页面 20 16 / 24 12 / 24 16
-//   --tool-page-subtitle-mb (默认 20px)    各页面 20 / 24
-//
-// 默认值只是兜底; 正常工具页应通过 ToolPage preset 设置这些变量。
-//
-// 各页面继续保留 (不抽到此处, 因为现有页面这些值不一致):
-//
-//   - 外壳的 height / display / flex-direction / overflow (json / sql /
-//     xml 是 viewport-fixed 全屏双栏, 其他页面是流式布局)
-//   - 移动端响应式里针对子组件 (card / toolbar / input 等) 的样式
-//
-// 注意: 标题的 margin 不在这里设 — 让全局 h2 { margin-block-start: 8px;
-// margin-block-end: 8px; } (在 styles/index.scss) 生效。所有工具页面之前
-// 的 scoped .title / .xxx-title 块都没有设 margin, 完全继承自全局 h2。
-//
-// 注意: 副标题的 color 仍然是 #888 (硬编码)。所有 15 个工具页面都是
-// 同一行 color: #888 — 这一致性已经保留, 没有 token 化, 本 Step 不动。
-//
-// 用法 (Step 2 之后):
-//
-//   <!-- 模板 -->
-//   <ToolPage
-//     class="sql-page"
-//     :title="t('tools.sql.name')"
-//     :subtitle="t('tools.sql.desc')"
-//   >
-//     <!-- 100 行内容 -->
-//   </ToolPage>
-//
-//   <!-- 模板 -->
-//   <ToolPage
-//     class="sql-page"
-//     preset="wide-editor"
-//     :title="t('tools.sql.name')"
-//     :subtitle="t('tools.sql.desc')"
-//   >
-//
-//   /* scoped: 只保留特异值 (height / display / overflow 等) */
-//   .sql-page {
-//     height: calc(100vh - 88px);
-//     display: flex;
-//     flex-direction: column;
-//     overflow: hidden;
-//   }
-//
-// 全局类用 BEM 长名 (.tool-page / .tool-page__title / .tool-page__subtitle)
-// 避免与 scoped 的 .title / .subtitle (hash.vue 等使用) 冲突。
-// =====================================================================
-
+// 工具页面共享样式
 .tool-page {
-  // === Sizing 变量 (由 ToolPage preset 注入, 这里提供 fallback) =====
   --tool-page-max-width: 1600px;
   --tool-page-margin-y: 20px;
   --tool-page-padding: 24px 16px;
@@ -84,20 +18,15 @@
   text-align: center;
   font-size: 2rem;
   font-weight: bold;
-  // margin 不在这里设 — 让全局 h2 { margin-block-start: 8px;
-  // margin-block-end: 8px; } 生效。所有工具页面之前都靠全局 h2
-  // margin-block 撑出标题上下 8px 间距, 这里不能加 margin: 0。
 }
 
 .tool-page__subtitle {
   text-align: center;
   color: #888;
   font-size: 1rem;
-  // margin-bottom 通过 CSS 变量从 ToolPage preset 继承下来。
   margin-bottom: var(--tool-page-subtitle-mb);
 }
 
-// 移动端: 所有 15 个工具页面一致 — padding: 8px 2px + title: 1.5rem
 @media (max-width: 600px) {
   .tool-page { padding: 8px 2px; }
   .tool-page__title { font-size: 1.5rem; }
