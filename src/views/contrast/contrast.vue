@@ -112,7 +112,7 @@
   </ToolPage>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { computed, nextTick, reactive, watch } from 'vue'
 import { Delete } from '@element-plus/icons-vue'
 import { useI18n } from 'vue-i18n'

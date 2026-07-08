@@ -46,7 +46,7 @@
   </ToolPage>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import calendar from '~/utils/js-calendar-converter.js'
 // dayjs with zh-cn locale drives both el-calendar's internal date
@@ -146,9 +146,5 @@ function solarToLunar(slotData: { day: string }) {
 }
 :deep(.ep-button-group) {
   display: flex;
-}
-
-@media (max-width: 600px) {
-  // .calendar-page padding + .calendar-title font-size 已由全局 _tool-page.scss 提供
 }
 </style>

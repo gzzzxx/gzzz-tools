@@ -65,7 +65,7 @@
   </ToolPage>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { reactive, watch } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 import { Delete, DocumentCopy, MagicStick, Minus } from '@element-plus/icons-vue'
@@ -192,11 +192,4 @@ watch(() => form.data, autoFormat)
 
 /* Arrow badge removed — matches the JSON formatter's equal-
    width "no arrow" style. */
-
-@media (max-width: 600px) {
-  // .sql-page padding + .sql-title font-size 已由全局 _tool-page.scss 提供
-  // .sql-card__header 移动端 padding 10 12 已由 <CardPane> 组件
-  //   headerMobilePadding="10px 12px" 默认值提供 — 不再需要在
-  //   caller scoped 块里写一份冗余规则 (抽 CardPane 之前是必要的)
-}
 </style>

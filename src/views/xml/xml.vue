@@ -85,7 +85,7 @@
   </ToolPage>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { reactive, ref, watch } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 import { Delete, DocumentCopy, MagicStick, Minus } from '@element-plus/icons-vue'

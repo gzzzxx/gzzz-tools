@@ -271,7 +271,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { reactive } from 'vue'
 import { ElMessage } from 'element-plus'
 import {

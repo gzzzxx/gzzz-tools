@@ -28,7 +28,7 @@
 
     <div class="qr-row">
       <!-- ============== Left: input + options ============== -->
-      <CardPane class="q-card" body-padding="20px 24px">
+      <CardPane class="q-card" body-padding="20px 24px" body-mobile-padding="16px 14px">
         <label class="q-label">{{ t('qrcodePage.input.label') }}</label>
         <el-input
           v-model="text"
@@ -79,7 +79,7 @@
       </CardPane>
 
       <!-- ============== Right: preview + actions ============== -->
-      <CardPane class="q-card q-card--preview" body-padding="20px 24px">
+      <CardPane class="q-card q-card--preview" body-padding="20px 24px" body-mobile-padding="16px 14px">
         <div class="q-preview-wrap">
           <canvas v-show="hasContent" ref="canvasRef" class="q-canvas" />
           <div v-if="!hasContent" class="q-empty">
@@ -346,8 +346,6 @@ async function copyImage() {
 }
 
 @media (max-width: 600px) {
-  /* .qrcode-page padding + .title font-size 已由全局 _tool-page.scss 提供 */
-  .q-card { padding: 16px 14px; }
   .q-form-row__label { flex: 0 0 70px; font-size: 12px; }
   .q-preview-wrap { min-height: 220px; }
 }

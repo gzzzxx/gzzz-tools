@@ -155,7 +155,7 @@ function copy(key: keyof HashResults) {
   align-items: center;
   justify-content: space-between;
   margin-top: 12px;
-  color: var(--ep-text-color-secondary);
+  color: var(--it-text-secondary);
   font-size: 13px;
 }
 
@@ -186,21 +186,21 @@ function copy(key: keyof HashResults) {
 .result-label {
   font-size: 14px;
   font-weight: 500;
-  color: var(--ep-text-color-primary);
+  color: var(--it-text-primary);
 }
 
 .result-bits {
   margin-left: 8px;
   font-size: 12px;
   font-weight: 400;
-  color: var(--ep-text-color-secondary);
+  color: var(--it-text-secondary);
 }
 
 .result-value {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 13px;
   line-height: 1.4;
-  color: var(--ep-text-color-primary);
+  color: var(--it-text-primary);
   word-break: break-all;
   user-select: all;
 }
@@ -211,9 +211,5 @@ function copy(key: keyof HashResults) {
 .result-value--wraps {
   min-height: 2.8em;
   box-sizing: border-box;
-}
-
-@media (max-width: 600px) {
-  /* .hash-page padding + .title font-size 已由全局 _tool-page.scss 提供 */
 }
 </style>

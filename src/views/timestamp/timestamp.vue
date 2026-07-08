@@ -82,14 +82,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { DocumentCopy } from '@element-plus/icons-vue';
-import { useI18n } from 'vue-i18n';
-import { useClipboard } from '~/composables/useClipboard';
-import { formatDateTime } from '~/utils/datetime';
+import { ref } from 'vue'
+import { DocumentCopy } from '@element-plus/icons-vue'
+import { useI18n } from 'vue-i18n'
+import { useClipboard } from '~/composables/useClipboard'
+import { formatDateTime } from '~/utils/datetime'
 
-const { t } = useI18n({ useScope: 'global' });
-const clipboard = useClipboard();
+const { t } = useI18n({ useScope: 'global' })
+const clipboard = useClipboard()
 
 const timestamp = ref('');
 const dateString = ref('');
@@ -174,7 +174,7 @@ function copyToClipboard(text: string) {
   background: var(--it-card-result-bg);
 }
 .result-label {
-  color: var(--ep-text-color-secondary);
+  color: var(--it-text-secondary);
   font-size: 0.95rem;
   margin-top: 8px;
   align-self: center;
@@ -198,7 +198,7 @@ function copyToClipboard(text: string) {
   text-align: center;
   font-size: 1.15rem;
   font-weight: bold;
-  color: var(--ep-text-color-primary);
+  color: var(--it-text-primary);
   word-break: break-all;
 }
 .copy-btn {

@@ -241,7 +241,7 @@ function analyze(text: string): Stat {
   align-items: center;
   justify-content: space-between;
   margin-top: 12px;
-  color: var(--ep-text-color-secondary);
+  color: var(--it-text-secondary);
   font-size: 13px;
 }
 
@@ -257,7 +257,7 @@ function analyze(text: string): Stat {
 .stat-card__title {
   font-size: 14px;
   font-weight: 600;
-  color: var(--ep-text-color-primary);
+  color: var(--it-text-primary);
   margin-bottom: 10px;
   letter-spacing: 0.02em;
 }
@@ -276,13 +276,13 @@ function analyze(text: string): Stat {
   font-size: 13px;
 }
 
-.stat-card__label { color: var(--ep-text-color-secondary); }
+.stat-card__label { color: var(--it-text-secondary); }
 
 .stat-card__value {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 14px;
   font-weight: 600;
-  color: var(--ep-text-color-primary);
+  color: var(--it-text-primary);
   font-variant-numeric: tabular-nums;
 }
 
@@ -302,22 +302,18 @@ function analyze(text: string): Stat {
 
 .reading-block__label {
   font-size: 12px;
-  color: var(--ep-text-color-secondary);
+  color: var(--it-text-secondary);
 }
 
 .reading-block__value {
   font-size: 18px;
   font-weight: 600;
-  color: var(--ep-text-color-primary);
+  color: var(--it-text-primary);
 }
 
 .reading-block__value--small {
   font-size: 12px;
   font-weight: 400;
-  color: var(--ep-text-color-secondary);
-}
-
-@media (max-width: 600px) {
-  /* .text-stats-page padding + .title font-size 已由全局 _tool-page.scss 提供 */
+  color: var(--it-text-secondary);
 }
 </style>

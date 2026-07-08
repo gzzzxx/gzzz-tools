@@ -42,7 +42,7 @@
   </el-config-provider>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
@@ -50,89 +50,76 @@ import en from 'element-plus/es/locale/lang/en'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
-export default {
-  setup () {
-    // Element Plus' built-in locale dictionary — picked per active
-    // language so el-pagination / el-table / etc. flip with our toggle.
-    const { locale } = useI18n({ useScope: 'global' })
-    const elLocale = computed(() => (locale.value === 'en-US' ? en : zhCn))
-    const router = useRouter()
+// Element Plus' built-in locale dictionary — picked per active
+// language so el-pagination / el-table / etc. flip with our toggle.
+const { locale } = useI18n({ useScope: 'global' })
+const elLocale = computed(() => (locale.value === 'en-US' ? en : zhCn))
+const router = useRouter()
 
-    // lg-1 boundary per it-tools design spec.
-    const isMobile = useMediaQuery('(max-width: 1023.98px)')
+// lg-1 boundary per it-tools design spec.
+const isMobile = useMediaQuery('(max-width: 1023.98px)')
 
-    const isSiderCollapsed = ref(false)
-    const drawerVisible = ref(false)
+const isSiderCollapsed = ref(false)
+const drawerVisible = ref(false)
 
-    function onNavigate(path: string) {
-      // Close the drawer before the route push so the page transition isn't
-      // blocked by the still-rendering drawer overlay.
-      drawerVisible.value = false
-      if (path && path !== router.currentRoute.value.path) {
-        router.push(path)
-      }
-    }
+function onNavigate(path: string) {
+  // Close the drawer before the route push so the page transition isn't
+  // blocked by the still-rendering drawer overlay.
+  drawerVisible.value = false
+  if (path && path !== router.currentRoute.value.path) {
+    router.push(path)
+  }
+}
 
-    // ----------------------------------------------------------------
-    // Theme toggle — reads/writes localStorage 'theme' and animates via
-    // the View Transitions API. The non-dark class is only ever added
-    // when explicitly switched to light, otherwise we stay on dark
-    // (which is the original behavior preserved from the legacy header).
-    // ----------------------------------------------------------------
-    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-      const next = localStorage.getItem('theme') === 'light' ? 'light' : 'dark'
-      document.documentElement.classList.remove('light', 'dark')
-      document.documentElement.classList.add(next)
-    } else {
-      document.documentElement.classList.remove('light')
-      document.documentElement.classList.add('dark')
-    }
+// ----------------------------------------------------------------
+// Theme toggle — reads/writes localStorage 'theme' and animates via
+// the View Transitions API. The non-dark class is only ever added
+// when explicitly switched to light, otherwise we stay on dark
+// (which is the original behavior preserved from the legacy header).
+// ----------------------------------------------------------------
+if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+  const next = localStorage.getItem('theme') === 'light' ? 'light' : 'dark'
+  document.documentElement.classList.remove('light', 'dark')
+  document.documentElement.classList.add(next)
+} else {
+  document.documentElement.classList.remove('light')
+  document.documentElement.classList.add('dark')
+}
 
-    function onToggleTheme(payload: { clientX: number; clientY: number }) {
-      const { clientX: x, clientY: y } = payload
-      const endRadius = Math.hypot(
-        Math.max(x, window.innerWidth - x),
-        Math.max(y, window.innerHeight - y),
-      )
+function onToggleTheme(payload: { clientX: number; clientY: number }) {
+  const { clientX: x, clientY: y } = payload
+  const endRadius = Math.hypot(
+    Math.max(x, window.innerWidth - x),
+    Math.max(y, window.innerHeight - y),
+  )
 
-      const isDark = document.documentElement.classList.contains('dark')
-      localStorage.setItem('theme', isDark ? 'light' : 'dark')
+  const isDark = document.documentElement.classList.contains('dark')
+  localStorage.setItem('theme', isDark ? 'light' : 'dark')
 
-      const transition = (document as any).startViewTransition?.(() => {
-        const root = document.documentElement
-        root.classList.remove(isDark ? 'dark' : 'light')
-        root.classList.add(isDark ? 'light' : 'dark')
-      })
+  const transition = (document as any).startViewTransition?.(() => {
+    const root = document.documentElement
+    root.classList.remove(isDark ? 'dark' : 'light')
+    root.classList.add(isDark ? 'light' : 'dark')
+  })
 
-      if (!transition) return // browser doesn't support view transitions
+  if (!transition) return // browser doesn't support view transitions
 
-      transition.ready.then(() => {
-        const clipPath = [
-          `circle(0px at ${x}px ${y}px)`,
-          `circle(${endRadius}px at ${x}px ${y}px)`,
-        ]
-        document.documentElement.animate(
-          { clipPath: isDark ? [...clipPath].reverse() : clipPath },
-          {
-            duration: 500,
-            easing: 'ease-in',
-            pseudoElement: isDark
-              ? '::view-transition-old(root)'
-              : '::view-transition-new(root)',
-          },
-        )
-      })
-    }
-
-    return {
-      elLocale,
-      isMobile,
-      isSiderCollapsed,
-      drawerVisible,
-      onNavigate,
-      onToggleTheme,
-    }
-  },
+  transition.ready.then(() => {
+    const clipPath = [
+      `circle(0px at ${x}px ${y}px)`,
+      `circle(${endRadius}px at ${x}px ${y}px)`,
+    ]
+    document.documentElement.animate(
+      { clipPath: isDark ? [...clipPath].reverse() : clipPath },
+      {
+        duration: 500,
+        easing: 'ease-in',
+        pseudoElement: isDark
+          ? '::view-transition-old(root)'
+          : '::view-transition-new(root)',
+      },
+    )
+  })
 }
 </script>
 

@@ -55,7 +55,7 @@
   </ToolPage>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue'
 import JsonEditorVue from 'json-editor-vue'
 import 'vanilla-jsoneditor/themes/jse-theme-dark.css'
@@ -125,10 +125,5 @@ const editorClass = computed(() =>
    to #222 in dark mode (default is slightly lighter). */
 :deep(.jse-theme-dark) {
   --jse-theme-color: #222;
-}
-
-@media (max-width: 600px) {
-  // .json-page padding + .json-title font-size 已由全局 _tool-page.scss 提供
-  // .json-card__header 移动端 padding 6 12 已由 <CardPane header-mobile-padding="6px 12px"> prop 传入
 }
 </style>

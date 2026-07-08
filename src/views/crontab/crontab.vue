@@ -22,7 +22,7 @@
 
     <div class="crontab-row">
       <!-- ============== Left: input + description + toggles ============== -->
-      <CardPane class="c-card" body-padding="20px 24px">
+      <CardPane class="c-card" body-padding="20px 24px" body-mobile-padding="16px 14px">
         <div class="c-card__input-wrap">
           <input
             v-model="cron"
@@ -61,7 +61,7 @@
       </CardPane>
 
       <!-- ============== Right: diagram + symbol table ============== -->
-      <CardPane class="c-card" body-padding="20px 24px">
+      <CardPane class="c-card" body-padding="20px 24px" body-mobile-padding="16px 14px">
         <pre class="c-card__diagram">{{ diagramText }}</pre>
 
         <div class="c-card__divider" />
@@ -428,8 +428,6 @@ const diagramText = computed(() => {
   .c-form-row__label { flex-basis: 130px; padding-right: 8px; font-size: 13px; }
 }
 @media (max-width: 600px) {
-  /* .crontab-page padding + .title font-size 已由全局 _tool-page.scss 提供 */
-  .c-card { padding: 16px 14px; }
   .c-input { font-size: 22px; }
   .c-card__cron-string { font-size: 18px; }
   .c-table thead th,

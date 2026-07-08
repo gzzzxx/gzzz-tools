@@ -124,7 +124,7 @@
 const DEFAULT_COLOR = 'F5F7FA';
 const DEFAULT_COLOR_DARK = '#004035';
 
-import { parseSearchParams } from './utils';
+import { parseSearchParams } from './utils'
 const pickers = ['chrome', 'sketch', 'photoshop', 'compact', 'grayscale', 'material', 'slider', 'twitter', 'swatches', 'hue', 'sliders'] as const;
 // typeof guards: vite-ssg build (prerender) 在 node 环境跑, document /
 // location 都不可用, 这里加 typeof 检查让 SSR / SSG 阶段拿到 fallback
@@ -156,8 +156,8 @@ const initialColor = `${searchParams.hex ?? isDarkInitial ? DEFAULT_COLOR_DARK :
 </script>
 
 <script setup lang="ts">
-import { computed, reactive, ref, onMounted, onUnmounted, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed, reactive, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import {
   ChromePicker,
@@ -174,10 +174,11 @@ import {
   HSVSliders,
   RGBSliders,
   tinycolor
-} from 'vue-color';
-import 'vue-color/style.css';
+} from 'vue-color'
+import 'vue-color/style.css'
+import { useIsDark } from '~/composables/useIsDark'
 
-const { t } = useI18n({ useScope: 'global' });
+const { t } = useI18n({ useScope: 'global' })
 
 const showStatus: Record<(typeof pickers)[number], boolean> = {} as Record<(typeof pickers)[number], boolean>;
 pickers.forEach((picker) => {
@@ -188,29 +189,11 @@ pickers.forEach((picker) => {
   }
 });
 
-// 主题感知 — 用 MutationObserver 直接监听 html.dark class 变化.
-// 为什么不用 useDark / useColorMode: useColorMode 是单向同步
-// (state ref → html class), 它**不**读 html class 变化, 所以
-// App.vue 手动改的 html class 对它**不可见**。BaseHeader.vue 也
-// 是用同样的 MutationObserver 模式 (L321-340)。onMounted 里同步
-// 读一次 class 拿到初始值, 之后 MutationObserver 监听后续变化。
-const isDark = ref(false)
-let themeObserver: MutationObserver | null = null
-
-onMounted(() => {
-  isDark.value = document.documentElement.classList.contains('dark')
-  themeObserver = new MutationObserver(() => {
-    isDark.value = document.documentElement.classList.contains('dark')
-  })
-  themeObserver.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['class'],
-  })
-})
-
-onUnmounted(() => {
-  themeObserver?.disconnect()
-})
+// 主题感知 — 复用 ~/composables/useIsDark.ts。useIsDark 用一个共享的
+// MutationObserver 监听 html.dark class 变化（首次调用时同步读一次
+// 当前值），所有 caller 共享同一个 ref + observer — 比 BaseHeader.vue
+// 自造的 per-component 模式更省。
+const isDark = useIsDark();
 
 const tinyColor = defineModel('tinyColor', {
   default: tinycolor(initialColor)
