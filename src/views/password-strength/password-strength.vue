@@ -336,10 +336,10 @@ const rules = computed<Rule[]>(() => {
   color: var(--it-text-primary);
 }
 .feedback__row--pass .feedback__icon {
-  color: var(--el-color-success);
+  color: var(--ep-color-success);
 }
 .feedback__row--fail .feedback__icon {
-  color: var(--el-color-danger);
+  color: var(--ep-color-danger);
 }
 
 @media (max-width: 600px) {

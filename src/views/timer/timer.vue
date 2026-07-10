@@ -420,10 +420,10 @@ onBeforeUnmount(() => {
   transition: color 0.2s;
 }
 .t-display__time--warn {
-  color: var(--el-color-warning);
+  color: var(--ep-color-warning);
 }
 .t-display__time--alert {
-  color: var(--el-color-danger);
+  color: var(--ep-color-danger);
   animation: t-pulse 1s ease-in-out infinite;
 }
 .t-display__unit {

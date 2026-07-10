@@ -120,7 +120,7 @@ function onToggleFav() {
 
 .tool-card__new {
   padding: 2px 8px;
-  background: var(--el-color-success, #67c23a);
+  background: var(--ep-color-success);
   color: #fff;
   border-radius: 10px;
   font-size: 11px;

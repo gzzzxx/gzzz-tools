@@ -76,7 +76,7 @@ function solarToLunar(slotData: { day: string }) {
   color: var(--it-text-secondary);
 }
 .lunar.festival {
-  color: var(--el-color-danger);
+  color: var(--ep-color-danger);
 }
 
 /* Element Plus 内部样式覆盖 */
@@ -88,7 +88,7 @@ function solarToLunar(slotData: { day: string }) {
 }
 
 :deep(.ep-calendar-table .current .lunar.festival) {
-  color: var(--el-color-danger);
+  color: var(--ep-color-danger);
 }
 :deep(.ep-calendar__body) {
   padding: 0;
