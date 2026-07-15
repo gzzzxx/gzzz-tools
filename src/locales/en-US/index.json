@@ -412,7 +412,7 @@
       "copyEmpty": "Nothing to copy, please format first"
     }
   },
-  "formatPage": {
+  "jsonPage": {
     "section": {
       "source": "Source",
       "result": "Result"

@@ -2,13 +2,13 @@
 
 <template>
   <ToolPage
-    class="pwd-page"
+    class="password-strength-page"
     preset="medium-form"
     :title="t('tools.passwordStrength.name')"
     :subtitle="t('tools.passwordStrength.desc')"
   >
 
-    <CardPane class="input-card">
+    <CardPane class="tool-input-card">
       <label class="field-label">{{ t('passwordStrengthPage.input.label') }}</label>
       <el-input
         v-model="password"
@@ -49,35 +49,35 @@
       </div>
 
       <!-- Stats grid -->
-      <el-row :gutter="16" class="stat-row">
+      <el-row :gutter="16" class="pwd-stat-row">
         <el-col :xs="12" :sm="6">
-          <div class="stat">
-            <div class="stat__label">{{ t('passwordStrengthPage.stats.length') }}</div>
-            <div class="stat__value">
+          <div class="pwd-stat">
+            <div class="pwd-stat__label">{{ t('passwordStrengthPage.stats.length') }}</div>
+            <div class="pwd-stat__value">
               {{ stats.length }}
-              <span class="stat__unit">/ 12+</span>
+              <span class="pwd-stat__unit">/ 12+</span>
             </div>
           </div>
         </el-col>
         <el-col :xs="12" :sm="6">
-          <div class="stat">
-            <div class="stat__label">{{ t('passwordStrengthPage.stats.entropy') }}</div>
-            <div class="stat__value">
+          <div class="pwd-stat">
+            <div class="pwd-stat__label">{{ t('passwordStrengthPage.stats.entropy') }}</div>
+            <div class="pwd-stat__value">
               {{ stats.entropy.toFixed(1) }}
-              <span class="stat__unit">bits</span>
+              <span class="pwd-stat__unit">bits</span>
             </div>
           </div>
         </el-col>
         <el-col :xs="12" :sm="6">
-          <div class="stat">
-            <div class="stat__label">{{ t('passwordStrengthPage.stats.crackTime') }}</div>
-            <div class="stat__value stat__value--small">{{ crackTime }}</div>
+          <div class="pwd-stat">
+            <div class="pwd-stat__label">{{ t('passwordStrengthPage.stats.crackTime') }}</div>
+            <div class="pwd-stat__value stat__value--small">{{ crackTime }}</div>
           </div>
         </el-col>
         <el-col :xs="12" :sm="6">
-          <div class="stat">
-            <div class="stat__label">{{ t('passwordStrengthPage.stats.charset') }}</div>
-            <div class="stat__value stat__value--small">{{ charsetSummary }}</div>
+          <div class="pwd-stat">
+            <div class="pwd-stat__label">{{ t('passwordStrengthPage.stats.charset') }}</div>
+            <div class="pwd-stat__value stat__value--small">{{ charsetSummary }}</div>
           </div>
         </el-col>
       </el-row>
@@ -267,10 +267,6 @@ const rules = computed<Rule[]>(() => {
 </script>
 
 <style lang="scss" scoped>
-.input-card {
-  margin-bottom: var(--tool-section-gap, 20px);
-}
-
 .meter {
   margin-bottom: 24px;
 }
@@ -293,30 +289,30 @@ const rules = computed<Rule[]>(() => {
   transition: color 0.25s;
 }
 
-.stat-row {
+.pwd-stat-row {
   margin-top: 4px;
 }
-.stat {
+.pwd-stat {
   padding: 8px 0;
 }
-.stat__label {
+.pwd-stat__label {
   font-size: 12px;
   color: var(--it-text-tertiary);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin-bottom: 4px;
 }
-.stat__value {
+.pwd-stat__value {
   font-size: 20px;
   font-weight: 600;
   color: var(--it-text-primary);
   font-variant-numeric: tabular-nums;
 }
-.stat__value--small {
+.pwd-stat__value--small {
   font-size: 16px;
   font-weight: 500;
 }
-.stat__unit {
+.pwd-stat__unit {
   font-size: 12px;
   font-weight: 400;
   color: var(--it-text-tertiary);
@@ -343,6 +339,6 @@ const rules = computed<Rule[]>(() => {
 }
 
 @media (max-width: 600px) {
-  .stat__value { font-size: 18px; }
+  .pwd-stat__value { font-size: 18px; }
 }
 </style>

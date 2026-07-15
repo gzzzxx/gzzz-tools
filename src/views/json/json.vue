@@ -12,7 +12,7 @@
       <CardPane class="json-card" body-padding="0">
         <ToolTextarea
           v-model="text"
-          :placeholder="t('formatPage.input.placeholder')"
+          :placeholder="t('jsonPage.input.placeholder')"
         />
       </CardPane>
 

@@ -7,7 +7,7 @@
     :title="t('tools.timestamp.name')"
     :subtitle="t('tools.timestamp.desc')"
   >
-    <CardPane class="input-card">
+    <CardPane class="tool-input-card">
       <div class="date-picker-wrapper">
         <el-date-picker
           v-model="datePickerValue"
@@ -127,9 +127,6 @@ function onDatePickerChange(val: string) {
 </script>
 
 <style lang="scss" scoped>
-.input-card {
-  margin-bottom: var(--tool-section-gap, 20px);
-}
 .input-row {
   display: grid;
   grid-template-columns: 1fr 1fr;

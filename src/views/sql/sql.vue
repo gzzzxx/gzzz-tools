@@ -129,6 +129,3 @@ const autoFormat = useDebounceFn((value: string) => {
 
 watch(() => form.data, autoFormat)
 </script>
-
-<style lang="scss" scoped>
-</style>

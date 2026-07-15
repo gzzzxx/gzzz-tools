@@ -26,7 +26,7 @@ export const tools: readonly ToolDefinition[] = [
   { path: '/hash',            component: () => import('~/views/hash/hash.vue'),            icon: 'hash',    nameKey: 'tools.hash.name',     descKey: 'tools.hash.desc',     category: 'crypto' },
   { path: '/password-strength', component: () => import('~/views/password-strength/password-strength.vue'), icon: 'password', nameKey: 'tools.passwordStrength.name', descKey: 'tools.passwordStrength.desc', category: 'crypto' },
   // dev
-  { path: '/format',          component: () => import('~/views/json/format.vue'),          icon: 'braces',   nameKey: 'tools.format.name',   descKey: 'tools.format.desc',   category: 'dev' },
+  { path: '/json',          component: () => import('~/views/json/json.vue'),          icon: 'braces',   nameKey: 'tools.format.name',   descKey: 'tools.format.desc',   category: 'dev' },
   { path: '/sql',             component: () => import('~/views/sql/sql.vue'),              icon: 'database', nameKey: 'tools.sql.name',      descKey: 'tools.sql.desc',      category: 'dev' },
   { path: '/xml',             component: () => import('~/views/xml/xml.vue'),              icon: 'xml',      nameKey: 'tools.xml.name',      descKey: 'tools.xml.desc',      category: 'dev' },
   { path: '/contrast',        component: () => import('~/views/contrast/contrast.vue'),    icon: 'diff',     nameKey: 'tools.contrast.name', descKey: 'tools.contrast.desc', category: 'dev' },

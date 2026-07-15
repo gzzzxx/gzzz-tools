@@ -412,7 +412,7 @@
       "copyEmpty": "暂无可复制的内容,请先格式化"
     }
   },
-  "formatPage": {
+  "jsonPage": {
     "section": {
       "source": "输入",
       "result": "结果"

@@ -8,7 +8,7 @@
     :subtitle="t('tools.textStats.desc')"
   >
 
-    <CardPane class="input-card">
+    <CardPane class="tool-input-card">
       <el-input
         v-model="input"
         type="textarea"
@@ -213,10 +213,6 @@ function analyze(text: string): Stat {
 </script>
 
 <style lang="scss" scoped>
-.input-card {
-  margin-bottom: var(--tool-section-gap, 20px);
-}
-
 .stat-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

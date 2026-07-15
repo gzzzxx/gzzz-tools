@@ -8,7 +8,7 @@
     :subtitle="t('tools.crontab.desc')"
   >
 
-    <div class="crontab-row">
+    <div class="tool-grid--narrow-left tool-grid--narrow-left-start">
       <!-- 左侧：输入 + 描述 + 开关 -->
       <CardPane class="crontab-card">
         <div class="crontab-card__input-wrap">
@@ -186,18 +186,12 @@ const diagramText = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-/* 双栏布局，5/7 比例，900px 以下堆叠 */
-.crontab-row {
-  display: grid;
-  grid-template-columns: 5fr 7fr;
-  gap: 16px;
-  align-items: start;
-}
+/* 双栏布局用 ~/styles/_tool-recipes.scss 全局 utility
+   .tool-grid--narrow-left + .tool-grid--narrow-left-start
+   (5/7 比例, align-items: start, 900px 以下塌缩单栏)。
+   父 scoped 不用再写一份。 */
 
 @media (max-width: 900px) {
-  .crontab-row {
-    grid-template-columns: 1fr;
-  }
   .crontab-form-row { max-width: 100%; }
   .crontab-form-row__label { flex-basis: 130px; padding-right: 8px; font-size: 13px; }
 }

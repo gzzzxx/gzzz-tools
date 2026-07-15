@@ -392,7 +392,7 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 4px;
 }
-.t-num-field :deep(.el-input-number) {
+.t-num-field :deep(.ep-input-number) {
   width: 100px;
 }
 .t-num-label {
@@ -485,6 +485,6 @@ onBeforeUnmount(() => {
      选择器就能命中, 不需要 :deep()。 */
   .tab-bar__item { padding: 8px 16px; font-size: 14px; }
   .t-lap-row { grid-template-columns: 28px 1fr 1fr; gap: 8px; font-size: 12px; }
-  .t-num-field :deep(.el-input-number) { width: 80px; }
+  .t-num-field :deep(.ep-input-number) { width: 80px; }
 }
 </style>

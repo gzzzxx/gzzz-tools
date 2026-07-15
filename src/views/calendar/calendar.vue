@@ -11,11 +11,11 @@
     <CardPane class="calendar-card" body-padding="0">
       <el-calendar>
         <template #date-cell="{ data }">
-          <div>
-            <div class="solar">{{ data.day.split('-')[2] }}</div>
+          <div class="cal-cell">
+            <div class="cal-cell__solar">{{ data.day.split('-')[2] }}</div>
             <div
-              class="lunar"
-              :class="{ festival: isFestival(data) }"
+              class="cal-cell__lunar"
+              :class="{ 'cal-cell__festival': isFestival(data) }"
             >
               {{ solarToLunar(data) }}
             </div>
@@ -65,17 +65,22 @@ function solarToLunar(slotData: { day: string }) {
 
 <style lang="scss" scoped>
 /* 单元格布局：公历在上，农历在下 */
-.solar {
+.cal-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.cal-cell__solar {
   font-size: 14px;
   line-height: 1.2;
   color: var(--it-text-primary);
 }
-.lunar {
+.cal-cell__lunar {
   font-size: 12px;
   line-height: 1.2;
   color: var(--it-text-secondary);
 }
-.lunar.festival {
+.cal-cell__festival {
   color: var(--ep-color-danger);
 }
 
@@ -87,7 +92,7 @@ function solarToLunar(slotData: { day: string }) {
   flex-wrap: wrap;
 }
 
-:deep(.ep-calendar-table .current .lunar.festival) {
+:deep(.ep-calendar-table .current .cal-cell__festival) {
   color: var(--ep-color-danger);
 }
 :deep(.ep-calendar__body) {

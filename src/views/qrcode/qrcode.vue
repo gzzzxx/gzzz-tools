@@ -8,7 +8,7 @@
     :subtitle="t('tools.qrcode.desc')"
   >
 
-    <div class="qrcode-row">
+    <div class="tool-grid--narrow-left">
       <!-- ============== Left: input + options ============== -->
       <CardPane class="qrcode-card">
         <label class="field-label">{{ t('qrcodePage.input.label') }}</label>
@@ -194,16 +194,9 @@ async function copyImage() {
 </script>
 
 <style lang="scss" scoped>
-.qrcode-row {
-  display: grid;
-  grid-template-columns: 5fr 7fr;
-  gap: 16px;
-}
-@media (max-width: 900px) {
-  .qrcode-row {
-    grid-template-columns: 1fr;
-  }
-}
+/* 双栏布局用 ~/styles/_tool-recipes.scss 全局 utility
+   .tool-grid--narrow-left (5/7 比例, 900px 以下塌缩单栏)。
+   父 scoped 不用再写一份。 */
 
 .qrcode-form-row .field-label {
   flex: 0 0 90px;
@@ -239,10 +232,10 @@ async function copyImage() {
   align-items: center;
   justify-content: center;
   background-image:
-    linear-gradient(45deg, #f0f0f0 25%, transparent 25%),
-    linear-gradient(-45deg, #f0f0f0 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, #f0f0f0 75%),
-    linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
+    linear-gradient(45deg, color-mix(in srgb, var(--it-text-tertiary) 12%, transparent) 25%, transparent 25%),
+    linear-gradient(-45deg, color-mix(in srgb, var(--it-text-tertiary) 12%, transparent) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, color-mix(in srgb, var(--it-text-tertiary) 12%, transparent) 75%),
+    linear-gradient(-45deg, transparent 75%, color-mix(in srgb, var(--it-text-tertiary) 12%, transparent) 75%);
   background-size: 16px 16px;
   background-position: 0 0, 0 8px, 8px -8px, -8px 0;
   border-radius: 4px;

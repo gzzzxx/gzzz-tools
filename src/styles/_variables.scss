@@ -3,7 +3,6 @@
 $it-radius:        8px;
 $it-card-padding:  16px;
 $it-grid-gap:      12px;
-$it-section-gap:   25px;
 $it-page-padding:  26px;
 
 $it-radius-sm:     4px;
@@ -55,7 +54,6 @@ $it-radius-lg:     12px;
   --it-radius:        #{$it-radius};
   --it-card-padding:  #{$it-card-padding};
   --it-grid-gap:      #{$it-grid-gap};
-  --it-section-gap:   #{$it-section-gap};
   --it-page-padding:  #{$it-page-padding};
 
   --it-favorite:        var(--brand-primary);

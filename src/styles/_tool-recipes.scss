@@ -194,3 +194,38 @@
   color: var(--it-text-primary);
   font-variant-numeric: tabular-nums;
 }
+
+
+// ====================== 通用 input card 容器 ======================
+.tool-input-card {
+  margin-bottom: var(--tool-section-gap, 20px);
+}
+
+
+// ====================== 5:7 双栏 grid (左窄右宽) ======================
+.tool-grid--narrow-left {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.tool-grid--narrow-left-start {
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .tool-grid--narrow-left,
+  .tool-grid--narrow-left-start {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+// ====================== 统一错误文本 ======================
+.tool-error {
+  color: var(--ep-color-danger);
+  font-size: 13px;
+  text-align: center;
+  margin-top: 8px;
+}

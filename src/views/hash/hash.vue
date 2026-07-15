@@ -7,7 +7,7 @@
     :title="t('tools.hash.name')"
     :subtitle="t('tools.hash.desc')"
   >
-    <CardPane class="input-card">
+    <CardPane class="tool-input-card">
       <el-input
         v-model="input"
         type="textarea"
@@ -121,10 +121,6 @@ watch(input, async (text) => {
 </script>
 
 <style lang="scss" scoped>
-.input-card {
-  margin-bottom: var(--tool-section-gap, 20px);
-}
-
 .result-list {
   margin-top: 4px;
   display: flex;

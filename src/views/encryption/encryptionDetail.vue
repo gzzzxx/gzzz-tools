@@ -143,9 +143,9 @@
             <el-button type="info" @click="run('dec')">
               {{ t('encryptionPage.action.decrypt') }}
             </el-button>
-            <el-button @click="copyData">
+            <CopyButton variant="text" :text="form.result">
               {{ t('encryptionPage.action.copy') }}
-            </el-button>
+            </CopyButton>
             <el-button @click="clear">
               {{ t('encryptionPage.action.clear') }}
             </el-button>
@@ -241,10 +241,8 @@ import {
   aesDecrypt,
 } from '~/utils/crypto'
 import { useI18n } from 'vue-i18n'
-import { useClipboard } from '~/composables/useClipboard'
 
 const { t } = useI18n({ useScope: 'global' })
-const { copy } = useClipboard()
 
 const props = defineProps<{ algorithm: string }>()
 
@@ -277,10 +275,6 @@ function run(op: 'enc' | 'dec') {
       message: e instanceof Error ? e.message : t('encryptionPage.message.error'),
     })
   }
-}
-
-function copyData() {
-  copy(form.result)
 }
 
 function clear() {
@@ -365,7 +359,7 @@ function clear() {
 }
 :deep(.ep-textarea__inner::-webkit-scrollbar-thumb) {
   border-radius: 3px;
-  background-color: #c3c3c3;
+  background-color: color-mix(in srgb, var(--it-text-tertiary) 60%, transparent);
 }
 :deep(.ep-textarea__inner::-webkit-scrollbar-track) {
   background-color: transparent;
