@@ -153,7 +153,8 @@
     },
     "result": {
       "bits": "{n} bits"
-    }
+    },
+    "empty": "Enter text above to compute hashes with every algorithm"
   },
   "timestampPage": {
     "input": {
@@ -178,7 +179,6 @@
     },
     "group": {
       "basic": "Basic",
-      "lexical": "Lexical",
       "composition": "Composition",
       "reading": "Reading"
     },
@@ -191,12 +191,16 @@
       "paragraphs": "Paragraphs",
       "words": "Words",
       "sentences": "Sentences",
-      "cjk": "CJK chars",
-      "ascii": "Latin letters",
+      "cjk": "Chinese",
+      "ascii": "English",
       "digits": "Digits",
       "punctuation": "Punctuation",
       "spaces": "Whitespace",
-      "others": "Other"
+      "others": "Other",
+      "avgSentenceLength": "Avg sentence chars",
+      "avgWordLength": "Avg word chars",
+      "longestLine": "Longest line",
+      "avgLinesPerParagraph": "Lines per paragraph"
     },
     "reading": {
       "label": "Estimated reading time",

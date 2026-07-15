@@ -60,6 +60,15 @@
 }
 
 
+// tool-page 全屏修饰 — 让整个 tool-page 占满剩余视口高度
+.tool-page--fullscreen {
+  height: calc(100vh - 88px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+
 // 表单字段标签
 .field-label {
   display: block;

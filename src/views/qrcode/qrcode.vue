@@ -8,9 +8,9 @@
     :subtitle="t('tools.qrcode.desc')"
   >
 
-    <div class="qr-row">
+    <div class="qrcode-row">
       <!-- ============== Left: input + options ============== -->
-      <CardPane class="q-card">
+      <CardPane class="qrcode-card">
         <label class="field-label">{{ t('qrcodePage.input.label') }}</label>
         <el-input
           v-model="text"
@@ -24,8 +24,8 @@
 
         <div class="tool-divider" />
 
-        <div class="q-form">
-          <div class="q-form-row">
+        <div class="qrcode-form">
+          <div class="qrcode-form-row">
             <label class="field-label">{{ t('qrcodePage.options.errorLevel') }}</label>
             <el-radio-group v-model="ecLevel" size="small">
               <el-radio-button
@@ -38,22 +38,22 @@
             </el-radio-group>
           </div>
 
-          <div class="q-form-row">
+          <div class="qrcode-form-row">
             <label class="field-label">{{ t('qrcodePage.options.size') }}</label>
             <el-slider v-model="size" :min="128" :max="512" :step="32" show-input />
           </div>
 
-          <div class="q-form-row">
+          <div class="qrcode-form-row">
             <label class="field-label">{{ t('qrcodePage.options.margin') }}</label>
             <el-slider v-model="margin" :min="0" :max="8" :step="1" show-input />
           </div>
 
-          <div class="q-form-row">
+          <div class="qrcode-form-row">
             <label class="field-label">{{ t('qrcodePage.options.fg') }}</label>
             <el-color-picker v-model="fg" />
           </div>
 
-          <div class="q-form-row">
+          <div class="qrcode-form-row">
             <label class="field-label">{{ t('qrcodePage.options.bg') }}</label>
             <el-color-picker v-model="bg" />
           </div>
@@ -61,18 +61,18 @@
       </CardPane>
 
       <!-- ============== Right: preview + actions ============== -->
-      <CardPane class="q-card q-card--preview">
-        <div class="q-preview-wrap">
-          <canvas v-show="hasContent" ref="canvasRef" class="q-canvas" />
+      <CardPane class="qrcode-card qrcode-card--preview">
+        <div class="qrcode-preview-wrap">
+          <canvas v-show="hasContent" ref="canvasRef" class="qrcode-canvas" />
           <EmptyState v-if="!hasContent" padding="0">
             {{ t('qrcodePage.empty') }}
           </EmptyState>
-          <div v-if="errorMsg" class="q-error">
+          <div v-if="errorMsg" class="qrcode-error">
             {{ errorMsg }}
           </div>
         </div>
 
-        <div class="q-meta">
+        <div class="qrcode-meta">
           <span v-if="moduleCount">{{ t('qrcodePage.moduleCount', { n: moduleCount }) }}</span>
         </div>
 
@@ -194,44 +194,44 @@ async function copyImage() {
 </script>
 
 <style lang="scss" scoped>
-.qr-row {
+.qrcode-row {
   display: grid;
   grid-template-columns: 5fr 7fr;
   gap: 16px;
 }
 @media (max-width: 900px) {
-  .qr-row {
+  .qrcode-row {
     grid-template-columns: 1fr;
   }
 }
 
-.q-form-row .field-label {
+.qrcode-form-row .field-label {
   flex: 0 0 90px;
   margin-bottom: 0;
 }
 
-.q-form {
+.qrcode-form {
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
-.q-form-row {
+.qrcode-form-row {
   display: flex;
   align-items: center;
   gap: 12px;
   min-height: 32px;
 }
-.q-form-row:has(.el-slider) {
+.qrcode-form-row:has(.el-slider) {
   align-items: center;
 }
 
 /* Right card */
-.q-card--preview {
+.qrcode-card--preview {
   display: flex;
   flex-direction: column;
 }
 
-.q-preview-wrap {
+.qrcode-preview-wrap {
   position: relative;
   min-height: 280px;
   flex: 1;
@@ -250,7 +250,7 @@ async function copyImage() {
   box-sizing: border-box;
 }
 
-.q-canvas {
+.qrcode-canvas {
   display: block;
   max-width: 100%;
   height: auto;
@@ -258,14 +258,14 @@ async function copyImage() {
   border-radius: 2px;
 }
 
-.q-error {
+.qrcode-error {
   color: var(--ep-color-danger);
   font-size: 13px;
   text-align: center;
   margin-top: 12px;
 }
 
-.q-meta {
+.qrcode-meta {
   margin-top: 8px;
   font-size: 12px;
   color: var(--it-text-tertiary);
@@ -273,7 +273,7 @@ async function copyImage() {
 }
 
 @media (max-width: 600px) {
-  .q-form-row .field-label { flex: 0 0 70px; font-size: 12px; }
-  .q-preview-wrap { min-height: 220px; }
+  .qrcode-form-row .field-label { flex: 0 0 70px; font-size: 12px; }
+  .qrcode-preview-wrap { min-height: 220px; }
 }
 </style>

@@ -1,15 +1,3 @@
-/*
-  registry.ts — single source of truth for every tool in the app.
-
-  One entry per user-facing tool. The router, the home grid, and the
-  sidebar all read from this list — add a tool here and it shows up
-  everywhere; remove it and it disappears everywhere.
-
-  `props` is forwarded to vue-router when the component needs to know
-  which tool it is (e.g. encryption.vue gets `algorithm: 'SM4'` /
-  `'AES'` from its dedicated route rather than reading from
-  `route.params`).
-*/
 import type { Component } from 'vue'
 
 export type ToolCategory = 'crypto' | 'dev' | 'convert' | 'time'

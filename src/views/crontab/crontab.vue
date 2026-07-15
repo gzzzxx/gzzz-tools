@@ -10,12 +10,12 @@
 
     <div class="crontab-row">
       <!-- 左侧：输入 + 描述 + 开关 -->
-      <CardPane class="c-card">
-        <div class="c-card__input-wrap">
+      <CardPane class="crontab-card">
+        <div class="crontab-card__input-wrap">
           <input
             v-model="cron"
-            class="c-input"
-            :class="{ 'c-input--error': !validation.isValid }"
+            class="crontab-input"
+            :class="{ 'crontab-input--error': !validation.isValid }"
             :placeholder="t('crontabPage.placeholder')"
             spellcheck="false"
             autocomplete="off"
@@ -24,39 +24,39 @@
           >
         </div>
 
-        <div class="c-card__cron-string">{{ cronString }}</div>
+        <div class="crontab-card__cron-string">{{ cronString }}</div>
 
-        <div v-if="!validation.isValid" class="c-card__feedback">
+        <div v-if="!validation.isValid" class="crontab-card__feedback">
           {{ validation.message }}
         </div>
 
         <div class="tool-divider" />
 
-        <div class="c-card__form">
-          <div class="c-form-row">
-            <label class="c-form-row__label">{{ t('crontabPage.options.verbose') }}</label>
+        <div class="crontab-card__form">
+          <div class="crontab-form-row">
+            <label class="crontab-form-row__label">{{ t('crontabPage.options.verbose') }}</label>
             <el-switch v-model="cronstrueConfig.verbose" />
           </div>
-          <div class="c-form-row">
-            <label class="c-form-row__label">{{ t('crontabPage.options.hour24') }}</label>
+          <div class="crontab-form-row">
+            <label class="crontab-form-row__label">{{ t('crontabPage.options.hour24') }}</label>
             <el-switch v-model="cronstrueConfig.use24HourTimeFormat" />
           </div>
-          <div class="c-form-row">
-            <label class="c-form-row__label">{{ t('crontabPage.options.daysStartAt0') }}</label>
+          <div class="crontab-form-row">
+            <label class="crontab-form-row__label">{{ t('crontabPage.options.daysStartAt0') }}</label>
             <el-switch v-model="cronstrueConfig.dayOfWeekStartIndexZero" />
           </div>
         </div>
       </CardPane>
 
       <!-- 右侧：示意图 + 符号表 -->
-      <CardPane class="c-card">
-        <pre class="c-card__diagram">{{ diagramText }}</pre>
+      <CardPane class="crontab-card">
+        <pre class="crontab-card__diagram">{{ diagramText }}</pre>
 
         <div class="tool-divider" />
 
         <!-- Desktop / tablet: 4-col table -->
-        <div v-if="!isSmallScreen" class="c-table-wrap">
-          <table class="c-table" :aria-label="t('crontabPage.symbolTableLabel')">
+        <div v-if="!isSmallScreen" class="crontab-table-wrap">
+          <table class="crontab-table" :aria-label="t('crontabPage.symbolTableLabel')">
             <thead>
               <tr>
                 <th>{{ t('crontabPage.symbol.symbol') }}</th>
@@ -77,8 +77,8 @@
         </div>
 
         <!-- Mobile: each row becomes a stacked card -->
-        <div v-else class="c-card-list">
-          <div v-for="row in helpers" :key="row.symbol" class="c-card-list__item">
+        <div v-else class="crontab-card-list">
+          <div v-for="row in helpers" :key="row.symbol" class="crontab-card-list__item">
             <div>{{ t('crontabPage.symbol.symbol') }}: <strong>{{ row.symbol }}</strong></div>
             <div>{{ t('crontabPage.symbol.meaning') }}: <strong>{{ row.meaning }}</strong></div>
             <div>
@@ -198,17 +198,17 @@ const diagramText = computed(() => {
   .crontab-row {
     grid-template-columns: 1fr;
   }
-  .c-form-row { max-width: 100%; }
-  .c-form-row__label { flex-basis: 130px; padding-right: 8px; font-size: 13px; }
+  .crontab-form-row { max-width: 100%; }
+  .crontab-form-row__label { flex-basis: 130px; padding-right: 8px; font-size: 13px; }
 }
 
-.c-card__input-wrap {
+.crontab-card__input-wrap {
   max-width: 384px;
   margin: 0 auto;
 }
 
 /* 大字体居中输入框 */
-.c-input {
+.crontab-input {
   width: 100%;
   font-size: 30px;
   font-family: var(--font-mono);
@@ -222,27 +222,27 @@ const diagramText = computed(() => {
   box-sizing: border-box;
   transition: border-color 0.2s ease-in-out, background-color 0.2s ease-in-out;
 }
-.c-input::placeholder {
+.crontab-input::placeholder {
   color: var(--it-text-tertiary);
 }
-.c-input:hover,
-.c-input:focus {
+.crontab-input:hover,
+.crontab-input:focus {
   border-color: var(--brand-primary);
 }
-.c-input:focus {
+.crontab-input:focus {
   background-color: var(--brand-primary-soft);
 }
-.c-input--error,
-.c-input--error:hover,
-.c-input--error:focus {
+.crontab-input--error,
+.crontab-input--error:hover,
+.crontab-input--error:focus {
   border-color: var(--ep-color-danger);
 }
-.c-input--error:focus {
+.crontab-input--error:focus {
   background-color: rgba(245, 108, 108, 0.13);
 }
 
 /* 描述文本 */
-.c-card__cron-string {
+.crontab-card__cron-string {
   text-align: center;
   font-size: 22px;
   color: var(--it-text-primary);
@@ -251,7 +251,7 @@ const diagramText = computed(() => {
   word-break: break-word;
 }
 
-.c-card__feedback {
+.crontab-card__feedback {
   text-align: center;
   color: var(--ep-color-danger);
   font-size: 14px;
@@ -260,19 +260,19 @@ const diagramText = computed(() => {
 }
 
 /* 表单行布局 */
-.c-card__form {
+.crontab-card__form {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
 }
-.c-form-row {
+.crontab-form-row {
   display: flex;
   align-items: center;
   width: 100%;
   max-width: 400px;
 }
-.c-form-row__label {
+.crontab-form-row__label {
   flex: 0 0 170px;
   text-align: right;
   padding-right: 12px;
@@ -281,7 +281,7 @@ const diagramText = computed(() => {
 }
 
 /* ASCII 示意图 */
-.c-card__diagram {
+.crontab-card__diagram {
   overflow: auto;
   padding: 10px 0;
   margin: 0;
@@ -293,44 +293,44 @@ const diagramText = computed(() => {
 }
 
 /* 符号表格 */
-.c-table-wrap {
+.crontab-table-wrap {
   overflow-x: auto;
   border-radius: 4px;
 }
-.c-table {
+.crontab-table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
   font-size: 14px;
   color: var(--it-text-primary);
 }
-.c-table thead {
+.crontab-table thead {
   background-color: var(--it-bg-elevated);
   color: var(--it-text-secondary);
   text-transform: uppercase;
 }
-.c-table thead th {
+.crontab-table thead th {
   padding: 12px 24px;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.04em;
   border-bottom: 1px solid var(--it-border);
 }
-.c-table tbody td {
+.crontab-table tbody td {
   padding: 16px 24px;
   border-bottom: 1px solid var(--it-border);
   vertical-align: top;
 }
-.c-table tbody tr:last-child td {
+.crontab-table tbody tr:last-child td {
   border-bottom: none;
 }
 /* 移动端堆叠卡片 */
-.c-card-list {
+.crontab-card-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
-.c-card-list__item {
+.crontab-card-list__item {
   border: 1px solid var(--it-border);
   border-radius: 4px;
   padding: 12px 16px;
@@ -341,9 +341,9 @@ const diagramText = computed(() => {
 }
 
 @media (max-width: 600px) {
-  .c-input { font-size: 22px; }
-  .c-card__cron-string { font-size: 18px; }
-  .c-table thead th,
-  .c-table tbody td { padding: 10px 14px; }
+  .crontab-input { font-size: 22px; }
+  .crontab-card__cron-string { font-size: 18px; }
+  .crontab-table thead th,
+  .crontab-table tbody td { padding: 10px 14px; }
 }
 </style>

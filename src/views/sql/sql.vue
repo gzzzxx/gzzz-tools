@@ -2,7 +2,7 @@
 
 <template>
   <ToolPage
-    class="sql-page"
+    class="sql-page tool-page--fullscreen"
     preset="wide-editor"
     :title="t('tools.sql.name')"
     :subtitle="t('tools.sql.desc')"
@@ -32,15 +32,12 @@
 
       <CardPane class="sql-card" :title="t('sqlPage.section.result')" variant="result" body-padding="0">
         <template #actions>
-          <el-button
-            size="small"
-            :icon="DocumentCopy"
-            link
-            :disabled="!form.result"
-            @click="copyData"
+          <CopyButton
+            variant="text"
+            :text="form.result"
           >
             {{ t('sqlPage.action.copy') }}
-          </el-button>
+          </CopyButton>
         </template>
         <ToolTextarea
           v-model="form.result"
@@ -55,14 +52,12 @@
 <script setup lang="ts">
 import { reactive, watch } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
-import { Delete, DocumentCopy, MagicStick, Minus } from '@element-plus/icons-vue'
+import { Delete, MagicStick, Minus } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { format as sqlFormat } from 'sql-formatter'
 import { useI18n } from 'vue-i18n'
-import { useClipboard } from '~/composables/useClipboard'
 
 const { t } = useI18n({ useScope: 'global' })
-const { copy } = useClipboard()
 
 const FORMAT_OPTS = {
   language: 'sql',
@@ -113,13 +108,6 @@ function minify() {
   )
 }
 
-function copyData() {
-  if (!form.result) {
-    return ElMessage.warning({ message: t('sqlPage.error.copyEmpty') })
-  }
-  copy(form.result)
-}
-
 function clear() {
   form.data = ''
   form.result = ''
@@ -143,11 +131,4 @@ watch(() => form.data, autoFormat)
 </script>
 
 <style lang="scss" scoped>
-/* 全屏双栏布局 */
-.sql-page {
-  height: calc(100vh - 88px);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
 </style>

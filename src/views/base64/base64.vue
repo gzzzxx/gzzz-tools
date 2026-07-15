@@ -33,15 +33,12 @@
 
       <CardPane class="base64-card" :title="t('base64Page.section.result')" variant="result" body-padding="0">
         <template #actions>
-          <el-button
-            size="small"
-            :icon="DocumentCopy"
-            link
-            :disabled="!form.result"
-            @click="copyData"
+          <CopyButton
+            variant="text"
+            :text="form.result"
           >
             {{ t('base64Page.action.copy') }}
-          </el-button>
+          </CopyButton>
         </template>
         <ToolTextarea
           v-model="form.result"
@@ -204,16 +201,13 @@ import { reactive } from 'vue'
 import {
   Brush,
   Delete,
-  DocumentCopy,
   SwitchFilled,
 } from '@element-plus/icons-vue'
 import { Base64 } from 'js-base64'
 import type { TableColumnCtx } from 'element-plus'
 import { useI18n } from 'vue-i18n'
-import { useClipboard } from '~/composables/useClipboard'
 
 const { t } = useI18n({ useScope: 'global' })
-const { copy } = useClipboard()
 
 const form = reactive({
   data: '',
@@ -226,10 +220,6 @@ function encode() {
 
 function decode() {
   form.result = Base64.decode(form.data)
-}
-
-function copyData() {
-  copy(form.result)
 }
 
 function clear() {

@@ -43,13 +43,9 @@
         <div class="result-label">{{ t('timestampPage.result.date') }}</div>
         <div class="result-row-flex">
           <span class="result-value result-mono">{{ formattedDate }}</span>
-          <el-button
-            v-if="formattedDate"
-            size="small"
-            :icon="DocumentCopy"
-            @click="copyToClipboard(formattedDate)"
-            class="copy-btn"
-            circle
+          <CopyButton
+            variant="icon"
+            :text="formattedDate"
           />
         </div>
       </CardPane>
@@ -57,13 +53,9 @@
         <div class="result-label">{{ t('timestampPage.result.timestamp') }}</div>
         <div class="result-row-flex">
           <span class="result-value result-mono">{{ formattedTimestamp }}</span>
-          <el-button
-            v-if="formattedTimestamp"
-            size="small"
-            :icon="DocumentCopy"
-            @click="copyToClipboard(formattedTimestamp)"
-            class="copy-btn"
-            circle
+          <CopyButton
+            variant="icon"
+            :text="formattedTimestamp"
           />
         </div>
       </CardPane>
@@ -73,13 +65,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { DocumentCopy } from '@element-plus/icons-vue'
 import { useI18n } from 'vue-i18n'
-import { useClipboard } from '~/composables/useClipboard'
 import { formatDateTime } from '~/utils/datetime'
 
 const { t } = useI18n({ useScope: 'global' })
-const clipboard = useClipboard()
 
 const timestamp = ref('');
 const dateString = ref('');
@@ -135,10 +124,6 @@ function onDatePickerChange(val: string) {
     onDateInput();
   }
 }
-
-function copyToClipboard(text: string) {
-  clipboard.copy(text);
-}
 </script>
 
 <style lang="scss" scoped>
@@ -183,23 +168,6 @@ function copyToClipboard(text: string) {
   font-size: 1.15rem;
   font-weight: bold;
   word-break: break-all;
-}
-.copy-btn {
-  margin-left: 0;
-  border-radius: 50%;
-  padding: 4px;
-  min-width: 28px;
-  min-height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s;
-  background: var(--ep-fill-color-blank);
-  border: none;
-}
-.copy-btn:hover {
-  background: var(--ep-color-primary-light-9);
-  color: var(--ep-color-primary);
 }
 @media (max-width: 600px) {
   .input-row,

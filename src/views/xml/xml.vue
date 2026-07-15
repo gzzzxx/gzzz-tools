@@ -2,7 +2,7 @@
 
 <template>
   <ToolPage
-    class="xml-page"
+    class="xml-page tool-page--fullscreen"
     preset="wide-editor"
     :title="t('tools.xml.name')"
     :subtitle="t('tools.xml.desc')"
@@ -43,15 +43,12 @@
       <!-- 结果输出卡片 -->
       <CardPane class="xml-card" :title="t('xmlPage.section.result')" variant="result" body-padding="0">
         <template #actions>
-          <el-button
-            size="small"
-            :icon="DocumentCopy"
-            link
-            :disabled="!form.result"
-            @click="copyData"
+          <CopyButton
+            variant="text"
+            :text="form.result"
           >
             {{ t('xmlPage.action.copy') }}
-          </el-button>
+          </CopyButton>
         </template>
         <ToolTextarea
           v-model="form.result"
@@ -66,14 +63,12 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
-import { Delete, DocumentCopy, MagicStick, Minus } from '@element-plus/icons-vue'
+import { Delete, MagicStick, Minus } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import xmlFormat from 'xml-formatter'
 import { useI18n } from 'vue-i18n'
-import { useClipboard } from '~/composables/useClipboard'
 
 const { t } = useI18n({ useScope: 'global' })
-const { copy } = useClipboard()
 
 type Indent = '  ' | '    ' | '\t'
 const indent = ref<Indent>('  ')
@@ -125,13 +120,6 @@ function minify() {
   )
 }
 
-function copyData() {
-  if (!form.result) {
-    return ElMessage.warning({ message: t('xmlPage.error.copyEmpty') })
-  }
-  copy(form.result)
-}
-
 function clear() {
   form.data = ''
   form.result = ''
@@ -155,13 +143,6 @@ watch([() => form.data, indent], () => autoFormat(form.data), { flush: 'post' })
 </script>
 
 <style lang="scss" scoped>
-/* 全屏双栏布局 */
-.xml-page {
-  height: calc(100vh - 88px);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
 
 .xml-card__indent {
   width: 130px;

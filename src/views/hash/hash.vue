@@ -25,12 +25,11 @@
     </CardPane>
 
     <!-- 结果列表 -->
-    <div class="result-list">
+    <div v-if="input" class="result-list">
       <CardPane
         v-for="algo in algorithms"
         :key="algo.key"
         class="result-card"
-        :class="{ 'is-empty': !input }"
         variant="result"
         body-padding="10px"
       >
@@ -44,28 +43,27 @@
               class="result-value result-mono"
               :class="{ 'result-value--wraps': algo.key === 'sha384' || algo.key === 'sha512' }"
             >
-              {{ input ? results[algo.key] : '—' }}
+              {{ results[algo.key] }}
             </div>
           </div>
-          <el-button
-            :icon="DocumentCopy"
-            size="small"
-            circle
-            :disabled="!input || !results[algo.key]"
-            @click="copy(algo.key)"
+          <CopyButton
+            variant="icon"
+            :text="results[algo.key]"
           />
         </div>
       </CardPane>
     </div>
+    <EmptyState v-else margin-top="24px">
+      {{ t('hashPage.empty') }}
+    </EmptyState>
   </ToolPage>
 </template>
 
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue'
-import { Delete, DocumentCopy } from '@element-plus/icons-vue'
+import { Delete } from '@element-plus/icons-vue'
 import { useI18n } from 'vue-i18n'
 import { md5 } from '~/utils/md5'
-import { useClipboard } from '~/composables/useClipboard'
 
 interface HashResults {
   md5: string
@@ -84,7 +82,6 @@ const algorithms: { key: keyof HashResults; label: string; bits: number }[] = [
 ]
 
 const { t } = useI18n({ useScope: 'global' })
-const clipboard = useClipboard()
 
 const input = ref('')
 const results = reactive<HashResults>({
@@ -121,12 +118,6 @@ watch(input, async (text) => {
   results.sha384 = sha384
   results.sha512 = sha512
 })
-
-function copy(key: keyof HashResults) {
-  const value = results[key]
-  if (!value) return
-  clipboard.copy(value)
-}
 </script>
 
 <style lang="scss" scoped>
@@ -140,8 +131,6 @@ function copy(key: keyof HashResults) {
   flex-direction: column;
   gap: 8px;
 }
-
-.result-card.is-empty { opacity: 0.6; }
 
 .result-row-flex {
   display: flex;

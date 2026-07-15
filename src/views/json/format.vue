@@ -2,7 +2,7 @@
 
 <template>
   <ToolPage
-    class="json-page"
+    class="json-page tool-page--fullscreen"
     preset="wide-editor"
     :title="t('tools.format.name')"
     :subtitle="t('tools.format.desc')"
@@ -52,13 +52,6 @@ const editorClass = computed(() =>
 </script>
 
 <style lang="scss" scoped>
-/* 全屏双栏布局 */
-.json-page {
-  height: calc(100vh - 88px);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
 
 .json-card__body {
   flex: 1;

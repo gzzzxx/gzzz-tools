@@ -8,62 +8,72 @@
     :subtitle="subtitle"
   >
 
-    <div class="encryption-tabs">
-      <el-tabs v-model="activeName" class="encryption-tabs__nav" @tab-click="handleClick">
-        <el-tab-pane label="SM4" name="SM4">
-          <detail :algorithm="algorithm" />
-        </el-tab-pane>
-        <el-tab-pane label="AES" name="AES">
-          <detail :algorithm="algorithm" />
-        </el-tab-pane>
-      </el-tabs>
+    <div class="tab-bar" role="tablist">
+      <button
+        class="tab-bar__item"
+        :class="{ 'tab-bar__item--active': algorithm === 'SM4' }"
+        role="tab"
+        :aria-selected="algorithm === 'SM4'"
+        @click="setAlgorithm('SM4')"
+      >
+        SM4
+      </button>
+      <button
+        class="tab-bar__item"
+        :class="{ 'tab-bar__item--active': algorithm === 'AES' }"
+        role="tab"
+        :aria-selected="algorithm === 'AES'"
+        @click="setAlgorithm('AES')"
+      >
+        AES
+      </button>
     </div>
+
+    <detail :algorithm="algorithm" />
   </ToolPage>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRoute, useRouter } from 'vue-router'
 import detail from './encryptionDetail.vue'
 
-const props = defineProps<{ algorithm: string }>()
+// props 占位声明, 避免 Vue 警告未声明 prop; 真值从 URL 解析
+defineProps<{ algorithm: string }>()
+
+type Algo = 'SM4' | 'AES'
 
 const { t } = useI18n({ useScope: 'global' })
+const route = useRoute()
+const router = useRouter()
 
-const activeName = ref(props.algorithm)
-const algorithm = ref(props.algorithm)
-
-const title = computed(() => t(`tools.${props.algorithm.toLowerCase()}.name`))
-const subtitle = computed(() => t(`tools.${props.algorithm.toLowerCase()}.desc`))
-
-const handleClick = (tab: { props: { label: string } }) => {
-  algorithm.value = tab.props.label
+function parseAlgoFromPath(path: string): Algo {
+  const m = path.match(/^\/encryption\/(SM4|AES)$/)
+  return (m?.[1] as Algo) ?? 'SM4'
 }
+
+const algorithm = ref<Algo>(parseAlgoFromPath(route.path))
+
+const title = computed(() => t(`tools.${algorithm.value.toLowerCase()}.name`))
+const subtitle = computed(() => t(`tools.${algorithm.value.toLowerCase()}.desc`))
+
+function setAlgorithm(algo: Algo) {
+  if (algorithm.value === algo) return
+  algorithm.value = algo
+  router.replace({ path: `/encryption/${algo}` })
+}
+
+// 浏览器前进/后退时同步 algorithm
+watch(() => route.path, (newPath) => {
+  const next = parseAlgoFromPath(newPath)
+  if (next !== algorithm.value) algorithm.value = next
+})
 </script>
 
 <style lang="scss" scoped>
-.encryption-tabs :deep(.ep-tabs__header) {
-  justify-content: center;
-  margin-bottom: 16px;
-}
-.encryption-tabs :deep(.ep-tabs__item) {
-  font-size: 15px;
-  font-weight: 500;
-  padding: 0 20px;
-}
-.encryption-tabs :deep(.ep-tabs__item.is-active) {
-  color: var(--brand-primary);
-  font-weight: 600;
-}
-.encryption-tabs :deep(.ep-tabs__active-bar) {
-  background-color: var(--brand-primary);
-}
 
 @media (max-width: 600px) {
-  // .encryption-page padding + .encryption-title font-size 已由全局 _tool-page.scss 提供
-  .encryption-tabs :deep(.ep-tabs__item) {
-    padding: 0 12px;
-    font-size: 14px;
-  }
+  .tab-bar__item { padding: 8px 16px; font-size: 14px; }
 }
 </style>

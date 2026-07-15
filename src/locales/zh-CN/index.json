@@ -153,7 +153,8 @@
     },
     "result": {
       "bits": "{n} 位"
-    }
+    },
+    "empty": "在上方输入文本后, 这里会显示各算法的 hash 值"
   },
   "timestampPage": {
     "input": {
@@ -178,7 +179,6 @@
     },
     "group": {
       "basic": "基础",
-      "lexical": "词句",
       "reading": "阅读",
       "composition": "构成"
     },
@@ -191,12 +191,16 @@
       "paragraphs": "段落数",
       "words": "词数",
       "sentences": "句子数",
-      "cjk": "中文字符",
-      "ascii": "英文/字母",
+      "cjk": "中文",
+      "ascii": "英文",
       "digits": "数字",
       "punctuation": "标点",
       "spaces": "空白",
-      "others": "其他"
+      "others": "其他",
+      "avgSentenceLength": "句均字符",
+      "avgWordLength": "词均字符",
+      "longestLine": "最长行",
+      "avgLinesPerParagraph": "段均行数"
     },
     "reading": {
       "label": "预估阅读时间",

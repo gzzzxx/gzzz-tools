@@ -12,7 +12,7 @@
       <el-input
         v-model="input"
         type="textarea"
-        :rows="8"
+        :rows="6"
         :placeholder="t('textStatsPage.input.placeholder')"
         resize="none"
         clearable
@@ -25,24 +25,22 @@
       </div>
     </CardPane>
 
-    <el-row :gutter="16" class="stat-row">
-      <el-col
+    <div class="stat-grid">
+      <CardPane
         v-for="group in groups"
         :key="group.key"
-        :xs="24" :sm="12" :md="6"
-        :style="{ marginBottom: '12px' }"
+        class="stat-card"
+        variant="result"
       >
-        <CardPane class="stat-card" variant="result">
-          <div class="stat-card__title">{{ t(`textStatsPage.group.${group.key}`) }}</div>
-          <ul class="stat-card__list">
-            <li v-for="key in group.items" :key="key" class="stat-card__item">
-              <span class="stat-card__label">{{ t(`textStatsPage.label.${key}`) }}</span>
-              <span class="stat-card__value result-mono">{{ stats[key] }}</span>
-            </li>
-          </ul>
-        </CardPane>
-      </el-col>
-    </el-row>
+        <div class="stat-card__title">{{ t(`textStatsPage.group.${group.key}`) }}</div>
+        <ul class="stat-card__list">
+          <li v-for="key in group.items" :key="key" class="stat-card__item">
+            <span class="stat-card__label">{{ t(`textStatsPage.label.${key}`) }}</span>
+            <span class="stat-card__value result-mono">{{ formatStat(key, stats[key]) }}</span>
+          </li>
+        </ul>
+      </CardPane>
+    </div>
 
     <CardPane class="reading-card" variant="result">
       <div class="reading-row">
@@ -79,17 +77,24 @@ type StatKey =
   | 'cjk' | 'ascii'
   | 'digits' | 'punctuation' | 'spaces' | 'others'
   | 'readingMs'
+  | 'avgSentenceLength' | 'avgWordLength'
+  | 'longestLine' | 'avgLinesPerParagraph'
 
 interface Stat { [K in StatKey]: number }
 
 const groups: Array<{ key: string; items: StatKey[] }> = [
   { key: 'basic',       items: ['chars', 'charsNoSpace', 'bytes', 'lines', 'nonEmptyLines', 'paragraphs'] },
-  { key: 'lexical',     items: ['words', 'sentences', 'cjk', 'ascii'] },
-  { key: 'composition', items: ['digits', 'punctuation', 'spaces', 'others'] },
-  { key: 'reading',     items: ['cjk', 'ascii', 'words', 'sentences'] },
+  { key: 'composition', items: ['cjk', 'ascii', 'digits', 'punctuation', 'spaces', 'others'] },
+  { key: 'reading',     items: ['words', 'sentences', 'avgSentenceLength', 'avgWordLength', 'longestLine', 'avgLinesPerParagraph'] },
 ]
 
 const stats = computed<Stat>(() => analyze(input.value))
+
+// 派生指标里两个是小数, 模板里 toFixed(1); 其余整数直显
+const FLOAT_KEYS: ReadonlySet<StatKey> = new Set(['avgWordLength', 'avgLinesPerParagraph'])
+function formatStat(key: StatKey, value: number): string {
+  return FLOAT_KEYS.has(key) ? value.toFixed(1) : String(value)
+}
 
 const formattedReadingTime = computed(() => {
   const ms = stats.value.readingMs
@@ -104,7 +109,8 @@ const formattedReadingTime = computed(() => {
 })
 
 const CJK_RE = /[\u3400-\u9fff\uF900-\uFAFF]/
-const WHITESPACE_RE = /\s/
+// 覆盖 ASCII 空白 + 全角空格 (U+3000, IME 输入常见) + NBSP (U+00A0, 复制粘贴常见)
+const WHITESPACE_RE = /[\s\u3000\u00A0]/
 const SENTENCE_END_RE = /[.!?。！？…]+/
 const PUNCTUATION_RE = /[.,;:!?。，；：！？、…—"'()\[\]{}<>«»`~@#\$%\^&*_+\-=/\\|]/
 
@@ -149,6 +155,8 @@ const ZERO_STATS: Stat = {
   cjk: 0, ascii: 0,
   digits: 0, punctuation: 0, spaces: 0, others: 0,
   readingMs: 0,
+  avgSentenceLength: 0, avgWordLength: 0,
+  longestLine: 0, avgLinesPerParagraph: 0,
 }
 
 function analyze(text: string): Stat {
@@ -162,7 +170,7 @@ function analyze(text: string): Stat {
     if (WHITESPACE_RE.test(ch)) { spaces++; continue }
     charsNoSpace++
     if (CJK_RE.test(ch)) cjk++
-    else if (ch >= '0' && ch <= '9') { digits++; ascii++ }
+    else if (ch >= '0' && ch <= '9') { digits++ }
     else if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z')) ascii++
     else if (PUNCTUATION_RE.test(ch)) punctuation++
     else others++
@@ -170,27 +178,36 @@ function analyze(text: string): Stat {
 
   const rawLines = text.split(/\r\n|\r|\n/)
   let paragraphs = 0, inPara = false
+  let longestLine = 0
   for (const line of rawLines) {
+    if (line.length > longestLine) longestLine = line.length
     const isBlank = !line.trim()
     if (!isBlank && !inPara) { paragraphs++; inPara = true }
     else if (isBlank) inPara = false
   }
 
   const words = countWords(text)
+  const sentences = countSentences(text)
   const nonCjkWords = words - cjk
   const wpmMs = (nonCjkWords / 250) * 60_000
   const cpmMs = (ascii / 1000) * 60_000
+  const nonEmptyLines = rawLines.filter(l => l.trim()).length
   return {
     chars: text.length,
     charsNoSpace,
     bytes: new TextEncoder().encode(text).length,
     lines: rawLines.length,
-    nonEmptyLines: rawLines.filter(l => l.trim()).length,
+    nonEmptyLines,
     paragraphs,
     words,
-    sentences: countSentences(text),
+    sentences,
     cjk, ascii, digits, punctuation, spaces, others,
     readingMs: (cjk / 400) * 60_000 + Math.max(wpmMs, cpmMs),
+    // 派生: 阅读/排版相关指标
+    avgSentenceLength:  sentences > 0 ? Math.round(charsNoSpace / sentences) : 0,
+    avgWordLength:      words    > 0 ? charsNoSpace / words : 0,
+    longestLine,
+    avgLinesPerParagraph: paragraphs > 0 ? nonEmptyLines / paragraphs : 0,
   }
 }
 </script>
@@ -200,9 +217,22 @@ function analyze(text: string): Stat {
   margin-bottom: var(--tool-section-gap, 20px);
 }
 
-.stat-row { margin-top: 4px; }
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
 
-.stat-card { height: 100%; }
+@media (max-width: 600px) {
+  .stat-grid {
+    grid-template-columns: 1fr;
+    gap: var(--tool-section-gap, 20px);
+  }
+}
+
+.reading-card {
+  margin-top: var(--tool-section-gap, 20px);
+}
 
 .stat-card__title {
   font-size: 14px;
@@ -238,12 +268,14 @@ function analyze(text: string): Stat {
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
+  height: 64px;
+  overflow: hidden;
 }
 
 .reading-block {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 16px;
 }
 
 .reading-block__label {
@@ -255,6 +287,7 @@ function analyze(text: string): Stat {
   font-size: 18px;
   font-weight: 600;
   color: var(--it-text-primary);
+  white-space: nowrap;
 }
 
 .reading-block__value--small {
