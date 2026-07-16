@@ -39,7 +39,10 @@
       </draggable>
     </template>
 
-    <h3 class="home-page__section-title">{{ t('home.section.tools') }}</h3>
+    <div class="home-page__section-title-row">
+      <h3 class="home-page__section-title">{{ t('home.section.tools') }}</h3>
+    </div>
+    
 
     <div class="home-page__grid home-page__grid--tools">
       <div v-for="tool in localizedTools" :key="tool.path" class="home-page__cell">
@@ -136,7 +139,7 @@ function onDragEnd() {
   }
 
   &__section-title {
-    margin: 25px 0 12px;
+    margin: 12px 0 12px;
     font-size: 14px;
     font-weight: 600;
     color: var(--it-text-secondary);
@@ -153,10 +156,6 @@ function onDragEnd() {
     color: var(--it-text-tertiary, #94a3b8);
     opacity: 0.7;
     transition: opacity 0.2s ease;
-  }
-  &__section-title--favorites {
-    margin-top: 18px;
-    margin-bottom: 4px;
   }
 }
 </style>

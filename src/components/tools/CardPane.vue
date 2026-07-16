@@ -34,7 +34,6 @@ const props = withDefaults(defineProps<{
   headerPadding?: string
   headerMobilePadding?: string
   bodyPadding?: string
-  bodyMobilePadding?: string
   radius?: string
 }>(), {
   title: '',
@@ -42,7 +41,6 @@ const props = withDefaults(defineProps<{
   headerPadding: '8px 16px',
   headerMobilePadding: '10px 12px',
   bodyPadding: '20px',
-  bodyMobilePadding: undefined,
   radius: '4px',
 })
 
@@ -59,7 +57,7 @@ const headerStyle = computed(() => ({
 
 const bodyStyle = computed(() => ({
   '--cp-body-padding': props.bodyPadding,
-  '--cp-body-padding-mobile': props.bodyMobilePadding ?? props.bodyPadding,
+  '--cp-body-padding-mobile': props.bodyPadding,
 }))
 
 const rootStyle = computed(() => ({
