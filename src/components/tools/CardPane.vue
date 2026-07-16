@@ -43,7 +43,7 @@ const props = withDefaults(defineProps<{
   headerMobilePadding: '10px 12px',
   bodyPadding: '20px',
   bodyMobilePadding: undefined,
-  radius: '8px',
+  radius: '4px',
 })
 
 const slots = useSlots()
@@ -76,7 +76,7 @@ const rootStyle = computed(() => ({
   flex-direction: column;
   background-color: var(--cp-bg, var(--it-bg-elevated));
   border: 1px solid var(--it-border);
-  border-radius: var(--cp-radius, 4px);
+  border-radius: var(--cp-radius);
   overflow: hidden;
 }
 

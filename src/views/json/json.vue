@@ -67,7 +67,7 @@ const editorClass = computed(() =>
 }
 // 修改json-editor的样式
 .tool-textarea :deep(textarea) {
-  border-radius: 8px;
+  border-radius: 4px;
 }
 :deep(.jse-contents) {
   border-left: 0px !important;
