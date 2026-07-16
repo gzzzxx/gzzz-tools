@@ -143,9 +143,13 @@
             <el-button type="info" @click="run('dec')">
               {{ t('encryptionPage.action.decrypt') }}
             </el-button>
-            <CopyButton variant="text" :text="form.result">
+            <el-button
+              type="primary"
+              :disabled="!form.result"
+              @click="copy(form.result)"
+            >
               {{ t('encryptionPage.action.copy') }}
-            </CopyButton>
+            </el-button>
             <el-button @click="clear">
               {{ t('encryptionPage.action.clear') }}
             </el-button>
@@ -241,8 +245,10 @@ import {
   aesDecrypt,
 } from '~/utils/crypto'
 import { useI18n } from 'vue-i18n'
+import { useClipboard } from '~/composables/useClipboard'
 
 const { t } = useI18n({ useScope: 'global' })
+const { copy } = useClipboard()
 
 const props = defineProps<{ algorithm: string }>()
 
@@ -320,36 +326,17 @@ function clear() {
   gap: 16px;
 }
 
-/* Card 容器 chrome (bg/border/radius/overflow) 已由 <CardPane> 提供,
-   原 .enc-info__card 块整体删掉 — 跟 CardPane 100% 重复, 是历史
-   包袱。
-   .prose-body / .prose-para / .prose-term 已抽到
-   ~/styles/_tool-recipes.scss 全局 utility, 模板里 <div class=
-   "enc-info__body prose-body"> / <p class="prose-para"> /
-   <span class="prose-term"> 自动套用相同的 14/1.7/primary +
-   margin + brand-color 强调样式, 父 scoped 不用再写一份。 */
-
-/* 末尾段落去掉下边距 — 只有 encryptionDetail 有这条, base64
-   .base64-reference__para 没有。属于 caller-specific 的微调,
-   不抽到全局 .prose-para。 */
+/* 末尾段落去掉下边距 — encryptionDetail 特有, 不抽到全局 */
 .enc-info__body :deep(.prose-para:last-child) {
   margin-bottom: 0;
 }
 
-/* card-pane__body gap — 这是 .enc-card--main / --config 的表单字段
-   间距的支撑 (4 个 .enc-field 直接是 .card-pane__body 的子节点,
-   .enc-field 内部 gap: 6px, 字段之间靠这里 gap: 10px 撑开)。
-   没有别的 caller 影响这个, 留着。 */
+/* card-pane__body gap — 撑开 .enc-card 内 .enc-field 之间的间距 */
 :deep(.card-pane__body) {
   gap: 10px;
 }
 
-/* ====================================================================
-   Element Plus internal tweaks — ep-* prefix because of
-   <el-config-provider namespace="ep">. Select inside any field
-   fills the field width (the original scoped this on
-   .ep-form-item__content .ep-select; we apply it at field level).
-   ==================================================================== */
+/* ep-* 前缀来自 <el-config-provider namespace="ep">, select 在字段内全宽 */
 .enc-field :deep(.ep-select) {
   width: 100% !important;
 }
@@ -367,8 +354,5 @@ function clear() {
 
 @media (max-width: 600px) {
   .enc-info__body { padding: 14px 16px; }
-  /* .enc-card__body 选择器是 CardPane 重构前的历史残留,
-     原 .enc-card__body 已并入 <CardPane body-mobile-padding> prop。
-     移除避免误导。 */
 }
 </style>

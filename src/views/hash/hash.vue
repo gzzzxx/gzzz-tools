@@ -128,12 +128,7 @@ watch(input, async (text) => {
   gap: 8px;
 }
 
-.result-row-flex {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
+// hash 专属: label + value 垂直堆叠的容器
 .result-info {
   flex: 1;
   min-width: 0;
@@ -142,12 +137,7 @@ watch(input, async (text) => {
   gap: 2px;
 }
 
-.result-label {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--it-text-primary);
-}
-
+// hash 专属: label 旁边的 bits 副信息
 .result-bits {
   margin-left: 8px;
   font-size: 12px;
@@ -155,12 +145,7 @@ watch(input, async (text) => {
   color: var(--it-text-secondary);
 }
 
-.result-value {
-  line-height: 1.4;
-  word-break: break-all;
-  user-select: all;
-}
-
+// hash 专属: sha384/512 需要更高行高的多行值
 .result-value--wraps {
   min-height: 2.8em;
   box-sizing: border-box;

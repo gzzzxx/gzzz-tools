@@ -495,7 +495,7 @@
     "action": {
       "encrypt": "加密",
       "decrypt": "解密",
-      "copy": "复制结果",
+      "copy": "复制",
       "clear": "清空"
     },
     "message": {

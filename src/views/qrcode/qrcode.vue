@@ -25,8 +25,8 @@
         <div class="tool-divider" />
 
         <div class="qrcode-form">
-          <div class="qrcode-form-row">
-            <label class="field-label">{{ t('qrcodePage.options.errorLevel') }}</label>
+          <div class="tool-form-row">
+            <label class="field-label field-label--inline">{{ t('qrcodePage.options.errorLevel') }}</label>
             <el-radio-group v-model="ecLevel" size="small">
               <el-radio-button
                 v-for="lvl in (['L','M','Q','H'] as const)"
@@ -38,23 +38,23 @@
             </el-radio-group>
           </div>
 
-          <div class="qrcode-form-row">
-            <label class="field-label">{{ t('qrcodePage.options.size') }}</label>
+          <div class="tool-form-row">
+            <label class="field-label field-label--inline">{{ t('qrcodePage.options.size') }}</label>
             <el-slider v-model="size" :min="128" :max="512" :step="32" show-input />
           </div>
 
-          <div class="qrcode-form-row">
-            <label class="field-label">{{ t('qrcodePage.options.margin') }}</label>
+          <div class="tool-form-row">
+            <label class="field-label field-label--inline">{{ t('qrcodePage.options.margin') }}</label>
             <el-slider v-model="margin" :min="0" :max="8" :step="1" show-input />
           </div>
 
-          <div class="qrcode-form-row">
-            <label class="field-label">{{ t('qrcodePage.options.fg') }}</label>
+          <div class="tool-form-row">
+            <label class="field-label field-label--inline">{{ t('qrcodePage.options.fg') }}</label>
             <el-color-picker v-model="fg" />
           </div>
 
-          <div class="qrcode-form-row">
-            <label class="field-label">{{ t('qrcodePage.options.bg') }}</label>
+          <div class="tool-form-row">
+            <label class="field-label field-label--inline">{{ t('qrcodePage.options.bg') }}</label>
             <el-color-picker v-model="bg" />
           </div>
         </div>
@@ -194,28 +194,11 @@ async function copyImage() {
 </script>
 
 <style lang="scss" scoped>
-/* 双栏布局用 ~/styles/_tool-recipes.scss 全局 utility
-   .tool-grid--narrow-left (5/7 比例, 900px 以下塌缩单栏)。
-   父 scoped 不用再写一份。 */
-
-.qrcode-form-row .field-label {
-  flex: 0 0 90px;
-  margin-bottom: 0;
-}
 
 .qrcode-form {
   display: flex;
   flex-direction: column;
   gap: 14px;
-}
-.qrcode-form-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-height: 32px;
-}
-.qrcode-form-row:has(.el-slider) {
-  align-items: center;
 }
 
 /* Right card */
@@ -266,7 +249,7 @@ async function copyImage() {
 }
 
 @media (max-width: 600px) {
-  .qrcode-form-row .field-label { flex: 0 0 70px; font-size: 12px; }
+  .field-label--inline { flex: 0 0 70px; font-size: 12px; }
   .qrcode-preview-wrap { min-height: 220px; }
 }
 </style>

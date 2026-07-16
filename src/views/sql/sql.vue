@@ -50,12 +50,12 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, watch } from 'vue'
-import { useDebounceFn } from '@vueuse/core'
+import { reactive } from 'vue'
 import { Delete, MagicStick, Minus } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { format as sqlFormat } from 'sql-formatter'
 import { useI18n } from 'vue-i18n'
+import { useAutoFormat } from '~/composables/useAutoFormat'
 
 const { t } = useI18n({ useScope: 'global' })
 
@@ -114,18 +114,9 @@ function clear() {
 }
 
 // 300ms 防抖自动格式化，输入过程中 SQL 不完整时静默忽略错误
-const autoFormat = useDebounceFn((value: string) => {
-  const input = value.trim()
-  if (!input) {
-    form.result = ''
-    return
-  }
-  try {
-    form.result = formatCore(input)
-  } catch {
-    /* keep previous result */
-  }
-}, 300)
-
-watch(() => form.data, autoFormat)
+useAutoFormat(
+  () => form.data,
+  formatCore,
+  (v) => { form.result = v },
+)
 </script>

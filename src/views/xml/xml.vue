@@ -61,12 +61,12 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, watch } from 'vue'
-import { useDebounceFn } from '@vueuse/core'
+import { computed, reactive, ref } from 'vue'
 import { Delete, MagicStick, Minus } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import xmlFormat from 'xml-formatter'
 import { useI18n } from 'vue-i18n'
+import { useAutoFormat } from '~/composables/useAutoFormat'
 
 const { t } = useI18n({ useScope: 'global' })
 
@@ -125,21 +125,13 @@ function clear() {
   form.result = ''
 }
 
-// 300ms 防抖自动格式化，输入过程中 XML 不完整时静默忽略错误
-const autoFormat = useDebounceFn((value: string) => {
-  const input = value.trim()
-  if (!input) {
-    form.result = ''
-    return
-  }
-  try {
-    form.result = formatCore(input)
-  } catch {
-    /* keep previous result */
-  }
-}, 300)
-
-watch([() => form.data, indent], () => autoFormat(form.data), { flush: 'post' })
+// 防抖自动格式化: 输入或缩进选项变化都触发 (formatCore 通过闭包读 indent)
+const formatTrigger = computed(() => form.data + '\0' + indent.value)
+useAutoFormat(
+  () => formatTrigger.value,
+  formatCore,
+  (v) => { form.result = v },
+)
 </script>
 
 <style lang="scss" scoped>

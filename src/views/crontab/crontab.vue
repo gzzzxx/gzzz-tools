@@ -33,16 +33,16 @@
         <div class="tool-divider" />
 
         <div class="crontab-card__form">
-          <div class="crontab-form-row">
-            <label class="crontab-form-row__label">{{ t('crontabPage.options.verbose') }}</label>
+          <div class="tool-form-row crontab-form-row">
+            <label class="field-label field-label--inline-wide">{{ t('crontabPage.options.verbose') }}</label>
             <el-switch v-model="cronstrueConfig.verbose" />
           </div>
-          <div class="crontab-form-row">
-            <label class="crontab-form-row__label">{{ t('crontabPage.options.hour24') }}</label>
+          <div class="tool-form-row crontab-form-row">
+            <label class="field-label field-label--inline-wide">{{ t('crontabPage.options.hour24') }}</label>
             <el-switch v-model="cronstrueConfig.use24HourTimeFormat" />
           </div>
-          <div class="crontab-form-row">
-            <label class="crontab-form-row__label">{{ t('crontabPage.options.daysStartAt0') }}</label>
+          <div class="tool-form-row crontab-form-row">
+            <label class="field-label field-label--inline-wide">{{ t('crontabPage.options.daysStartAt0') }}</label>
             <el-switch v-model="cronstrueConfig.dayOfWeekStartIndexZero" />
           </div>
         </div>
@@ -94,7 +94,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
+import { useMediaQuery } from '@vueuse/core'
 import cronstrue from 'cronstrue'
 import { toString as cronstrueI18n } from 'cronstrue/i18n'
 import { isValidCron } from 'cron-validator'
@@ -109,13 +110,7 @@ const cronstrueConfig = reactive({
   dayOfWeekStartIndexZero: true,
 })
 
-const mql = typeof window !== 'undefined'
-  ? window.matchMedia('(max-width: 768px)')
-  : null
-const isSmallScreen = ref(mql?.matches ?? false)
-function onMqChange(e: MediaQueryListEvent) { isSmallScreen.value = e.matches }
-onMounted(() => mql?.addEventListener('change', onMqChange))
-onBeforeUnmount(() => mql?.removeEventListener('change', onMqChange))
+const isSmallScreen = useMediaQuery('(max-width: 768px)')
 
 const isCronValid = (v: string) => isValidCron(v, {
   allowBlankDay: true,
@@ -186,14 +181,14 @@ const diagramText = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-/* 双栏布局用 ~/styles/_tool-recipes.scss 全局 utility
-   .tool-grid--narrow-left + .tool-grid--narrow-left-start
-   (5/7 比例, align-items: start, 900px 以下塌缩单栏)。
-   父 scoped 不用再写一份。 */
+.crontab-form-row {
+  width: 100%;
+  max-width: 400px;
+}
 
-@media (max-width: 900px) {
+@media (max-width: 600px) {
   .crontab-form-row { max-width: 100%; }
-  .crontab-form-row__label { flex-basis: 130px; padding-right: 8px; font-size: 13px; }
+  .field-label--inline-wide { flex-basis: 130px; padding-right: 8px; }
 }
 
 .crontab-card__input-wrap {
@@ -214,7 +209,7 @@ const diagramText = computed(() => {
   border-radius: 4px;
   outline: none;
   box-sizing: border-box;
-  transition: border-color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  transition: border-color var(--it-transition), background-color var(--it-transition);
 }
 .crontab-input::placeholder {
   color: var(--it-text-tertiary);
@@ -259,19 +254,6 @@ const diagramText = computed(() => {
   flex-direction: column;
   align-items: center;
   gap: 6px;
-}
-.crontab-form-row {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  max-width: 400px;
-}
-.crontab-form-row__label {
-  flex: 0 0 170px;
-  text-align: right;
-  padding-right: 12px;
-  color: var(--it-text-primary);
-  font-size: 14px;
 }
 
 /* ASCII 示意图 */

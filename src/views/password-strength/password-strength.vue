@@ -100,11 +100,9 @@
       </div>
     </CardPane>
 
-    <div v-else>
-      <EmptyState margin-top="24px">
-        {{ t('passwordStrengthPage.empty') }}
-      </EmptyState>
-    </div>
+    <EmptyState v-else margin-top="24px">
+      {{ t('passwordStrengthPage.empty') }}
+    </EmptyState>
   </ToolPage>
 </template>
 
@@ -222,7 +220,14 @@ const score = computed(() => {
 })
 
 const meterColor = computed(() => {
-  return ['#f56c6c', '#f89898', '#e6a23c', '#85ce61', '#67c23a'][score.value]
+  // EP 主题色: 0-1 偏红, 2 黄, 3-4 偏绿; 用 light-5 拿中间色阶, dark 模式自动适配
+  return [
+    'var(--ep-color-danger)',
+    'var(--ep-color-danger-light-5)',
+    'var(--ep-color-warning)',
+    'var(--ep-color-success-light-5)',
+    'var(--ep-color-success)',
+  ][score.value]
 })
 
 const crackTime = computed(() => {
@@ -280,13 +285,13 @@ const rules = computed<Rule[]>(() => {
   height: 10px;
   border-radius: 2px;
   background-color: var(--it-border);
-  transition: background-color 0.25s ease-out;
+  transition: background-color var(--it-transition-smooth);
 }
 .meter__label {
   font-size: 16px;
   font-weight: 600;
   text-align: right;
-  transition: color 0.25s;
+  transition: color var(--it-transition-smooth);
 }
 
 .pwd-stat-row {

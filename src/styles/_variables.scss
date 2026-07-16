@@ -67,6 +67,8 @@ $it-radius-lg:     12px;
   --font-mono:           ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-mono-code:      'Fira Code', 'Cascadia Code', Consolas, Menlo, monospace;
   --tool-section-gap:    20px;
+  --it-transition:       0.15s ease;
+  --it-transition-smooth: 0.25s ease-out;
 }
 
 html.dark {

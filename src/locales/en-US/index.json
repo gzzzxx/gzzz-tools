@@ -495,7 +495,7 @@
     "action": {
       "encrypt": "Encrypt",
       "decrypt": "Decrypt",
-      "copy": "Copy result",
+      "copy": "Copy",
       "clear": "Clear"
     },
     "message": {

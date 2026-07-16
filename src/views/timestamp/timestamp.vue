@@ -40,9 +40,9 @@
     </CardPane>
     <div class="result-row">
       <CardPane class="result-card" variant="result" body-padding="0">
-        <div class="result-label">{{ t('timestampPage.result.date') }}</div>
-        <div class="result-row-flex">
-          <span class="result-value result-mono">{{ formattedDate }}</span>
+        <div class="result-label result-label--block">{{ t('timestampPage.result.date') }}</div>
+        <div class="result-row-flex result-row-flex--center">
+          <span class="result-value result-value--lg result-mono">{{ formattedDate }}</span>
           <CopyButton
             variant="icon"
             :text="formattedDate"
@@ -50,9 +50,9 @@
         </div>
       </CardPane>
       <CardPane class="result-card" variant="result" body-padding="0">
-        <div class="result-label">{{ t('timestampPage.result.timestamp') }}</div>
-        <div class="result-row-flex">
-          <span class="result-value result-mono">{{ formattedTimestamp }}</span>
+        <div class="result-label result-label--block">{{ t('timestampPage.result.timestamp') }}</div>
+        <div class="result-row-flex result-row-flex--center">
+          <span class="result-value result-value--lg result-mono">{{ formattedTimestamp }}</span>
           <CopyButton
             variant="icon"
             :text="formattedTimestamp"
@@ -145,27 +145,6 @@ function onDatePickerChange(val: string) {
   justify-content: center;
   align-items: center;
 }
-.result-label {
-  color: var(--it-text-secondary);
-  font-size: 0.95rem;
-  margin-top: 8px;
-  align-self: center;
-}
-.result-row-flex {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 38px;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.result-value {
-  flex: 0 1 auto;
-  text-align: center;
-  font-size: 1.15rem;
-  font-weight: bold;
-  word-break: break-all;
-}
 @media (max-width: 600px) {
   .input-row,
   .result-row {
@@ -179,5 +158,23 @@ function onDatePickerChange(val: string) {
   display: flex;
   justify-content: center;
   margin-bottom: 8px;
+}
+// timestamp 专属: label 居中在结果卡顶部 (上面带 8px 留白)
+.result-label--block {
+  margin-top: 8px;
+  align-self: center;
+}
+// timestamp 专属: 居中堆叠 value + 复制按钮
+.result-row-flex--center {
+  justify-content: center;
+  flex-wrap: wrap;
+  min-height: 38px;
+  gap: 8px;
+}
+// timestamp 专属: 时间戳数字突出显示
+.result-value--lg {
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-align: center;
 }
 </style>

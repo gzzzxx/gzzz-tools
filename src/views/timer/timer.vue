@@ -365,7 +365,7 @@ onBeforeUnmount(() => {
   border-radius: 999px;
   font-size: 13px;
   cursor: pointer;
-  transition: border-color 0.15s, color 0.15s, background-color 0.15s;
+  transition: border-color var(--it-transition), color var(--it-transition), background-color var(--it-transition);
 }
 .t-preset:hover {
   border-color: var(--brand-primary);
@@ -417,7 +417,7 @@ onBeforeUnmount(() => {
   color: var(--it-text-primary);
   letter-spacing: 2px;
   font-variant-numeric: tabular-nums;
-  transition: color 0.2s;
+  transition: color var(--it-transition);
 }
 .t-display__time--warn {
   color: var(--ep-color-warning);
@@ -436,10 +436,6 @@ onBeforeUnmount(() => {
   0%, 100% { opacity: 1; }
   50%      { opacity: 0.45; }
 }
-
-/* Action buttons — 已抽到 ~/styles/_tool-recipes.scss 全局 utility
-   (.tool-actions, horizontal center + 12px gap + flex-wrap)。模板里
-   <div class="tool-actions"> 自动套用相同样式, 父 scoped 不用再写一份。 */
 
 /* Lap table */
 .t-laps {
