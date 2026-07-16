@@ -43,7 +43,7 @@ const emit = defineEmits<{
   flex: 1;
   min-height: 0;
   border: none !important;
-  border-radius: 0;
+  border-radius: 0 0 8px 8px;
   padding: 14px 16px;
   font-family: var(--font-mono-code);
   font-size: 13px;

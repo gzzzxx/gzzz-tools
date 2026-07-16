@@ -60,8 +60,9 @@
 }
 
 
+// tool-page 全屏修饰, 内部滚动
 .tool-page--fullscreen {
-  height: 100%;
+  height: calc(100vh - var(--ah-h, 56px));
   display: flex;
   flex-direction: column;
   overflow: hidden;

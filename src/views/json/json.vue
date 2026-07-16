@@ -65,4 +65,21 @@ const editorClass = computed(() =>
 :deep(.jse-theme-dark) {
   --jse-theme-color: #222;
 }
+// 修改json-editor的样式
+.tool-textarea :deep(textarea) {
+  border-radius: 8px;
+}
+:deep(.jse-contents) {
+  border-left: 0px !important;
+  border-right: 0px !important;
+}
+:deep(.jse-status-bar) {
+  border-left: 0px !important;
+  border-right: 0px !important;
+  border-top: 0px !important;
+  border-bottom: 0px !important;
+}
+:deep(.jse-tree-mode.svelte-vrx1dr .jse-contents:where(.svelte-vrx1dr):last-child) {
+  border-bottom: 0px !important;
+}
 </style>
