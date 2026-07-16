@@ -42,7 +42,6 @@
     <div class="home-page__section-title-row">
       <h3 class="home-page__section-title">{{ t('home.section.tools') }}</h3>
     </div>
-    
 
     <div class="home-page__grid home-page__grid--tools">
       <div v-for="tool in localizedTools" :key="tool.path" class="home-page__cell">
