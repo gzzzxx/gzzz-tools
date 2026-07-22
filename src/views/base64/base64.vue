@@ -205,9 +205,9 @@ import {
 } from '@element-plus/icons-vue'
 import { Base64 } from 'js-base64'
 import type { TableColumnCtx } from 'element-plus'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 
-const { t } = useI18n({ useScope: 'global' })
+const { t } = useT()
 
 const form = reactive({
   data: '',

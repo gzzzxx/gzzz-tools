@@ -35,16 +35,14 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 import { useRoute, useRouter } from 'vue-router'
 import detail from './encryptionDetail.vue'
 
-// props 占位声明, 避免 Vue 警告未声明 prop; 真值从 URL 解析
-defineProps<{ algorithm: string }>()
-
+// 真值从 URL 解析, 不依赖 route props
 type Algo = 'SM4' | 'AES'
 
-const { t } = useI18n({ useScope: 'global' })
+const { t } = useT()
 const route = useRoute()
 const router = useRouter()
 

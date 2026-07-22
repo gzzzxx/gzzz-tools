@@ -65,10 +65,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 import { formatDateTime } from '~/utils/datetime'
 
-const { t } = useI18n({ useScope: 'global' })
+const { t } = useT()
 
 const timestamp = ref('');
 const dateString = ref('');

@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { DocumentCopy } from '@element-plus/icons-vue'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 import { useClipboard } from '~/composables/useClipboard'
 
 const props = withDefaults(defineProps<{
@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<{
   disabled: false,
 })
 
-const { t } = useI18n({ useScope: 'global' })
+const { t } = useT()
 const { copy } = useClipboard()
 
 function onCopy() {

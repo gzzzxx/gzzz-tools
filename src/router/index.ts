@@ -1,13 +1,4 @@
-/*
-  router/index.ts — vue-router setup.
-
-  Routes are derived from `~/tools/registry`: every tool becomes one
-  route (SM4 and AES each get their own entry — same component, but
-  different `props` so the view knows which algorithm it is).
-
-  The home route (`/`) is fixed and lives outside the registry; it's
-  an app-shell entry, not a tool.
-*/
+/* router/index.ts — vue-router setup. */
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import { tools } from '~/tools/registry'
 

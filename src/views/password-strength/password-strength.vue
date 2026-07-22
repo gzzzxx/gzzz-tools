@@ -114,15 +114,15 @@ import {
   Hide,
   View,
 } from '@element-plus/icons-vue'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 
-const { t, locale } = useI18n({ useScope: 'global' })
+const { t } = useT()
 
 const password = ref('')
 const showPassword = ref(false)
 
 const COMMON_PASSWORDS = computed(() => {
-  void locale.value
+  // 硬编码英文词表, 跟 locale 无关 — locale 变化不需要重算
   return new Set([
     'password', '123456', '12345678', 'qwerty', 'abc123', 'monkey', '1234567',
     'letmein', 'trustno1', 'dragon', 'baseball', 'iloveyou', 'master', 'sunshine',
@@ -256,7 +256,6 @@ interface Rule { key: string; label: string; pass: boolean }
 
 const rules = computed<Rule[]>(() => {
   const s = stats.value
-  void locale.value
   return [
     { key: 'length',      label: t('passwordStrengthPage.feedback.rules.length'),      pass: s.length >= 8 },
     { key: 'lengthStrong', label: t('passwordStrengthPage.feedback.rules.lengthStrong'), pass: s.length >= 12 },

@@ -125,13 +125,13 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 import { pad } from '~/utils/datetime'
 
 type Mode = 'stopwatch' | 'countdown'
 type CountdownPhase = 'idle' | 'running' | 'paused' | 'finished'
 
-const { t, locale } = useI18n({ useScope: 'global' })
+const { t } = useT()
 
 const mode = ref<Mode>('stopwatch')
 
@@ -203,7 +203,6 @@ const cd = reactive({
 })
 
 const presets = computed(() => {
-  void locale.value
   return [
     { label: t('timerPage.preset.1min'),  h: 0, m: 1,  s: 0 },
     { label: t('timerPage.preset.3min'),  h: 0, m: 3,  s: 0 },

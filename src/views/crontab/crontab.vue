@@ -99,9 +99,9 @@ import { useMediaQuery } from '@vueuse/core'
 import cronstrue from 'cronstrue'
 import { toString as cronstrueI18n } from 'cronstrue/i18n'
 import { isValidCron } from 'cron-validator'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 
-const { t, locale } = useI18n({ useScope: 'global' })
+const { t, locale } = useT()
 
 const cron = ref('40 * * * *')
 const cronstrueConfig = reactive({
@@ -110,7 +110,7 @@ const cronstrueConfig = reactive({
   dayOfWeekStartIndexZero: true,
 })
 
-const isSmallScreen = useMediaQuery('(max-width: 768px)')
+const isSmallScreen = useMediaQuery('(max-width: 600px)')
 
 const isCronValid = (v: string) => isValidCron(v, {
   allowBlankDay: true,
@@ -126,7 +126,6 @@ const validation = computed<{ isValid: boolean; message: string }>(() => {
 })
 
 const cronString = computed(() => {
-  void locale.value
   if (!validation.value.isValid) return ' '
   try {
     const opts = { ...cronstrueConfig, throwExceptionOnParseError: true }
@@ -166,7 +165,6 @@ const helpers = computed(() => [
 ])
 
 const diagramText = computed(() => {
-  void locale.value
   return [
     '\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 [' + t('crontabPage.diagram.optional') + '] ' + t('crontabPage.diagram.seconds') + ' (0 - 59)',
     '\u2502 \u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 ' + t('crontabPage.diagram.minute') + ' (0 - 59)',

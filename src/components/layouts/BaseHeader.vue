@@ -180,7 +180,7 @@ import {
   Search,
   Sunny,
 } from '@element-plus/icons-vue'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 import { useRouter } from 'vue-router'
 import SearchPalette from './SearchPalette.vue'
 import { type Tool } from '~/composables/useTools'
@@ -195,7 +195,7 @@ const emit = defineEmits<{
 }>()
 
 const router = useRouter()
-const { t, locale } = useI18n({ useScope: 'global' })
+const { t, locale } = useT()
 
 const langOptions: { value: AppLocale; label: string }[] = [
   { value: 'zh-CN', label: '中文' },

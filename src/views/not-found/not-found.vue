@@ -41,11 +41,11 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 import { useRouter } from 'vue-router'
 import { useLocalizedTools, type Tool } from '~/composables/useTools'
 
-const { t } = useI18n({ useScope: 'global' })
+const { t } = useT()
 const router = useRouter()
 
 // Show three most-used tools as a "you might want…" escape hatch.

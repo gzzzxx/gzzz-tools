@@ -78,7 +78,7 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue'
 import { Search, Right } from '@element-plus/icons-vue'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 import { useLocalizedTools, type Tool } from '~/composables/useTools'
 import { getToolIcon } from '~/components/cards/toolIconRegistry'
 
@@ -93,7 +93,7 @@ const emit = defineEmits<{
   (e: 'select', tool: Tool): void
 }>()
 
-const { t } = useI18n({ useScope: 'global' })
+const { t } = useT()
 const hasQuery = computed(() => props.query.trim().length > 0)
 
 const noResultText = computed(() => t('palette.hint.noResult', { q: props.query }))

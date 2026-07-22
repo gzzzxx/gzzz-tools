@@ -27,13 +27,13 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 import calendar from '~/utils/js-calendar-converter.js'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
 dayjs.locale('zh-cn')
 
-const { t } = useI18n({ useScope: 'global' })
+const { t } = useT()
 
 // 判断是否是节日（不含节气）
 function isFestival(slotData: { day: string }) {

@@ -62,9 +62,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { Delete } from '@element-plus/icons-vue'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 
-const { t } = useI18n({ useScope: 'global' })
+const { t } = useT()
 const input = ref('')
 
 // All keys the template is allowed to read off `stats`. The

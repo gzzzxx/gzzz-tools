@@ -62,7 +62,7 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue'
 import { Delete } from '@element-plus/icons-vue'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 import { md5 } from '~/utils/md5'
 
 interface HashResults {
@@ -81,7 +81,7 @@ const algorithms: { key: keyof HashResults; label: string; bits: number }[] = [
   { key: 'sha512', label: 'SHA-512', bits: 512 },
 ]
 
-const { t } = useI18n({ useScope: 'global' })
+const { t } = useT()
 
 const input = ref('')
 const results = reactive<HashResults>({

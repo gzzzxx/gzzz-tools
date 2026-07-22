@@ -99,10 +99,10 @@ import { computed, nextTick, ref, watch } from 'vue'
 import QRCode, { type QRCodeErrorCorrectionLevel } from 'qrcode'
 import { ElMessage } from 'element-plus'
 import { CopyDocument, Download, Files } from '@element-plus/icons-vue'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 import { useClipboard } from '~/composables/useClipboard'
 
-const { t } = useI18n({ useScope: 'global' })
+const { t } = useT()
 const clipboard = useClipboard()
 
 // Reactive inputs

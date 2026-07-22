@@ -93,12 +93,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, reactive, watch } from 'vue'
+import { computed, reactive } from 'vue'
 import { Delete } from '@element-plus/icons-vue'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 import { useIsDark } from '~/composables/useIsDark'
 
-const { t } = useI18n({ useScope: 'global' })
+const { t } = useT()
 const isDark = useIsDark()
 
 const theme = computed(() => (isDark.value ? 'dark' : 'light'))
@@ -120,20 +120,6 @@ const form = reactive({
   current: '',
   folding: false,
 })
-
-// 手动同步主题和模式类名，确保切换后正确重绘
-watch(
-  [isDark, () => form.mode],
-  ([dark, mode]) => {
-    nextTick(() => {
-      const d = document.getElementById('diff')
-      if (d) {
-        d.className = `vue-diff-wrapper vue-diff-mode-${mode} vue-diff-theme-${dark ? 'dark' : 'light'}`
-      }
-    })
-  },
-  { immediate: true, flush: 'post' },
-)
 </script>
 
 <style lang="scss" scoped>

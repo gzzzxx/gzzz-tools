@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 import { getUiIcon } from './toolIconRegistry'
 
 const props = withDefaults(
@@ -57,7 +57,7 @@ const props = withDefaults(
   },
 )
 
-const { t } = useI18n({ useScope: 'global' })
+const { t } = useT()
 const titleText = computed(() => props.title || t('home.banner.title'))
 
 const iconSize = 28

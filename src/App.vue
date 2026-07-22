@@ -47,12 +47,12 @@ import { computed, ref } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import en from 'element-plus/es/locale/lang/en'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 import { useRouter } from 'vue-router'
 
 // Element Plus' built-in locale dictionary — picked per active
 // language so el-pagination / el-table / etc. flip with our toggle.
-const { locale } = useI18n({ useScope: 'global' })
+const { locale } = useT()
 const elLocale = computed(() => (locale.value === 'en-US' ? en : zhCn))
 const router = useRouter()
 

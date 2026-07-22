@@ -39,11 +39,11 @@
 import { computed, ref } from 'vue'
 import JsonEditorVue from 'json-editor-vue'
 import 'vanilla-jsoneditor/themes/jse-theme-dark.css'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 import { useIsDark } from '~/composables/useIsDark'
 
 const text = ref('')
-const { t } = useI18n({ useScope: 'global' })
+const { t } = useT()
 const isDark = useIsDark()
 
 const editorClass = computed(() =>

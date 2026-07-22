@@ -64,7 +64,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 import { type Tool } from '~/composables/useTools'
 import { useFavorites } from '~/composables/useFavorites'
 import { getToolIcon } from '~/components/cards/toolIconRegistry'
@@ -79,7 +79,7 @@ const iconPath = computed(() => getToolIcon(props.tool.icon))
 const { isFavorite, toggle } = useFavorites()
 const isFav = computed(() => isFavorite(props.tool.path))
 
-const { t } = useI18n({ useScope: 'global' })
+const { t } = useT()
 const favTooltip = computed(() =>
   isFav.value ? t('toolcard.favorite.remove') : t('toolcard.favorite.add'),
 )

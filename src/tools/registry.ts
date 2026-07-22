@@ -21,8 +21,8 @@ export interface ToolDefinition {
 
 export const tools: readonly ToolDefinition[] = [
   // crypto
-  { path: '/encryption/SM4', component: () => import('~/views/encryption/encryption.vue'), icon: 'shield',  nameKey: 'tools.sm4.name',      descKey: 'tools.sm4.desc',      category: 'crypto', props: { algorithm: 'SM4' } },
-  { path: '/encryption/AES', component: () => import('~/views/encryption/encryption.vue'), icon: 'key',     nameKey: 'tools.aes.name',      descKey: 'tools.aes.desc',      category: 'crypto', props: { algorithm: 'AES' } },
+  { path: '/encryption/SM4', component: () => import('~/views/encryption/encryption.vue'), icon: 'shield',  nameKey: 'tools.sm4.name',      descKey: 'tools.sm4.desc',      category: 'crypto' },
+  { path: '/encryption/AES', component: () => import('~/views/encryption/encryption.vue'), icon: 'key',     nameKey: 'tools.aes.name',      descKey: 'tools.aes.desc',      category: 'crypto' },
   { path: '/hash',            component: () => import('~/views/hash/hash.vue'),            icon: 'hash',    nameKey: 'tools.hash.name',     descKey: 'tools.hash.desc',     category: 'crypto' },
   { path: '/password-strength', component: () => import('~/views/password-strength/password-strength.vue'), icon: 'password', nameKey: 'tools.passwordStrength.name', descKey: 'tools.passwordStrength.desc', category: 'crypto' },
   // dev

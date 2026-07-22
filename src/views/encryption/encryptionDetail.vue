@@ -244,10 +244,10 @@ import {
   aesEncrypt,
   aesDecrypt,
 } from '~/utils/crypto'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 import { useClipboard } from '~/composables/useClipboard'
 
-const { t } = useI18n({ useScope: 'global' })
+const { t } = useT()
 const { copy } = useClipboard()
 
 const props = defineProps<{ algorithm: string }>()

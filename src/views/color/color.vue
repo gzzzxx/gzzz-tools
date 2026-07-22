@@ -120,7 +120,7 @@ const initialColor = `${searchParams.hex ?? isDarkInitial ? DEFAULT_COLOR_DARK :
 
 <script setup lang="ts">
 import { computed, reactive, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 
 import {
   ChromePicker,
@@ -141,7 +141,7 @@ import {
 import 'vue-color/style.css'
 import { useIsDark } from '~/composables/useIsDark'
 
-const { t } = useI18n({ useScope: 'global' })
+const { t } = useT()
 
 const showStatus: Record<(typeof pickers)[number], boolean> = {} as Record<(typeof pickers)[number], boolean>;
 pickers.forEach((picker) => {

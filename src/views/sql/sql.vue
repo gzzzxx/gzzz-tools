@@ -54,10 +54,10 @@ import { reactive } from 'vue'
 import { Delete, MagicStick, Minus } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { format as sqlFormat } from 'sql-formatter'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 import { useAutoFormat } from '~/composables/useAutoFormat'
 
-const { t } = useI18n({ useScope: 'global' })
+const { t } = useT()
 
 const FORMAT_OPTS = {
   language: 'sql',

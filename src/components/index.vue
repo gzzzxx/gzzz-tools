@@ -53,7 +53,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 import draggable from 'vuedraggable'
 import FollowBanner from './cards/FollowBanner.vue'
 import ToolCard from './cards/ToolCard.vue'
@@ -62,7 +62,7 @@ import { useFavorites } from '~/composables/useFavorites'
 
 const { localizedTools } = useLocalizedTools()
 const { favoriteTools, setFavoriteOrder } = useFavorites()
-const { t } = useI18n({ useScope: 'global' })
+const { t } = useT()
 
 const localFavorites = ref<Tool[]>(favoriteTools.value)
 watch(favoriteTools, (next) => {

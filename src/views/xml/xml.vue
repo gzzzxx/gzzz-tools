@@ -65,10 +65,10 @@ import { computed, reactive, ref } from 'vue'
 import { Delete, MagicStick, Minus } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import xmlFormat from 'xml-formatter'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 import { useAutoFormat } from '~/composables/useAutoFormat'
 
-const { t } = useI18n({ useScope: 'global' })
+const { t } = useT()
 
 type Indent = '  ' | '    ' | '\t'
 const indent = ref<Indent>('  ')

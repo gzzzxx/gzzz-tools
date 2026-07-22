@@ -157,7 +157,7 @@
 import { computed } from 'vue'
 import { useStorage } from '@vueuse/core'
 import { ArrowDown } from '@element-plus/icons-vue'
-import { useI18n } from 'vue-i18n'
+import { useT } from '~/composables/useT'
 import { useLocalizedTools } from '~/composables/useTools'
 import { useFavorites } from '~/composables/useFavorites'
 import { getToolIcon } from '~/components/cards/toolIconRegistry'
@@ -172,7 +172,7 @@ const emit = defineEmits<{
   (e: 'navigate', path: string): void
 }>()
 
-const { t } = useI18n({ useScope: 'global' })
+const { t } = useT()
 const { localizedTools } = useLocalizedTools()
 
 import { tools } from '~/tools/registry'
