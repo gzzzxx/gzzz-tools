@@ -8,7 +8,6 @@
     <CardPane
       class="not-found-card"
       body-padding="40px"
-      body-mobile-padding="32px 24px 28px"
     >
       <div class="not-found-card__code">404</div>
 
