@@ -251,7 +251,7 @@ function onDragEnd() {
     flex-shrink: 0;
     color: var(--brand-primary);
     // Slow heartbeat — calls attention without being distracting.
-    animation: it-heartbeat 1.8s var(--ease-in-out) infinite;
+    animation: it-heartbeat 1.8s var(--ease-in-out) 3 both;
     transform-origin: center;
   }
   &__empty-title {
