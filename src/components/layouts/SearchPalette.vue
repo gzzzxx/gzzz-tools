@@ -27,7 +27,7 @@
           role="option"
           :aria-selected="idx === activeIndex"
           :style="{ '--i': idx }"
-          @mouseenter="activeIndex = idx"
+          @mouseenter="onItemEnter(idx)"
           @mousedown.prevent="select(tool)"
         >
           <span class="search-palette__icon">
@@ -113,9 +113,23 @@ const filtered = computed<Tool[]>(() => {
 })
 
 const activeIndex = ref(0)
+
+// After a query change, the list re-flows but the mouse pointer
+// stays where it was. If a new item now sits under the pointer, the
+// browser fires mouseenter on it — and that would yank activeIndex
+// off the freshly-reset 0, making the second item appear "selected"
+// on every keystroke. Lock out mouseenter for 120ms after each
+// reflow so the user's intentional hover still works, but the
+// accidental "the list moved under my cursor" hover doesn't.
+const mouseEnterLockedUntil = ref(0)
+function onItemEnter(idx: number) {
+  if (Date.now() < mouseEnterLockedUntil.value) return
+  activeIndex.value = idx
+}
 watch(filtered, () => {
   activeIndex.value = 0
   scrollActiveIntoView()
+  mouseEnterLockedUntil.value = Date.now() + 120
 })
 
 // Keep the highlighted row in view when arrow keys move it off-screen.
