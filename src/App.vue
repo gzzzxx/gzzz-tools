@@ -112,8 +112,8 @@ function onToggleTheme(payload: { clientX: number; clientY: number }) {
     document.documentElement.animate(
       { clipPath: isDark ? [...clipPath].reverse() : clipPath },
       {
-        duration: 500,
-        easing: 'ease-in',
+        duration: 800,
+        easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
         pseudoElement: isDark
           ? '::view-transition-old(root)'
           : '::view-transition-new(root)',

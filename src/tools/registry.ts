@@ -2,6 +2,20 @@ import type { Component } from 'vue'
 
 export type ToolCategory = 'crypto' | 'dev' | 'convert' | 'time'
 
+// The 4 tool categories in display order. Every UI surface that
+// lists categories (sidebar, hero tabs) must read from here — adding
+// a category is a single-file change.
+export const CATEGORIES: readonly { key: ToolCategory; i18nKey: string }[] = [
+  { key: 'crypto',  i18nKey: 'sidebar.category.crypto' },
+  { key: 'dev',     i18nKey: 'sidebar.category.dev' },
+  { key: 'convert', i18nKey: 'sidebar.category.convert' },
+  { key: 'time',    i18nKey: 'sidebar.category.time' },
+] as const
+
+// A tab key may also be 'all' — the no-filter sentinel used by the
+// hero tab strip and the home page's tool grid filter.
+export type TabKey = 'all' | ToolCategory
+
 export interface ToolDefinition {
   /** Canonical URL the user lands on; used by sidebar, tool card, search palette. */
   path: string

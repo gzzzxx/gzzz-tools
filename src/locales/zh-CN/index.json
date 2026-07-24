@@ -50,9 +50,17 @@
       "tools": "全部工具",
       "favorites": "我的收藏"
     },
-    "banner": {
-      "title": "关注我们",
-      "desc": "如果对您有帮助，请 Star {github}、{gitee}，感谢您的支持！"
+    "hero": {
+      "tagline": "面向开发者的 {count} 个在线工具 · 加密 / 格式化 / 转换 / 时间 · 一站搞定",
+      "supportNote": "如果对您有帮助，请 Star {github}、{gitee}，感谢您的支持！"
+    },
+    "tab": {
+      "all": "全部",
+      "empty": "这个分类还没有工具"
+    },
+    "favoritesEmpty": {
+      "title": "还没有收藏的工具",
+      "desc": "点击任意卡片右上角的心形，把常用工具加到这里。"
     },
     "drag": {
       "hintIdle": "拖动卡片可调整顺序",

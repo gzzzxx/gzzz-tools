@@ -1,160 +1,155 @@
-<!-- 首页组件，展示收藏工具和全部工具列表 -->
+<!--
+  首页：英雄区 + 收藏 + 工具网格。
+
+  - Hero —— 通过 v-model:category 与本页共享当前选中的分类
+  - Favorites —— 自管拖拽 + 空 CTA
+  - 工具区 —— 按选中分类过滤展示
+-->
 
 <template>
   <div class="it-page-content home-page">
-    <div class="home-page__grid home-page__grid--with-banner">
-      <div class="home-page__cell home-page__cell--banner">
-        <FollowBanner />
-      </div>
-    </div>
+    <Hero
+      v-model:category="selectedCategory"
+      :tools="localizedTools"
+    />
 
-    <template v-if="favoriteTools.length > 0">
-      <div class="home-page__section-title-row">
-        <h3 class="home-page__section-title home-page__section-title--favorites">
-          {{ t('home.section.favorites') }}
-        </h3>
-        <span class="home-page__drag-hint" aria-hidden="true">
-          {{ dragHint }}
-        </span>
-      </div>
+    <Favorites />
 
-      <draggable
-        v-model="localFavorites"
-        :animation="180"
-        item-key="path"
-        handle=".it-tool-card"
-        ghost-class="home-page__cell--ghost"
-        drag-class="home-page__cell--drag"
-        :force-fallback="true"
-        :fallback-tolerance="3"
-        class="home-page__grid home-page__grid--tools home-page__grid--draggable"
-        @start="isDragging = true"
-        @end="onDragEnd"
-      >
-        <template #item="{ element }">
-          <div class="home-page__cell home-page__cell--draggable">
-            <ToolCard :tool="element" />
-          </div>
-        </template>
-      </draggable>
-    </template>
-
+    <!-- 工具区 -->
     <div class="home-page__section-title-row">
-      <h3 class="home-page__section-title">{{ t('home.section.tools') }}</h3>
+      <h3 class="home-page__section-title">
+        {{ currentSectionTitle }}
+        <span class="home-page__section-count">{{ filteredTools.length }}</span>
+      </h3>
     </div>
 
-    <div class="home-page__grid home-page__grid--tools">
-      <div v-for="tool in localizedTools" :key="tool.path" class="home-page__cell">
+    <div v-if="filteredTools.length > 0" class="home-page__grid home-page__grid--tools">
+      <div
+        v-for="(tool, index) in filteredTools"
+        :key="tool.path"
+        class="home-page__cell"
+        :style="{ '--i': index }"
+      >
         <ToolCard :tool="tool" />
       </div>
+    </div>
+    <div v-else class="home-page__empty">
+      {{ t('home.tab.empty') }}
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { useT } from '~/composables/useT'
-import draggable from 'vuedraggable'
-import FollowBanner from './cards/FollowBanner.vue'
+import Hero from './Hero.vue'
+import Favorites from './Favorites.vue'
 import ToolCard from './cards/ToolCard.vue'
 import { useLocalizedTools, type Tool } from '~/composables/useTools'
-import { useFavorites } from '~/composables/useFavorites'
+import { CATEGORIES, type TabKey } from '~/tools/registry'
 
 const { localizedTools } = useLocalizedTools()
-const { favoriteTools, setFavoriteOrder } = useFavorites()
 const { t } = useT()
 
-const localFavorites = ref<Tool[]>(favoriteTools.value)
-watch(favoriteTools, (next) => {
-  localFavorites.value = [...next]
-})
+// ----- Category selection (shared with Hero via v-model) -----
+const selectedCategory = ref<TabKey>('all')
 
-const isDragging = ref(false)
-const dragHint = computed(() =>
-  isDragging.value ? t('home.drag.hintActive') : t('home.drag.hintIdle'),
+// Section title i18n keys — derived from the registry's CATEGORIES
+// so the tools section can show "开发 · 6" instead of just "全部工具"
+// without redeclaring the same 4-key map.
+const CATEGORY_LABEL_KEYS: Record<TabKey, string> = {
+  all: 'home.section.tools',
+  ...Object.fromEntries(CATEGORIES.map((c) => [c.key, c.i18nKey])),
+}
+
+const filteredTools = computed<Tool[]>(() =>
+  selectedCategory.value === 'all'
+    ? localizedTools.value
+    : localizedTools.value.filter((tool) => tool.category === selectedCategory.value),
 )
 
-function onDragEnd() {
-  isDragging.value = false
-  setFavoriteOrder(localFavorites.value.map((tool) => tool.path))
-}
+const currentSectionTitle = computed(() => t(CATEGORY_LABEL_KEYS[selectedCategory.value]))
 </script>
 
 <style lang="scss" scoped>
 .home-page {
-  padding: 12px 16px 32px;
+  padding: 16px 16px 40px;
+}
 
-  &__grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    width: 100%;
-    box-sizing: border-box;
-    column-gap: 12px;
-    row-gap: 12px;
-  }
-  &__grid--with-banner,
-  &__grid--tools,
-  &__grid--draggable {
-    @media (min-width: 640px)  { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    @media (min-width: 768px)  { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    @media (min-width: 1280px) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  }
+.home-page__section-title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 18px 0 12px;
+  padding-left: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--it-text-secondary);
+  letter-spacing: 0.02em;
 
-  &__cell {
-    min-width: 0;
-    display: flex;
-    align-self: stretch;
+  // Vertical accent bar — gives the title a typographic anchor so it
+  // doesn't read as a stranded label.
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 14px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, var(--brand-primary), var(--brand-primary-light));
   }
-  &__cell--banner {
-    @media (min-width: 1280px) { grid-column: 1; }
-    align-self: start;
-  }
+}
+.home-page__section-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.home-page__section-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 18px;
+  padding: 0 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--it-text-tertiary);
+  background-color: var(--brand-tint);
+  border-radius: 999px;
+  letter-spacing: 0;
+}
 
-  &__cell--draggable {
-    position: relative;
-    cursor: grab;
-    border: 2px solid transparent;
-    border-radius: 10px;
-    width: 100%;
-    box-sizing: border-box;
-    transition: border-color 0.15s ease, background-color 0.15s ease, opacity 0.15s ease;
+.home-page__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
+  box-sizing: border-box;
+  column-gap: 12px;
+  row-gap: 12px;
+}
+.home-page__grid--tools {
+  @media (min-width: 640px)  { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (min-width: 768px)  { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  @media (min-width: 1280px) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
 
-    &:active { cursor: grabbing; }
+.home-page__cell {
+  min-width: 0;
+  display: flex;
+  align-self: stretch;
+}
 
-    &.home-page__cell--ghost {
-      border-color: var(--ghost-border);
-      border-style: dashed;
-      background-color: var(--ghost-bg);
-      opacity: 0.55;
-    }
-
-    &.home-page__cell--drag {
-      border-color: var(--brand-primary);
-      background-color: var(--el-color-primary-light-9, #ecfeff);
-      box-shadow: 0 10px 24px var(--drag-shadow);
-      cursor: grabbing;
-      transform: rotate(-1.5deg);
-    }
-  }
-
-  &__section-title {
-    margin: 12px 0 12px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--it-text-secondary);
-    letter-spacing: 0.02em;
-  }
-  &__section-title-row {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
-  }
-  &__drag-hint {
-    font-size: 12px;
-    color: var(--it-text-tertiary, #94a3b8);
-    opacity: 0.7;
-    transition: opacity 0.2s ease;
-  }
+.home-page__empty {
+  padding: 40px 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--it-text-tertiary);
+  background-color: var(--it-bg-elevated);
+  border: 1px dashed var(--it-border);
+  border-radius: 10px;
 }
 </style>

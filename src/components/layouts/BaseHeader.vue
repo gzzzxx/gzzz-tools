@@ -104,7 +104,7 @@
       <el-tooltip content="GitHub" placement="bottom">
         <a
           class="app-header__icon-btn app-header__icon-btn--hide-mobile"
-          href="https://github.com/gzzzxx/gzzz-tool-show"
+          :href="GITHUB_REPO_URL"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="GitHub"
@@ -185,6 +185,7 @@ import { useRouter } from 'vue-router'
 import SearchPalette from './SearchPalette.vue'
 import { type Tool } from '~/composables/useTools'
 import type { AppLocale } from '~/locales'
+import { GITHUB_REPO_URL } from '~/config/repos'
 import { getUiIcon } from '~/components/cards/toolIconRegistry'
 
 const props = defineProps<{ isSiderCollapsed?: boolean }>()
@@ -267,7 +268,6 @@ const onThemeClick = (event: MouseEvent) => {
   emit('toggle-theme', { clientX: event.clientX, clientY: event.clientY })
 }
 
-const GITHUB_REPO_URL = 'https://github.com/gzzzxx/gzzz-tool-show'
 function goGithub() {
   window.open(GITHUB_REPO_URL, '_blank', 'noopener,noreferrer')
 }
@@ -542,15 +542,15 @@ color: var(--brand-primary);
   overflow: hidden;
   color: #fff;
   transition:
-    width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.25s var(--ease-standard),
     opacity 0.25s ease,
-    margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-left 0.25s var(--ease-standard);
 
   svg {
     display: block;
     transform: scale(0.5);
     transform-origin: center;
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 0.3s var(--ease-spring);
   }
 }
 

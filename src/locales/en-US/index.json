@@ -50,9 +50,17 @@
       "tools": "All Tools",
       "favorites": "Favorites"
     },
-    "banner": {
-      "title": "Follow us",
-      "desc": "If this is helpful, please star us on {github} / {gitee} — thanks for the support!"
+    "hero": {
+      "tagline": "{count} online tools for developers — crypto, formatting, conversion, time. All in one place.",
+      "supportNote": "If this is helpful, please star us on {github} / {gitee} — thanks for the support!"
+    },
+    "tab": {
+      "all": "All",
+      "empty": "No tools in this category yet"
+    },
+    "favoritesEmpty": {
+      "title": "No favorites yet",
+      "desc": "Click the heart on any card to pin a tool here for quick access."
     },
     "drag": {
       "hintIdle": "Drag to reorder",

@@ -69,6 +69,14 @@ $it-radius-lg:     12px;
   --tool-section-gap:    20px;
   --it-transition:       0.15s ease;
   --it-transition-smooth: 0.25s ease-out;
+
+  // Easing curves — central place to tune interaction feel.
+  // Per Emil: CSS built-in easings are too weak; use strong custom
+  // curves for UI feedback (start fast, settle).
+  --ease-out:      cubic-bezier(0.23, 1, 0.32, 1);   // hover, fade, tab
+  --ease-in-out:   cubic-bezier(0.4, 0, 0.6, 1);     // pulse, breathing
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1); // state-change delight
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);      // material-style utility
 }
 
 html.dark {

@@ -37,7 +37,7 @@
               :class="{ 'is-fav': isFav }"
               :aria-label="favTooltip"
               :aria-pressed="isFav"
-              @click.stop.prevent="onToggleFav"
+              @click.stop.prevent="toggle(tool.path)"
             >
               <svg
                 :width="favIconSize"
@@ -49,8 +49,14 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 aria-hidden="true"
+                class="tool-card__fav-svg"
               >
-                <path d="M12 21s-7-4.5-9.5-9.5C.8 7.5 3.5 4 7 4c2 0 3.5 1 5 3 1.5-2 3-3 5-3 3.5 0 6.2 3.5 4.5 7.5C19 16.5 12 21 12 21z" />
+                <!-- :key forces remount on toggle → re-runs the bounce animation. -->
+                <path
+                  :key="isFav ? 'on' : 'off'"
+                  class="tool-card__fav-path"
+                  d="M12 21s-7-4.5-9.5-9.5C.8 7.5 3.5 4 7 4c2 0 3.5 1 5 3 1.5-2 3-3 5-3 3.5 0 6.2 3.5 4.5 7.5C19 16.5 12 21 12 21z"
+                />
               </svg>
             </button>
           </el-tooltip>
@@ -83,10 +89,6 @@ const { t } = useT()
 const favTooltip = computed(() =>
   isFav.value ? t('toolcard.favorite.remove') : t('toolcard.favorite.add'),
 )
-
-function onToggleFav() {
-  toggle(props.tool.path)
-}
 </script>
 
 <style lang="scss" scoped>
@@ -119,13 +121,26 @@ function onToggleFav() {
 }
 
 .tool-card__new {
+  // Gradient + soft drop shadow. Shadow slowly pulses — gives the
+  // badge a "live" presence on a card that's otherwise static.
+  position: relative;
   padding: 2px 8px;
-  background: var(--ep-color-success);
+  background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
   color: #fff;
   border-radius: 10px;
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.4;
+  letter-spacing: 0.04em;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.55);
+  animation: it-new-pulse 2.4s var(--ease-in-out) infinite;
+}
+@keyframes it-new-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.45); }
+  50%      { box-shadow: 0 0 0 5px rgba(16, 185, 129, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tool-card__new { animation: none; }
 }
 
 .tool-card__fav {
@@ -140,13 +155,19 @@ function onToggleFav() {
   color: var(--it-text-tertiary, #94a3b8);
   border-radius: 6px;
   cursor: pointer;
-  transition: color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
+  transition: color 200ms var(--ease-out),
+              background-color 200ms var(--ease-out),
+              transform 160ms var(--ease-out);
 
-  &:hover {
-    color: var(--it-favorite);
-    background-color: var(--it-favorite-soft);
+  // Touch devices trigger hover on tap — gate the grow.
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      color: var(--it-favorite);
+      background-color: var(--it-favorite-soft);
+      transform: scale(1.1);
+    }
   }
-  &:active { transform: scale(0.92); }
+  &:active { transform: scale(0.88); }
   &:focus-visible {
     outline: 2px solid var(--brand-primary);
     outline-offset: 1px;
@@ -155,12 +176,35 @@ function onToggleFav() {
   // Filled state — teal heart.
   &.is-fav {
     color: var(--it-favorite);
-    &:hover {
-      color: var(--it-favorite);
-      background-color: var(--it-favorite-softer);
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        color: var(--it-favorite);
+        background-color: var(--it-favorite-softer);
+      }
     }
   }
+}
 
-  svg { display: block; }
+// SVG container — drives the toggle bounce. The :key on <path> forces
+// remount on every state flip, so the keyframe animation re-runs both
+// directions (off→on and on→off).
+.tool-card__fav-svg {
+  display: block;
+  transform-origin: center;
+  // No transition on transform here — the animation owns the motion.
+}
+.tool-card__fav-path {
+  animation: it-heart-bounce 320ms var(--ease-spring);
+  transform-origin: center;
+}
+@keyframes it-heart-bounce {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(0.82); }
+  70%  { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tool-card__fav-path { animation: none; }
+  .tool-card__fav { transition: color 0.15s ease, background-color 0.15s ease; }
 }
 </style>

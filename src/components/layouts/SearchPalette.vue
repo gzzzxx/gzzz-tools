@@ -26,6 +26,7 @@
           :class="['search-palette__item', { 'is-active': idx === activeIndex }]"
           role="option"
           :aria-selected="idx === activeIndex"
+          :style="{ '--i': idx }"
           @mouseenter="activeIndex = idx"
           @mousedown.prevent="select(tool)"
         >
@@ -237,7 +238,21 @@ defineExpose({ handleKeydown })
   border-radius: 6px;
   cursor: pointer;
   color: var(--it-text-primary);
-  transition: background-color 0.12s ease, color 0.12s ease;
+  transition: background-color 150ms var(--ease-out),
+              color 150ms var(--ease-out);
+
+  // Staggered entrance — each item slides 4px up + fades in. The
+  // parent transition group runs the animation only on enter, not
+  // on every re-render.
+  animation: it-palette-item-in 220ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 22ms);
+  @keyframes it-palette-item-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 
   &.is-active {
     // We hardcode the active background instead of var(--el-color-primary)
@@ -353,14 +368,19 @@ defineExpose({ handleKeydown })
   color: rgba(255, 255, 255, 0.7);
 }
 
-// Open/close fade
-.search-palette-fade-enter-active,
+// Open/close fade — use a stronger easing for "punchy" entrance,
+// gentler exit. The panel appears to "settle" rather than fade in.
+.search-palette-fade-enter-active {
+  transition: opacity 140ms var(--ease-out),
+              transform 180ms var(--ease-out);
+}
 .search-palette-fade-leave-active {
-  transition: opacity 0.12s ease, transform 0.12s ease;
+  transition: opacity 100ms ease-in, transform 100ms ease-in;
 }
 .search-palette-fade-enter-from,
 .search-palette-fade-leave-to {
   opacity: 0;
-  transform: translateY(-4px);
+  transform: translateY(-4px) scale(0.98);
+  transform-origin: top center;
 }
 </style>

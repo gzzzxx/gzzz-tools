@@ -13,7 +13,7 @@
       开发的在线工具集，汇集了开发人员和 IT 从业者日常会用到的加解密、编码、格式化、对比等小工具。如果对您有帮助，欢迎分享给朋友或加入收藏夹。gzzz-tools 永久免费且开源，但持续运行需要资金支撑托管与域名续费。如果愿意支持项目发展，鼓励添加更多工具，请考虑通过页面右上角的
       <a
         class="about-page__link"
-        href="https://github.com/gzzzxx/gzzz-tool-show"
+        :href="GITHUB_REPO_URL"
         target="_blank"
         rel="noopener noreferrer"
       >赞助</a>
@@ -26,7 +26,7 @@
       其他依赖可在仓库的
       <a
         class="about-page__link"
-        href="https://github.com/gzzzxx/gzzz-tool-show/blob/main/package.json"
+        :href="`${GITHUB_REPO_URL}/blob/main/package.json`"
         target="_blank"
         rel="noopener noreferrer"
       >package.json</a>
@@ -38,14 +38,14 @@
       如果目前这里没有您需要的工具，并且您认为它可能有用，欢迎在 GitHub 仓库的
       <a
         class="about-page__link"
-        href="https://github.com/gzzzxx/gzzz-tool-show/issues"
+        :href="`${GITHUB_REPO_URL}/issues`"
         target="_blank"
         rel="noopener noreferrer"
       >issues</a>
       中提交新功能请求。如果发现了 Bug，或某些功能未能按预期工作，也请在
       <a
         class="about-page__link"
-        href="https://github.com/gzzzxx/gzzz-tool-show/issues"
+        :href="`${GITHUB_REPO_URL}/issues`"
         target="_blank"
         rel="noopener noreferrer"
       >issues</a>
@@ -60,6 +60,7 @@
 </template>
 
 <script setup lang="ts">
+import { GITHUB_REPO_URL } from '~/config/repos'
 </script>
 
 <style lang="scss" scoped>

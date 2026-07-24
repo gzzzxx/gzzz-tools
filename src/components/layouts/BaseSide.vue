@@ -175,20 +175,12 @@ const emit = defineEmits<{
 const { t } = useT()
 const { localizedTools } = useLocalizedTools()
 
-import { tools } from '~/tools/registry'
-import type { ToolCategory } from '~/tools/registry'
-
-const categoryDefs: { key: ToolCategory; i18nKey: string }[] = [
-  { key: 'crypto',  i18nKey: 'sidebar.category.crypto' },
-  { key: 'dev',     i18nKey: 'sidebar.category.dev' },
-  { key: 'convert', i18nKey: 'sidebar.category.convert' },
-  { key: 'time',    i18nKey: 'sidebar.category.time' },
-]
+import { tools, CATEGORIES } from '~/tools/registry'
 
 const categoryByPath = new Map(tools.map(tool => [tool.path, tool.category]))
 
 const categories = computed(() =>
-  categoryDefs.map((cat) => ({
+  CATEGORIES.map((cat) => ({
     key: cat.key,
     name: t(cat.i18nKey),
     tools: localizedTools.value
@@ -376,7 +368,7 @@ const isFavoritesCollapsed = useStorage<boolean>(
 
 .base-side__category-arrow {
   font-size: 14px;
-  transition: transform 0.2s ease;
+  transition: transform 180ms var(--ease-standard);
   flex-shrink: 0;
   &.is-collapsed { transform: rotate(-90deg); }
 }
@@ -401,7 +393,8 @@ const isFavoritesCollapsed = useStorage<boolean>(
   color: var(--bs-sider-text-mute);
   text-decoration: none;
   font-size: 13.5px;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: background-color 150ms var(--ease-out),
+              color 150ms var(--ease-out);
 
   &:hover {
     background-color: var(--bs-sider-hover);
@@ -427,7 +420,7 @@ const isFavoritesCollapsed = useStorage<boolean>(
   width: 2px;
   border-radius: 2px;
   background-color: var(--bs-sider-hover);
-  transition: background 0.2s ease;
+  transition: background 200ms var(--ease-out);
 }
 
 .base-side__tool-icon { font-size: 16px; flex-shrink: 0; }
@@ -442,8 +435,12 @@ const isFavoritesCollapsed = useStorage<boolean>(
 .base-side--collapsed .base-side__link { justify-content: center; padding: 8px 0; }
 .base-side--collapsed .base-side__tool-name { display: none; }
 
-.base-side-fade-enter-active,
-.base-side-fade-leave-active { transition: opacity 0.18s ease; }
-.base-side-fade-enter-from,
-.base-side-fade-leave-to { opacity: 0; }
+// List collapse/expand — opacity + a small translateY so the eye tracks
+// the spatial change. Easing: ease-out for the entrance, ease-in for
+// the exit (faster collapse, "the section was here" instead of "wait
+// did anything happen?").
+.base-side-fade-enter-active { transition: opacity 150ms ease-out, transform 200ms var(--ease-out); }
+.base-side-fade-leave-active { transition: opacity 120ms ease-in, transform 150ms ease-in; }
+.base-side-fade-enter-from   { opacity: 0; transform: translateY(-2px); }
+.base-side-fade-leave-to     { opacity: 0; transform: translateY(-2px); }
 </style>

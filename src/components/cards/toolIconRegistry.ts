@@ -196,7 +196,8 @@ export const toolIconRegistry: Record<string, IconRender> = {
 }
 
 /**
- * UI / decorative icons — used by FollowBanner, header sponsor
+ * UI / decorative icons — used by the header sponsor button, the
+ * favorites-empty CTA, and the drag-handle hint on the home page.
  * button, etc. Same renderer contract (returns VNode), kept in
  * the same file so all icon decisions live in one place.
  */
