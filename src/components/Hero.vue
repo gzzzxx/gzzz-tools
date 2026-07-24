@@ -12,7 +12,7 @@
     <p class="hero__tagline">
       <i18n-t keypath="home.hero.tagline" tag="span">
         <template #count>
-          <strong class="hero__count">{{ totalCount }}</strong>
+          <strong class="hero__count">{{ Math.round(animatedCount) }}</strong>
         </template>
       </i18n-t>
     </p>
@@ -49,7 +49,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
+import { useTransition } from '@vueuse/core'
 import { useT } from '~/composables/useT'
 import { type Tool } from '~/composables/useTools'
 import { CATEGORIES, type TabKey } from '~/tools/registry'
@@ -70,6 +71,27 @@ const emit = defineEmits<{
 const { t } = useT()
 
 const totalCount = computed(() => props.tools.length)
+
+// ----------------------------------------------------------------
+// Animated count-up for the total tools number. useTransition (not
+// useSpring — the project has VueUse, not framer-motion) drives a
+// single progress from 0 → 1, then we multiply by target.
+//
+// Why easeOutCubic instead of easeOutBack / spring: the count is
+// rendered as an integer via Math.round, and any overshoot in the
+// curve becomes a visible "16 → 18 → 16" stutter. Spring-style
+// overshoot only reads as spring on continuous values; on integers
+// it reads as a bug. easeOutCubic gives a quick start + smooth
+// settle without ever exceeding 1.0, so the integer is monotonic.
+// ----------------------------------------------------------------
+const countSource = ref(0)
+const animatedCount = useTransition(countSource, {
+  duration: 1200,
+  transition: [0.33, 1, 0.68, 1],
+})
+onMounted(() => {
+  countSource.value = props.tools.length
+})
 
 const tabs = computed(() => [
   { key: 'all' as TabKey, label: t('home.tab.all'), count: props.tools.length },
@@ -191,8 +213,12 @@ function moveTab(delta: number) {
     max-width: 64ch;
   }
   &__count {
-    font-weight: 700;
+    font-weight: 800;
     color: #fff;
+    // Tabular figures so each digit occupies the same advance width
+    // — without this, "1" → "16" mid-count would jitter as the
+    // number's visual width changes. Inline with the count-up.
+    font-variant-numeric: tabular-nums;
     // Slight underline so the count stands out without breaking flow.
     border-bottom: 1px dashed rgba(255, 255, 255, 0.45);
     padding-bottom: 1px;
