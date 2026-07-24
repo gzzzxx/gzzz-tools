@@ -23,16 +23,22 @@
       </h3>
     </div>
 
-    <div v-if="filteredTools.length > 0" class="home-page__grid home-page__grid--tools">
+    <TransitionGroup
+      v-if="filteredTools.length > 0"
+      name="grid-fade"
+      tag="div"
+      class="home-page__grid home-page__grid--tools"
+      @before-leave="lockCellGeometry"
+    >
       <div
         v-for="(tool, index) in filteredTools"
-        :key="tool.path"
+        :key="`${selectedCategory}/${tool.path}`"
         class="home-page__cell"
         :style="{ '--i': index }"
       >
         <ToolCard :tool="tool" />
       </div>
-    </div>
+    </TransitionGroup>
     <div v-else class="home-page__empty">
       {{ t('home.tab.empty') }}
     </div>
@@ -69,6 +75,23 @@ const filteredTools = computed<Tool[]>(() =>
 )
 
 const currentSectionTitle = computed(() => t(CATEGORY_LABEL_KEYS[selectedCategory.value]))
+
+// When a category changes, leaving cells need to keep their position
+// and width for the duration of the 200ms fade — otherwise the
+// incoming grid snaps in immediately and the leaving cards "jump"
+// into the void. Capturing getBoundingClientRect here lets us pin
+// the cell via inline styles during the leave transition.
+function lockCellGeometry(el: Element) {
+  const cell = el as HTMLElement
+  const parent = cell.parentElement
+  if (!parent) return
+  const cellRect = cell.getBoundingClientRect()
+  const parentRect = parent.getBoundingClientRect()
+  cell.style.position = 'absolute'
+  cell.style.width = `${cellRect.width}px`
+  cell.style.top = `${cellRect.top - parentRect.top}px`
+  cell.style.left = `${cellRect.left - parentRect.left}px`
+}
 </script>
 
 <style lang="scss" scoped>
@@ -124,12 +147,41 @@ const currentSectionTitle = computed(() => t(CATEGORY_LABEL_KEYS[selectedCategor
 }
 
 .home-page__grid {
+  // position: relative anchors the absolutely-positioned leaving
+  // cells so they fade out from their original grid slot instead
+  // of collapsing to the container's top-left corner.
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   width: 100%;
   box-sizing: border-box;
   column-gap: 12px;
   row-gap: 12px;
+}
+
+// Category-switch transition. Enter fades up from below, leave fades
+// up and out (script-side `lockCellGeometry` keeps the leaving cell
+// pinned to its slot so the new grid can flow into place cleanly).
+// 200ms is short enough not to feel sluggish on a tab click, but
+// long enough that the grid doesn't snap-cut between categories.
+.grid-fade-enter-active,
+.grid-fade-leave-active {
+  transition: opacity 200ms var(--ease-out),
+              transform 200ms var(--ease-out);
+}
+.grid-fade-enter-from {
+  opacity: 0;
+  transform: translateY(6px);
+}
+.grid-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+// Leaving cells opt out of grid flow so the incoming cells can take
+// their slots immediately, instead of waiting 200ms for the old
+// ones to disappear.
+.grid-fade-leave-active {
+  position: absolute;
 }
 .home-page__grid--tools {
   @media (min-width: 640px)  { grid-template-columns: repeat(2, minmax(0, 1fr)); }
