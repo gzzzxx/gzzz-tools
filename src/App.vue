@@ -140,7 +140,7 @@ function onToggleTheme(payload: { clientX: number; clientY: number }) {
   top: 0;
   height: 100vh;
 
-  &.is-collapsed { width: 64px; }
+  &.is-collapsed { width: 0; }
 }
 
 .app-root__main {

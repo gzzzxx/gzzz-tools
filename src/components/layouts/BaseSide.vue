@@ -17,7 +17,7 @@
       <div class="base-side__brand-curve" aria-hidden="true" />
     </div>
 
-    <div v-show="!isCollapsed" class="base-side__body">
+    <div class="base-side__body">
   
       <div
         v-if="favoriteTools.length > 0"
@@ -235,7 +235,10 @@ const isFavoritesCollapsed = useStorage<boolean>(
   flex-shrink: 0;
   border-right: 1px solid var(--bs-sider-border);
 
-  &--collapsed { width: 64px; }
+  &--collapsed { 
+  width: 0; 
+  border-right-color: transparent;
+}
 }
 
 .base-side__brand {
@@ -317,14 +320,6 @@ const isFavoritesCollapsed = useStorage<boolean>(
   opacity: 0.6;
   filter: blur(1px);
 }
-
-.base-side--collapsed .base-side__titles,
-.base-side--collapsed .base-side__brand-curve,
-.base-side--collapsed .base-side__subtitle {
-  display: none;
-}
-.base-side--collapsed .base-side__brand { padding: 16px 16px 12px; }
-.base-side--collapsed .base-side__brand-inner { justify-content: center; }
 
 .base-side__body {
   flex: 1;
@@ -431,9 +426,6 @@ const isFavoritesCollapsed = useStorage<boolean>(
 }
 
 .base-side__footer { flex-shrink: 0; min-height: 16px; }
-
-.base-side--collapsed .base-side__link { justify-content: center; padding: 8px 0; }
-.base-side--collapsed .base-side__tool-name { display: none; }
 
 // List collapse/expand — opacity + a small translateY so the eye tracks
 // the spatial change. Easing: ease-out for the entrance, ease-in for
