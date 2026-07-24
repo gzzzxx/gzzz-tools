@@ -13,6 +13,11 @@ export function useLocalizedTools() {
   const localizedTools = computed<Tool[]>(() =>
     tools.map(entry => ({
       ...entry,
+      // Surface optional flags explicitly so the contract lives here,
+      // not as a side effect of the spread. Adding a new optional flag
+      // on ToolDefinition still works through `...entry`, but this
+      // line makes the intent obvious to readers.
+      isNew: entry.isNew,
       name: t(entry.nameKey),
       desc: t(entry.descKey),
     })),

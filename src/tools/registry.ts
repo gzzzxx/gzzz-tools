@@ -29,6 +29,8 @@ export interface ToolDefinition {
   descKey: string
   /** Sidebar category. */
   category: ToolCategory
+  /** Show the "NEW" badge on the home card. */
+  isNew?: boolean
   /** Optional vue-router `props` — passed to the component as props. */
   props?: Record<string, unknown>
 }
@@ -40,7 +42,7 @@ export const tools: readonly ToolDefinition[] = [
   { path: '/hash',            component: () => import('~/views/hash/hash.vue'),            icon: 'hash',    nameKey: 'tools.hash.name',     descKey: 'tools.hash.desc',     category: 'crypto' },
   { path: '/password-strength', component: () => import('~/views/password-strength/password-strength.vue'), icon: 'password', nameKey: 'tools.passwordStrength.name', descKey: 'tools.passwordStrength.desc', category: 'crypto' },
   // dev
-  { path: '/json',          component: () => import('~/views/json/json.vue'),          icon: 'braces',   nameKey: 'tools.format.name',   descKey: 'tools.format.desc',   category: 'dev' },
+  { path: '/json',          component: () => import('~/views/json/json.vue'),          icon: 'braces',   nameKey: 'tools.format.name',   descKey: 'tools.format.desc',   category: 'dev'},
   { path: '/sql',             component: () => import('~/views/sql/sql.vue'),              icon: 'database', nameKey: 'tools.sql.name',      descKey: 'tools.sql.desc',      category: 'dev' },
   { path: '/xml',             component: () => import('~/views/xml/xml.vue'),              icon: 'xml',      nameKey: 'tools.xml.name',      descKey: 'tools.xml.desc',      category: 'dev' },
   { path: '/contrast',        component: () => import('~/views/contrast/contrast.vue'),    icon: 'diff',     nameKey: 'tools.contrast.name', descKey: 'tools.contrast.desc', category: 'dev' },
@@ -50,7 +52,7 @@ export const tools: readonly ToolDefinition[] = [
   { path: '/base64',          component: () => import('~/views/base64/base64.vue'),         icon: 'binary',   nameKey: 'tools.base64.name',    descKey: 'tools.base64.desc',    category: 'convert' },
   { path: '/timestamp',       component: () => import('~/views/timestamp/timestamp.vue'),   icon: 'clock',    nameKey: 'tools.timestamp.name', descKey: 'tools.timestamp.desc', category: 'convert' },
   { path: '/color',           component: () => import('~/views/color/color.vue'),           icon: 'palette',  nameKey: 'tools.color.name',     descKey: 'tools.color.desc',     category: 'convert' },
-  { path: '/qrcode',          component: () => import('~/views/qrcode/qrcode.vue'),         icon: 'qrcode',   nameKey: 'tools.qrcode.name',    descKey: 'tools.qrcode.desc',    category: 'convert' },
+  { path: '/qrcode',          component: () => import('~/views/qrcode/qrcode.vue'),         icon: 'qrcode',   nameKey: 'tools.qrcode.name',    descKey: 'tools.qrcode.desc',    category: 'convert' , isNew: true },
   // time
   { path: '/calendar',        component: () => import('~/views/calendar/calendar.vue'),    icon: 'calendar', nameKey: 'tools.calendar.name', descKey: 'tools.calendar.desc', category: 'time' },
   { path: '/timer',           component: () => import('~/views/timer/timer.vue'),          icon: 'timer',    nameKey: 'tools.timer.name',    descKey: 'tools.timer.desc',    category: 'time' },
