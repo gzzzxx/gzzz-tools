@@ -136,7 +136,7 @@
           @click="onThemeClick"
         >
           <el-icon :size="18">
-            <component :is="isDark ? Sunny : Moon" />
+            <component :is="isDark ? Moon : Sunny" />
           </el-icon>
         </button>
       </el-tooltip>

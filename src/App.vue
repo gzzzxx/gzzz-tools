@@ -51,32 +51,22 @@ import { useT } from '~/composables/useT'
 import { useTheme } from '~/composables/useTheme'
 import { useRouter } from 'vue-router'
 
-// Element Plus' built-in locale dictionary — picked per active
-// language so el-pagination / el-table / etc. flip with our toggle.
 const { locale } = useT()
 const elLocale = computed(() => (locale.value === 'en-US' ? en : zhCn))
 const router = useRouter()
 
-// lg-1 boundary per it-tools design spec.
 const isMobile = useMediaQuery('(max-width: 1023.98px)')
 
 const isSiderCollapsed = ref(false)
 const drawerVisible = ref(false)
 
 function onNavigate(path: string) {
-  // Close the drawer before the route push so the page transition isn't
-  // blocked by the still-rendering drawer overlay.
   drawerVisible.value = false
   if (path && path !== router.currentRoute.value.path) {
     router.push(path)
   }
 }
 
-// Theme toggle is owned by `useTheme` so the dark/light logic and
-// the View Transitions animation live in one place. `initTheme()`
-// was already called from main.ts before mount to apply the saved
-// preference to <html>; here we just expose the flipper to the
-// header click handler.
 const { toggleTheme } = useTheme()
 function onToggleTheme(payload: { clientX: number; clientY: number }) {
   toggleTheme(payload)
@@ -121,16 +111,76 @@ function onToggleTheme(payload: { clientX: number; clientY: number }) {
   .app-root__main { width: 100%; }
 }
 
-// View-transition animation hooks.
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
 }
 
-.dark::view-transition-old(root) { z-index: 1; }
-.dark::view-transition-new(root) { z-index: 999; }
+::view-transition-old(root) {
+  z-index: 1;
+}
 
-::view-transition-old(root) { z-index: 999; }
-::view-transition-new(root) { z-index: 1; }
+::view-transition-new(root) {
+  z-index: 2147483646;
+}
+
+@keyframes vt-shrink {
+  from {
+    clip-path: circle(
+      var(--vt-radius)
+      at
+      var(--vt-x)
+      var(--vt-y)
+    );
+  }
+  to {
+    clip-path: circle(
+      0
+      at
+      var(--vt-x)
+      var(--vt-y)
+    );
+  }
+}
+
+html:active-view-transition-type(light-to-dark) {
+  &::view-transition-old(root) {
+    z-index: 2147483646;
+    animation: vt-shrink 400ms ease-in forwards;
+  }
+  &::view-transition-new(root) {
+    z-index: 1;
+  }
+}
+
+@keyframes vt-expand {
+  from {
+    clip-path: circle(
+      0
+      at
+      var(--vt-x)
+      var(--vt-y)
+    );
+  }
+  to {
+    clip-path: circle(
+      var(--vt-radius)
+      at
+      var(--vt-x)
+      var(--vt-y)
+    );
+  }
+}
+
+html:active-view-transition-type(dark-to-light) {
+  &::view-transition-new(root) {
+    z-index: 2147483646;
+    animation: vt-expand 400ms ease-in forwards;
+  }
+}
 </style>
