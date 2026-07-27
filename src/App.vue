@@ -48,6 +48,7 @@ import { useMediaQuery } from '@vueuse/core'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import en from 'element-plus/es/locale/lang/en'
 import { useT } from '~/composables/useT'
+import { useTheme } from '~/composables/useTheme'
 import { useRouter } from 'vue-router'
 
 // Element Plus' built-in locale dictionary — picked per active
@@ -71,55 +72,14 @@ function onNavigate(path: string) {
   }
 }
 
-// ----------------------------------------------------------------
-// Theme toggle — reads/writes localStorage 'theme' and animates via
-// the View Transitions API. The non-dark class is only ever added
-// when explicitly switched to light, otherwise we stay on dark
-// (which is the original behavior preserved from the legacy header).
-// ----------------------------------------------------------------
-if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-  const next = localStorage.getItem('theme') === 'light' ? 'light' : 'dark'
-  document.documentElement.classList.remove('light', 'dark')
-  document.documentElement.classList.add(next)
-} else {
-  document.documentElement.classList.remove('light')
-  document.documentElement.classList.add('dark')
-}
-
+// Theme toggle is owned by `useTheme` so the dark/light logic and
+// the View Transitions animation live in one place. `initTheme()`
+// was already called from main.ts before mount to apply the saved
+// preference to <html>; here we just expose the flipper to the
+// header click handler.
+const { toggleTheme } = useTheme()
 function onToggleTheme(payload: { clientX: number; clientY: number }) {
-  const { clientX: x, clientY: y } = payload
-  const endRadius = Math.hypot(
-    Math.max(x, window.innerWidth - x),
-    Math.max(y, window.innerHeight - y),
-  )
-
-  const isDark = document.documentElement.classList.contains('dark')
-  localStorage.setItem('theme', isDark ? 'light' : 'dark')
-
-  const transition = (document as any).startViewTransition?.(() => {
-    const root = document.documentElement
-    root.classList.remove(isDark ? 'dark' : 'light')
-    root.classList.add(isDark ? 'light' : 'dark')
-  })
-
-  if (!transition) return // browser doesn't support view transitions
-
-  transition.ready.then(() => {
-    const clipPath = [
-      `circle(0px at ${x}px ${y}px)`,
-      `circle(${endRadius}px at ${x}px ${y}px)`,
-    ]
-    document.documentElement.animate(
-      { clipPath: isDark ? [...clipPath].reverse() : clipPath },
-      {
-        duration: 800,
-        easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
-        pseudoElement: isDark
-          ? '::view-transition-old(root)'
-          : '::view-transition-new(root)',
-      },
-    )
-  })
+  toggleTheme(payload)
 }
 </script>
 

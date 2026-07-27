@@ -163,72 +163,28 @@
       <CardPane>
         <div class="enc-info__body prose-body">
           <p class="prose-para">
-            <strong>算法介绍</strong>
+            <strong>{{ t('encryptionPage.info.introTitle') }}</strong>
           </p>
-          <p class="prose-para">
-            <strong>SM4.0</strong>
-            <span>（原名SMS4.0）是一种</span>
-            <span class="prose-term">分组密码</span>
-            <span>标准，由</span>
-            <span class="prose-term">国家密码管理局</span>
-            <span>于2012年3月21日发布。相关标准为"GM/T 0002-2012《SM4分组密码算法》（原SMS4分组密码算法）"。</span>
-          </p>
-          <p class="prose-para">
-            <span>在</span>
-            <span class="prose-term">商用密码</span>
-            <span>体系中，SM4主要用于</span>
-            <span class="prose-term">数据加密</span>
-            <span>，其算法公开，分组长度与密钥长度均为128bit，</span>
-            <span class="prose-term">加密算法</span>
-            <span>与密钥扩展算法都采用32轮非线性迭代结构，</span>
-            <span class="prose-term">S盒</span>
-            <span>为固定的8比特输入8比特输出。</span>
-          </p>
-          <p class="prose-para">
-            SM4.0中的指令长度被提升到大于64K（即64×1024）的水平，这是SM 3.0规格（渲染指令长度允许大于512）的128倍。
-          </p>
+          <p
+            v-for="(text, i) in encIntroParagraphs"
+            :key="`ip-${i}`"
+            class="prose-para"
+            v-html="text"
+          />
         </div>
       </CardPane>
 
       <CardPane>
         <div class="enc-info__body prose-body">
           <p class="prose-para">
-            <strong>相关概念</strong>
+            <strong>{{ t('encryptionPage.info.conceptsTitle') }}</strong>
           </p>
-          <p class="prose-para">
-            <span>在</span>
-            <span class="prose-term">密码学</span>
-            <span>中，</span>
-            <strong>分组加密</strong>
-            <span>（英语：</span>
-            <strong>Block cipher</strong>
-            <span>），又称</span>
-            <strong>分块加密</strong>
-            <span>或</span>
-            <strong>块密码</strong>
-            <span>，是一种对称密钥算法。它将明文分成多个等长的模块（block），使用确定的算法和</span>
-            <span class="prose-term">对称密钥</span>
-            <span>对每组分别加密解密。分组加密是极其重要的加密协议组成，其中典型的如</span>
-            <span class="prose-term">DES</span>
-            <span>和</span>
-            <span class="prose-term">AES</span>
-            <span>作为美国政府核定的标准加密算法，应用领域从电子邮件加密到银行交易转帐，非常广泛。</span>
-          </p>
-          <p class="prose-para">
-            国密即国家密码局认定的国产密码算法。主要有SM1，SM2，SM3，SM4。密钥长度和分组长度均为128位。
-          </p>
-          <p class="prose-para">
-            SM1为对称加密。其加密强度与AES相当。该算法不公开，调用该算法时，需要通过加密芯片的接口进行调用。
-          </p>
-          <p class="prose-para">
-            SM2为非对称加密，基于ECC。该算法已公开。由于该算法基于ECC，故其签名速度与秘钥生成速度都快于RSA。ECC 256位（SM2采用的就是ECC 256位的一种）安全强度比RSA 2048位高，但运算速度快于RSA。
-          </p>
-          <p class="prose-para">
-            SM3消息摘要。可以用MD5作为对比理解。该算法已公开。校验结果为256位。
-          </p>
-          <p class="prose-para">
-            SM4无线局域网标准的分组数据算法。对称加密，密钥长度和分组长度均为128位。
-          </p>
+          <p
+            v-for="(text, i) in encConceptParagraphs"
+            :key="`cp-${i}`"
+            class="prose-para"
+            v-html="text"
+          />
         </div>
       </CardPane>
     </section>
@@ -236,7 +192,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { computed, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
 import {
   sm4Encrypt,
@@ -244,11 +200,23 @@ import {
   aesEncrypt,
   aesDecrypt,
 } from '~/utils/crypto'
-import { useT } from '~/composables/useT'
+import { useI18n } from 'vue-i18n'
 import { useClipboard } from '~/composables/useClipboard'
 
-const { t } = useT()
+// Use raw tm() for the prose arrays — t() flattens array paths into a
+// single string and we need the full list to v-for over. Reading
+// `locale.value` inside the computed establishes an explicit
+// dependency on the active language so the array swaps on language
+// flip.
+const { t, tm, locale } = useI18n({ useScope: 'global' })
 const { copy } = useClipboard()
+
+const encIntroParagraphs = computed<string[]>(
+  () => (locale.value, tm('encryptionPage.info.introParagraphs') as string[]),
+)
+const encConceptParagraphs = computed<string[]>(
+  () => (locale.value, tm('encryptionPage.info.conceptParagraphs') as string[]),
+)
 
 const props = defineProps<{ algorithm: string }>()
 

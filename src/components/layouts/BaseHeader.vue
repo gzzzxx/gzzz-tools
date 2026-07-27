@@ -181,6 +181,7 @@ import {
   Sunny,
 } from '@element-plus/icons-vue'
 import { useT } from '~/composables/useT'
+import { useIsDark } from '~/composables/useIsDark'
 import { useRouter } from 'vue-router'
 import SearchPalette from './SearchPalette.vue'
 import { type Tool } from '~/composables/useTools'
@@ -256,15 +257,11 @@ const onDocumentMouseDown = (e: MouseEvent) => {
   }
 }
 
-const isDark = ref(false)
-const syncThemeFromDom = () => {
-  isDark.value = document.documentElement.classList.contains('dark')
-}
+const isDark = useIsDark()
 const themeTooltip = computed(() =>
   isDark.value ? t('common.theme.light') : t('common.theme.dark'),
 )
 const onThemeClick = (event: MouseEvent) => {
-  syncThemeFromDom()
   emit('toggle-theme', { clientX: event.clientX, clientY: event.clientY })
 }
 
@@ -274,25 +271,16 @@ function goGithub() {
 
 const sponsorGift = getUiIcon('gift')
 
-let themeObserver: MutationObserver | null = null
-
 onMounted(() => {
   isMac.value = /Mac|iPhone|iPad/i.test(navigator.platform)
-  syncThemeFromDom()
 
   window.addEventListener('keydown', onKeydown)
   document.addEventListener('mousedown', onDocumentMouseDown)
-  themeObserver = new MutationObserver(syncThemeFromDom)
-  themeObserver.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['class'],
-  })
 })
 
 onUnmounted(() => {
   window.removeEventListener('keydown', onKeydown)
   document.removeEventListener('mousedown', onDocumentMouseDown)
-  themeObserver?.disconnect()
 })
 </script>
 

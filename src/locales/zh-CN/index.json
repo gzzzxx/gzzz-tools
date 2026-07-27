@@ -472,6 +472,42 @@
       "decode": "解码",
       "copy": "复制",
       "clear": "清空"
+    },
+    "reference": {
+      "title": "Base64 编码说明",
+      "paragraphs": [
+        "<span class=\"prose-term\">Base64 </span>是一种基于 64 个可打印字符来表示二进制数据的表示方法，由于 2^6=64，所以每 6 个比特为一个单元，对应某个可打印字符。",
+        "<span class=\"prose-term\">Base64 </span>常用于在通常处理文本数据的场合，表示、传输、存储一些二进制数据，包括 MIME 的电子邮件及 XML 的一些复杂数据。",
+        "<span class=\"prose-term\">Base64 </span>编码要求把 3 个 8 位字节（3*8=24）转化为 4 个 6 位的字节（4*6=24），之后在 6 位的前面补两个 0，形成 8 位一个字节的形式。 如果剩下的字符不足 3 个字节，则用 0 填充，输出字符使用 =，因此编码后输出的文本末尾可能会出现 1 或 2 个 =。",
+        "为了保证所输出的编码位可读字符，<span class=\"prose-term\">Base64 </span>制定了一个编码表，以便进行统一转换。编码表的大小为<span class=\"prose-term\"> 2^6=64 </span>，这也是<span class=\"prose-term\"> Base64 </span>名称的由来。",
+        "在 <span class=\"prose-term\"> Base64 </span>中的可打印字符包括字母<span class=\"prose-term\"> A-Z </span>、<span class=\"prose-term\"> a-z </span>、数字<span class=\"prose-term\"> 0-9 </span>，这样共有 62 个字符，此外两个可打印符号在不同的系统中而不同。",
+        "以下是<span class=\"prose-term\"> Base64 </span>编码的基本步骤：",
+        "解码<span class=\"prose-term\"> Base64 </span>编码的过程与编码相反，将每个 Base64 字符转换为对应的6位二进制值，然后将这些 6 位值组合成原始的二进制数据。",
+        "<span class=\"prose-term\">Base64 </span>编码具有以下特点："
+      ],
+      "steps": [
+        "将数据划分为 3 个字节一组（24位）。",
+        "将每个字节转换为 8 位二进制形式。",
+        "将 24 位数据按照 6 位一组进行划分，得到 4 个 6 位的组。",
+        "将每个 6 位的组转换为对应的 Base64 字符。",
+        "如果数据不足 3 字节，进行填充。",
+        "将所有转换后的 Base64 字符连接起来，形成最终的编码结果。"
+      ],
+      "features": [
+        "编码后的数据长度总是比原始数据长约 1/3。",
+        "编码后的数据可以包含 A-Z、a-z、0-9 和两个额外字符的任意组合。",
+        "Base64 编码是一种可逆的编码方式，可以通过解码还原原始数据。"
+      ],
+      "tableHeader": "Base64 编码表",
+      "codeValue": "码值",
+      "codeChar": "字符",
+      "example": {
+        "lead": "举例来说，一段引用自托马斯·霍布斯《利维坦》的文本：",
+        "source": "Man is distinguished, not only by his reason, but by this singular passion from other animals, which is a lust of the mind, that by a perseverance of delight in the continued and indefatigable generation of knowledge, exceeds the short vehemence of any carnal pleasure.",
+        "encodedLead": "使用 Base64 编码之后变成：",
+        "encoded": "TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCBieSB0aGlzIHNpbmd1bGFyIHBhc3Npb24gZnJvbSBvdGhlciBhbmltYWxzLCB3aGljaCBpcyBhIGx1c3Qgb2YgdGhlIG1pbmQsIHRoYXQgYnkgYSBwZXJzZXZlcmFuY2Ugb2YgZGVsaWdodCBpbiB0aGUgY29udGludWVkIGFuZCBpbmRlZmF0aWdhYmxlIGdlbmVyYXRpb24gb2Yga25vd2xlZGdlLCBleGNlZWRzIHRoZSBzaG9ydCB2ZWhlbWVuY2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4=",
+        "manLead": "编码 \"Man\" 的结果为 TWFu，转换过程如下："
+      }
     }
   },
   "encryptionPage": {
@@ -510,6 +546,23 @@
       "encryptSuccess": "加密成功",
       "decryptSuccess": "解密成功",
       "error": "处理失败"
+    },
+    "info": {
+      "introTitle": "算法介绍",
+      "conceptsTitle": "相关概念",
+      "introParagraphs": [
+        "<strong>SM4.0</strong><span>（原名SMS4.0）是一种</span><span class=\"prose-term\">分组密码</span><span>标准，由</span><span class=\"prose-term\">国家密码管理局</span><span>于2012年3月21日发布。相关标准为\"GM/T 0002-2012《SM4分组密码算法》（原SMS4分组密码算法）\"。</span>",
+        "<span>在</span><span class=\"prose-term\">商用密码</span><span>体系中，SM4主要用于</span><span class=\"prose-term\">数据加密</span><span>，其算法公开，分组长度与密钥长度均为128bit，</span><span class=\"prose-term\">加密算法</span><span>与密钥扩展算法都采用32轮非线性迭代结构，</span><span class=\"prose-term\">S盒</span><span>为固定的8比特输入8比特输出。</span>",
+        "SM4.0中的指令长度被提升到大于64K（即64×1024）的水平，这是SM 3.0规格（渲染指令长度允许大于512）的128倍。"
+      ],
+      "conceptParagraphs": [
+        "<span>在</span><span class=\"prose-term\">密码学</span><span>中，</span><strong>分组加密</strong><span>（英语：</span><strong>Block cipher</strong><span>），又称</span><strong>分块加密</strong><span>或</span><strong>块密码</strong><span>，是一种对称密钥算法。它将明文分成多个等长的模块（block），使用确定的算法和</span><span class=\"prose-term\">对称密钥</span><span>对每组分别加密解密。分组加密是极其重要的加密协议组成，其中典型的如</span><span class=\"prose-term\">DES</span><span>和</span><span class=\"prose-term\">AES</span><span>作为美国政府核定的标准加密算法，应用领域从电子邮件加密到银行交易转帐，非常广泛。</span>",
+        "国密即国家密码局认定的国产密码算法。主要有SM1，SM2，SM3，SM4。密钥长度和分组长度均为128位。",
+        "SM1为对称加密。其加密强度与AES相当。该算法不公开，调用该算法时，需要通过加密芯片的接口进行调用。",
+        "SM2为非对称加密，基于ECC。该算法已公开。由于该算法基于ECC，故其签名速度与秘钥生成速度都快于RSA。ECC 256位（SM2采用的就是ECC 256位的一种）安全强度比RSA 2048位高，但运算速度快于RSA。",
+        "SM3消息摘要。可以用MD5作为对比理解。该算法已公开。校验结果为256位。",
+        "SM4无线局域网标准的分组数据算法。对称加密，密钥长度和分组长度均为128位。"
+      ]
     }
   }
 }

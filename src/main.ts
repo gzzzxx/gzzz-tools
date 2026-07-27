@@ -1,7 +1,11 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import './axios/index.js'
-// import './assets/font/font.css'
+import { initTheme } from "~/composables/useTheme";
+
+// Apply the saved theme (or fall back to dark) before mounting so the
+// first paint already has the right class on <html>. Without this
+// step, the first render would briefly flash the default class.
+initTheme();
 
 import VueDiff from 'vue-diff';
 import 'vue-diff/dist/index.css';

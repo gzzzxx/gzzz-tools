@@ -472,6 +472,42 @@
       "decode": "Decode",
       "copy": "Copy",
       "clear": "Clear"
+    },
+    "reference": {
+      "title": "About Base64 Encoding",
+      "paragraphs": [
+        "<span class=\"prose-term\">Base64</span> is a binary-to-text encoding that represents binary data using a set of 64 printable characters. Because 2^6 = 64, every 6 bits maps to one printable character.",
+        "<span class=\"prose-term\">Base64</span> is commonly used wherever text-friendly representation, transfer, or storage of binary data is needed — MIME email bodies, complex data inside XML, and similar channels.",
+        "<span class=\"prose-term\">Base64</span> encoding groups every 3 bytes (3 × 8 = 24 bits) into 4 output characters of 6 bits each (4 × 6 = 24). The 6-bit value is left-padded with two zero bits to form a full byte. If the input is not a multiple of 3 bytes, the remaining bits are zero-padded and the output is terminated with 1 or 2 \"=\" characters.",
+        "To keep the encoded output printable, <span class=\"prose-term\">Base64</span> uses a fixed alphabet. The alphabet has <span class=\"prose-term\">2^6 = 64</span> entries — that is where the name comes from.",
+        "The <span class=\"prose-term\">Base64</span> alphabet covers the letters <span class=\"prose-term\">A–Z</span>, <span class=\"prose-term\">a–z</span>, and the digits <span class=\"prose-term\">0–9</span> — 62 characters in total. The remaining 2 characters are two printable symbols that vary between variants.",
+        "Here is the basic procedure for <span class=\"prose-term\">Base64</span> encoding:",
+        "Decoding <span class=\"prose-term\">Base64</span> is the inverse of encoding: each character is mapped back to its 6-bit value and the bits are concatenated to recover the original bytes.",
+        "<span class=\"prose-term\">Base64</span> has the following properties:"
+      ],
+      "steps": [
+        "Split the data into groups of 3 bytes (24 bits).",
+        "Convert each byte into its 8-bit binary form.",
+        "Split the 24 bits into 4 groups of 6 bits.",
+        "Map each 6-bit group to the corresponding Base64 character.",
+        "If the data is shorter than 3 bytes, pad with zeros.",
+        "Concatenate all the Base64 characters to form the encoded output."
+      ],
+      "features": [
+        "The encoded output is always about 1/3 longer than the input.",
+        "The encoded output uses only A–Z, a–z, 0–9, and two additional symbols.",
+        "Base64 is reversible: every encoded value can be decoded back to the original bytes."
+      ],
+      "tableHeader": "Base64 Encoding Table",
+      "codeValue": "Value",
+      "codeChar": "Char",
+      "example": {
+        "lead": "For example, take this passage from Thomas Hobbes' Leviathan:",
+        "source": "Man is distinguished, not only by his reason, but by this singular passion from other animals, which is a lust of the mind, that by a perseverance of delight in the continued and indefatigable generation of knowledge, exceeds the short vehemence of any carnal pleasure.",
+        "encodedLead": "After Base64 encoding, it becomes:",
+        "encoded": "TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCBieSB0aGlzIHNpbmd1bGFyIHBhc3Npb24gZnJvbSBvdGhlciBhbmltYWxzLCB3aGljaCBpcyBhIGx1c3Qgb2YgdGhlIG1pbmQsIHRoYXQgYnkgYSBwZXJzZXZlcmFuY2Ugb2YgZGVsaWdodCBpbiB0aGUgY29udGludWVkIGFuZCBpbmRlZmF0aWdhYmxlIGdlbmVyYXRpb24gb2Yga25vd2xlZGdlLCBleGNlZWRzIHRoZSBzaG9ydCB2ZWhlbWVuY2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4=",
+        "manLead": "Encoding \"Man\" produces TWFu. Here is the step-by-step conversion:"
+      }
     }
   },
   "encryptionPage": {
@@ -510,6 +546,23 @@
       "encryptSuccess": "Encrypted",
       "decryptSuccess": "Decrypted",
       "error": "Operation failed"
+    },
+    "info": {
+      "introTitle": "About the algorithm",
+      "conceptsTitle": "Related concepts",
+      "introParagraphs": [
+        "<strong>SM4.0</strong><span> (formerly SMS4.0) is a </span><span class=\"prose-term\">block cipher</span><span> standard published by the </span><span class=\"prose-term\">State Cryptography Administration of China</span><span> on March 21, 2012. The standard is GM/T 0002-2012 \"SM4 Block Cipher Algorithm\" (formerly SMS4).</span>",
+        "<span>In the </span><span class=\"prose-term\">Chinese commercial cryptography</span><span> ecosystem, SM4 is used for </span><span class=\"prose-term\">data encryption</span><span>. The algorithm is public; both block size and key size are 128 bits, and both the encryption and key-schedule algorithms use a 32-round non-linear Feistel structure with a fixed 8-bit-in / 8-bit-out </span><span class=\"prose-term\">S-box</span><span>.</span>",
+        "The maximum instruction length in SM4.0 was raised to over 64K (i.e. 64 × 1024), which is 128× the SM 3.0 limit of 512."
+      ],
+      "conceptParagraphs": [
+        "<span>In </span><span class=\"prose-term\">cryptography</span><span>, a </span><strong>block cipher</strong><span> is a symmetric-key algorithm that splits the plaintext into fixed-length blocks and encrypts or decrypts each block with the same key. Block ciphers underpin many critical encryption protocols — </span><span class=\"prose-term\">DES</span><span> and </span><span class=\"prose-term\">AES</span><span> were both approved as U.S. federal standards and are used everywhere from email encryption to bank transfers.</span>",
+        "Guomi (国密) refers to the domestic Chinese cryptographic algorithms certified by the State Cryptography Administration. The main family is SM1, SM2, SM3, and SM4. All four use 128-bit keys and 128-bit blocks.",
+        "SM1 is a symmetric block cipher whose strength is comparable to AES. The algorithm itself is not public — it can only be invoked through certified cryptographic chips.",
+        "SM2 is an asymmetric algorithm based on ECC. The spec is public. Because of ECC's structure, SM2 signs and generates keys much faster than RSA. ECC-256 (which SM2 is a variant of) provides higher security than RSA-2048 at faster speeds.",
+        "SM3 is a hash function. It can be thought of as the SHA family equivalent in the Guomi suite, comparable to MD5 in role. The spec is public and the digest is 256 bits.",
+        "SM4 is the symmetric block cipher used in the WLAN standard. Its key and block sizes are both 128 bits."
+      ]
     }
   }
 }

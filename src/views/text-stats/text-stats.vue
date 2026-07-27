@@ -114,32 +114,42 @@ const WHITESPACE_RE = /[\s\u3000\u00A0]/
 const SENTENCE_END_RE = /[.!?。！？…]+/
 const PUNCTUATION_RE = /[.,;:!?。，；：！？、…—"'()\[\]{}<>«»`~@#\$%\^&*_+\-=/\\|]/
 
-const isWordContent = (s: string): boolean => {
-  for (let i = 0; i < s.length; i++) {
-    const c = s[i]
-    if (CJK_RE.test(c)) return true
-    if (c >= '0' && c <= '9') return true
-    if (c >= 'A' && c <= 'Z') return true
-    if (c >= 'a' && c <= 'z') return true
-  }
-  return false
-}
-
+// Single-pass word counter. The previous version buffered non-CJK
+// runs and called `buf.trim().split(/\s+/).filter(Boolean).length`
+// per flush — that's three array allocations per whitespace boundary
+// in the input, which made the per-keystroke `analyze()` call O(n²)
+// in the worst case. We now track "we're inside a non-CJK word"
+// with a single boolean and only allocate the input's characters
+// as we iterate them, no string buffers.
+//
+// Word counting rules preserved verbatim from the prior impl:
+//   - every CJK char counts as one word on its own
+//   - each maximal run of [letters/digits] (no whitespace, no CJK)
+//     counts as one word — runs of pure punctuation don't count
 function countWords(text: string): number {
   if (!text) return 0
-  let words = 0, buf = ''
-  const flush = () => {
-    if (buf && isWordContent(buf)) {
-      words += buf.trim().split(/\s+/).filter(Boolean).length
-    }
-    buf = ''
-  }
+  let words = 0
+  let inWord = false
   for (const ch of text) {
-    if (CJK_RE.test(ch)) { flush(); words++; continue }
-    if (WHITESPACE_RE.test(ch)) { flush(); continue }
-    buf += ch
+    if (CJK_RE.test(ch)) {
+      if (inWord) { words++; inWord = false }
+      words++
+      continue
+    }
+    if (WHITESPACE_RE.test(ch)) {
+      if (inWord) { words++; inWord = false }
+      continue
+    }
+    // Non-CJK, non-whitespace char. Only letters/digits flip
+    // inWord on — punctuation inside a run (e.g. "don't") keeps
+    // the run alive but doesn't restart it.
+    const isWordChar =
+      (ch >= '0' && ch <= '9') ||
+      (ch >= 'A' && ch <= 'Z') ||
+      (ch >= 'a' && ch <= 'z')
+    if (isWordChar) inWord = true
   }
-  flush()
+  if (inWord) words++
   return words
 }
 
