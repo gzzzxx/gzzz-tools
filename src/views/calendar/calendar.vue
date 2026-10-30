@@ -28,10 +28,7 @@
 
 <script setup lang="ts">
 import { useT } from '~/composables/useT'
-import calendar from '~/utils/js-calendar-converter.js'
-import dayjs from 'dayjs'
-import 'dayjs/locale/zh-cn'
-dayjs.locale('zh-cn')
+import calendar from '~/utils/js-calendar-converter'
 
 const { t } = useT()
 
@@ -39,6 +36,8 @@ const { t } = useT()
 function isFestival(slotData: { day: string }) {
   const [y, m, d] = slotData.day.split('-')
   const lunarDay = calendar.solar2lunar(y, m, d)
+  // 超出 1900-01-31 ~ 2100-12-01 区间时该库返回 -1
+  if (lunarDay === -1) return false
 
   const festAndTerm =
     (lunarDay.festival == null ? '' : ' ' + lunarDay.festival) +
@@ -51,6 +50,7 @@ function isFestival(slotData: { day: string }) {
 function solarToLunar(slotData: { day: string }) {
   const [y, m, d] = slotData.day.split('-')
   const lunarDay = calendar.solar2lunar(y, m, d)
+  if (lunarDay === -1) return ''
 
   const lunarMD = lunarDay.IDayCn == '初一' ? lunarDay.IMonthCn : lunarDay.IDayCn
 

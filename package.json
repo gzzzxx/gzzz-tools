@@ -1,5 +1,5 @@
 {
-  "name": "element-plus-vite-starter",
+  "name": "gzzz-tools",
   "private": true,
   "version": "0.1.0",
   "scripts": {
@@ -10,13 +10,12 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "@types/qrcode": "^1.5.6",
     "@vueuse/core": "^10.9.0",
     "cron-validator": "^1.4.0",
     "cronstrue": "^3.24.0",
     "crypto-js": "^4.2.0",
+    "dayjs": "^1.11.20",
     "element-plus": "^2.3.12",
-    "highlight.js": "^11.9.0",
     "js-base64": "^3.7.5",
     "json-editor-vue": "^0.17.3",
     "qrcode": "^1.5.4",
@@ -28,21 +27,24 @@
     "vue-i18n": "^9.14.5",
     "vue-router": "^4.2.5",
     "vuedraggable": "^4.1.0",
+    "vanilla-jsoneditor": "^2.4.0",
     "xml-formatter": "^3.7.0"
   },
   "devDependencies": {
-    "@iconify-json/ep": "^1.1.12",
     "@types/crypto-js": "^4.2.2",
     "@types/node": "^20.6.0",
+    "@types/qrcode": "^1.5.6",
     "@vitejs/plugin-vue": "^4.3.4",
     "less": "^4.2.0",
     "sass": "^1.66.1",
     "typescript": "^5.2.2",
-    "unocss": "^0.55.7",
     "unplugin-vue-components": "^0.25.2",
     "vite": "^4.5.14",
     "vite-ssg": "^0.23.1",
-    "vue-tsc": "^1.8.11"
+    "vue-tsc": "^3.3.13"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0"
+  }
 }

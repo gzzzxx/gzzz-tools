@@ -97,7 +97,7 @@
 import { computed, reactive, ref } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
 import cronstrue from 'cronstrue'
-import { toString as cronstrueI18n } from 'cronstrue/i18n'
+import cronstrueI18n from 'cronstrue/i18n'
 import { isValidCron } from 'cron-validator'
 import { useT } from '~/composables/useT'
 
@@ -130,7 +130,7 @@ const cronString = computed(() => {
   try {
     const opts = { ...cronstrueConfig, throwExceptionOnParseError: true }
     return locale.value === 'zh-CN'
-      ? cronstrueI18n(cron.value, { ...opts, locale: 'zh_CN' })
+      ? cronstrueI18n.toString(cron.value, { ...opts, locale: 'zh_CN' })
       : cronstrue.toString(cron.value, opts)
   } catch {
     return ' '

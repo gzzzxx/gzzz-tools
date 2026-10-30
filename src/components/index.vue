@@ -63,10 +63,10 @@ const selectedCategory = ref<TabKey>('all')
 // Section title i18n keys — derived from the registry's CATEGORIES
 // so the tools section can show "开发 · 6" instead of just "全部工具"
 // without redeclaring the same 4-key map.
-const CATEGORY_LABEL_KEYS: Record<TabKey, string> = {
+const CATEGORY_LABEL_KEYS = {
   all: 'home.section.tools',
   ...Object.fromEntries(CATEGORIES.map((c) => [c.key, c.i18nKey])),
-}
+} as Record<TabKey, string>
 
 const filteredTools = computed<Tool[]>(() =>
   selectedCategory.value === 'all'

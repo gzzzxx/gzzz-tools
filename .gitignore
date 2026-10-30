@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 /dist
+/.vite-ssg-temp
 
 
 # local env files
@@ -22,5 +23,8 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-package-lock.json
+# package-lock.json is intentionally NOT ignored: this is an app, and
+# without a committed lockfile `npm install` resolves a different tree
+# every time (we hit a vue-tsc version drift that broke `npm run
+# typecheck`). yarn.lock stays ignored — this project uses npm.
 yarn.lock

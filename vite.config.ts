@@ -5,15 +5,6 @@ import vue from '@vitejs/plugin-vue'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
-import Unocss from 'unocss/vite'
-import {
-  presetAttributify,
-  presetIcons,
-  presetUno,
-  transformerDirectives,
-  transformerVariantGroup,
-} from 'unocss'
-
 const pathSrc = path.resolve(__dirname, 'src')
 
 // https://vitejs.dev/config/
@@ -44,34 +35,10 @@ export default defineConfig({
       ],
       dts: 'src/components.d.ts',
     }),
-
-    // https://github.com/antfu/unocss
-    // see unocss.config.ts for config
-    Unocss({
-      presets: [
-        presetUno(),
-        presetAttributify(),
-        presetIcons({
-          scale: 1.2,
-          warn: true,
-        }),
-      ],
-      transformers: [
-        transformerDirectives(),
-        transformerVariantGroup(),
-      ]
-    }),
   ],
   server: {
     host: '0.0.0.0',
     port: 1000, // port,
-    proxy: {
-      '/art': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/art/, ""),
-      }
-    },
     https: false
   },
 })

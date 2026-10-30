@@ -22,7 +22,7 @@
         <li
           v-for="(tool, idx) in filtered"
           :key="tool.path"
-          :ref="(el) => setItemRef(el as HTMLElement | null, idx)"
+          :ref="(el: Element | ComponentPublicInstance | null) => setItemRef(el as HTMLElement | null, idx)"
           :class="['search-palette__item', { 'is-active': idx === activeIndex }]"
           role="option"
           :aria-selected="idx === activeIndex"
@@ -77,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch, type ComponentPublicInstance } from 'vue'
 import { Search, Right } from '@element-plus/icons-vue'
 import { useT } from '~/composables/useT'
 import { useLocalizedTools, type Tool } from '~/composables/useTools'
@@ -269,10 +269,10 @@ defineExpose({ handleKeydown })
   }
 
   &.is-active {
-    // We hardcode the active background instead of var(--el-color-primary)
-    // because the Element Plus CSS-var layer isn't always injected at
-    // :root on this project; falling back to --el-color-primary would
-    // resolve to an empty value and leave the row transparent.
+    // Use the brand token directly instead of an element-plus semantic
+    // colour: the project overrides element-plus's namespace to `ep-`
+    // and its brand primary (#2563eb), but the active row also needs
+    // white foreground, so a plain semantic var can't express it.
     background-color: var(--brand-primary);
     color: #fff;
 

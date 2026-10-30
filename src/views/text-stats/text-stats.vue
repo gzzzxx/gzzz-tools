@@ -80,7 +80,7 @@ type StatKey =
   | 'avgSentenceLength' | 'avgWordLength'
   | 'longestLine' | 'avgLinesPerParagraph'
 
-interface Stat { [K in StatKey]: number }
+type Stat = { [K in StatKey]: number }
 
 const groups: Array<{ key: string; items: StatKey[] }> = [
   { key: 'basic',       items: ['chars', 'charsNoSpace', 'bytes', 'lines', 'nonEmptyLines', 'paragraphs'] },

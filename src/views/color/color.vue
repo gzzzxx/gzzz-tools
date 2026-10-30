@@ -181,7 +181,7 @@ const hsva = computed(() => {
   const hsva = tinycolor(tinyColor.value).toHsv();
   const res: Record<string, number> = {};
   for (const [key, value] of Object.entries(hsva)) {
-    res[key] = Number(value.toFixed(2));
+    res[key] = Number(Number(value).toFixed(2));
   }
   return res;
 });

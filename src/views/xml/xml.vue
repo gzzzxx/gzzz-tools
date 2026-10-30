@@ -126,11 +126,14 @@ function clear() {
 }
 
 // 防抖自动格式化: 输入或缩进选项变化都触发 (formatCore 通过闭包读 indent)
+// 依赖源用 data + '\0' + indent 拼成一个串, 但真正要格式化的只有 data ——
+// 分隔符绝不能混进送进 XML parser 的内容里.
 const formatTrigger = computed(() => form.data + '\0' + indent.value)
 useAutoFormat(
   () => formatTrigger.value,
   formatCore,
   (v) => { form.result = v },
+  { getInput: () => form.data },
 )
 </script>
 

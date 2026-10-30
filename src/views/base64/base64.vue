@@ -197,14 +197,16 @@ interface Table {
   5: string; 6: string; 7: string; 8: string
 }
 
+// The demo table is sparse on purpose — each row only fills the cells
+// that carry a value, the rest render as empty cells. Hence optional.
 interface TableDemo {
-  1: string; 2: string; 3: string; 4: string
-  5: string; 6: string; 7: string; 8: string
-  9: string; 10: string; 11: string; 12: string
-  13: string; 14: string; 15: string; 16: string
-  17: string; 18: string; 19: string; 20: string
-  21: string; 22: string; 23: string; 24: string
-  25: string; 26: string; 27: string
+  1?: string; 2?: string; 3?: string; 4?: string
+  5?: string; 6?: string; 7?: string; 8?: string
+  9?: string; 10?: string; 11?: string; 12?: string
+  13?: string; 14?: string; 15?: string; 16?: string
+  17?: string; 18?: string; 19?: string; 20?: string
+  21?: string; 22?: string; 23?: string; 24?: string
+  25?: string; 26?: string; 27?: string
 }
 
 interface SpanMethodProps {

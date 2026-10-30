@@ -21,7 +21,7 @@
           <JsonEditorVue
             id="json-editor-result"
             :class="editorClass"
-            mode="text"
+            :mode="Mode.text"
             v-model="text"
             :mainMenuBar="true"
             :navigationBar="true"
@@ -38,6 +38,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import JsonEditorVue from 'json-editor-vue'
+import { Mode } from 'vanilla-jsoneditor'
 import 'vanilla-jsoneditor/themes/jse-theme-dark.css'
 import { useT } from '~/composables/useT'
 import { useIsDark } from '~/composables/useIsDark'

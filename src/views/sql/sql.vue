@@ -53,13 +53,13 @@
 import { reactive } from 'vue'
 import { Delete, MagicStick, Minus } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
-import { format as sqlFormat } from 'sql-formatter'
+import { format as sqlFormat, type FormatOptionsWithLanguage } from 'sql-formatter'
 import { useT } from '~/composables/useT'
 import { useAutoFormat } from '~/composables/useAutoFormat'
 
 const { t } = useT()
 
-const FORMAT_OPTS = {
+const FORMAT_OPTS: FormatOptionsWithLanguage = {
   language: 'sql',
   keywordCase: 'upper',
   tabWidth: 2,

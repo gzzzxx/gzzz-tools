@@ -11,7 +11,6 @@ import VueDiff from 'vue-diff';
 import 'vue-diff/dist/index.css';
 
 import "~/styles/index.scss";
-import "uno.css";
 import router from './router'
 import { i18n } from '~/locales'
 

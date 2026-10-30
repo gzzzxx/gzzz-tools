@@ -228,7 +228,7 @@ function onDragEnd() {
   }
   &__cell--drag {
     border-color: var(--brand-primary);
-    background-color: var(--el-color-primary-light-9, #ecfeff);
+    background-color: var(--ep-color-primary-light-9, #ecfeff);
     box-shadow: 0 10px 24px var(--drag-shadow);
     cursor: grabbing;
     transform: rotate(-1.5deg);

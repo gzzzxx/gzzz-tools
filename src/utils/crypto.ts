@@ -172,7 +172,12 @@ function sm4Block(keyHex: string, ivHex: string, input: Uint8Array, op: 'enc' | 
   const opts: any = mode === 'CBC' ? { mode: 'cbc', iv: ivHex } : {}
   const bytes = Array.from(input)
   if (op === 'enc') return hexToBytes(sm4.encrypt(bytes, keyHex, { ...opts, padding: 'none' }))
-  return new Uint8Array(sm4.decrypt(bytes, keyHex, { ...opts, padding: 'none', output: 'array' }))
+  // sm-crypto has no bundled types; TS infers the return as `string`
+  // (the hex/utf8 branch) even though `output: 'array'` makes it
+  // return the raw byte array.
+  return new Uint8Array(
+    sm4.decrypt(bytes, keyHex, { ...opts, padding: 'none', output: 'array' }) as unknown as number[],
+  )
 }
 
 /** SM4 CTR：counter 初值 = IV，每块末字节 +1（与 crypto-js mode-ctr 行为对齐） */
@@ -202,6 +207,15 @@ function sm4Operate(op: 'enc' | 'dec', p: CipherParams): Uint8Array {
  * AES（crypto-js：ECB / CBC / CTR + PKCS7 / NoPadding）
  * ============================ */
 
+// @types/crypto-js declares `CipherOption` at the top level of the
+// .d.ts file, but the package uses `export = CryptoJS`, so it is not
+// reachable as a namespace member (`CryptoJS.CipherOption` → TS2694).
+// Mirror the parts we actually pass instead.
+type CryptoJsCipherOption = {
+  iv?: CryptoJS.lib.WordArray
+  [key: string]: any
+}
+
 function aesOperate(op: 'enc' | 'dec', p: CipherParams): Uint8Array {
   const { keyBytes, ivBytes, dataBytes } = parseInputs(p, op)
   const isCtr = p.mode === 'CTR'
@@ -209,13 +223,13 @@ function aesOperate(op: 'enc' | 'dec', p: CipherParams): Uint8Array {
     throw new Error('CTR 模式数据长度必须为 16 字节的整数倍')
   }
 
-  const opts: CryptoJS.CipherOption = {
+  const opts: CryptoJsCipherOption = {
     mode: isCtr ? CryptoJS.mode.CTR
       : p.mode === 'CBC' ? CryptoJS.mode.CBC
       : CryptoJS.mode.ECB,
     padding: isCtr ? CryptoJS.pad.NoPadding : CryptoJS.pad.Pkcs7,
   }
-  if (ivBytes) (opts as any).iv = bytesToWordArray(ivBytes)
+  if (ivBytes) opts.iv = bytesToWordArray(ivBytes)
 
   const result = op === 'enc'
     ? CryptoJS.AES.encrypt(bytesToWordArray(dataBytes), bytesToWordArray(keyBytes), opts)
