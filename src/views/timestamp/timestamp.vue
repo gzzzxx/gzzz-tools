@@ -26,14 +26,14 @@
           v-model="timestamp"
           :placeholder="t('timestampPage.input.timestampPlaceholder')"
           @input="onTimestampInput"
-          prefix-icon="el-icon-time"
+          :prefix-icon="Clock"
           clearable
         />
         <el-input
           v-model="dateString"
           :placeholder="t('timestampPage.input.dateStringPlaceholder')"
           @input="onDateInput"
-          prefix-icon="el-icon-date"
+          :prefix-icon="Calendar"
           clearable
         />
       </div>
@@ -65,6 +65,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { Calendar, Clock } from '@element-plus/icons-vue'
 import { useT } from '~/composables/useT'
 import { formatDateTime } from '~/utils/datetime'
 

@@ -26,7 +26,6 @@
             :mainMenuBar="true"
             :navigationBar="true"
             :statusBar="true"
-            :readOnly="true"
             :askToFormat="false"
           />
         </div>

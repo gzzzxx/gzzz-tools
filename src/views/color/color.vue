@@ -115,7 +115,10 @@ function invertColor({ r, g, b, a}: { r: number; g: number; b: number, a: number
 
 const hasInitialColor = !!searchParams.hex;
 const isDarkInitial = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
-const initialColor = `${searchParams.hex ?? isDarkInitial ? DEFAULT_COLOR_DARK : DEFAULT_COLOR}`;
+// 注意括号: `??` 优先级高于 `?:`. 不加括号会解析成
+// `(searchParams.hex ?? isDarkInitial) ? DARK : DEFAULT` —— 只要传了
+// hex 就恒返回深色默认值, URL 参数彻底失效.
+const initialColor = searchParams.hex ?? (isDarkInitial ? DEFAULT_COLOR_DARK : DEFAULT_COLOR);
 </script>
 
 <script setup lang="ts">

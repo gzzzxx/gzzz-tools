@@ -71,13 +71,13 @@
         <el-col :xs="12" :sm="6">
           <div class="pwd-stat">
             <div class="pwd-stat__label">{{ t('passwordStrengthPage.stats.crackTime') }}</div>
-            <div class="pwd-stat__value stat__value--small">{{ crackTime }}</div>
+            <div class="pwd-stat__value pwd-stat__value--small">{{ crackTime }}</div>
           </div>
         </el-col>
         <el-col :xs="12" :sm="6">
           <div class="pwd-stat">
             <div class="pwd-stat__label">{{ t('passwordStrengthPage.stats.charset') }}</div>
-            <div class="pwd-stat__value stat__value--small">{{ charsetSummary }}</div>
+            <div class="pwd-stat__value pwd-stat__value--small">{{ charsetSummary }}</div>
           </div>
         </el-col>
       </el-row>
