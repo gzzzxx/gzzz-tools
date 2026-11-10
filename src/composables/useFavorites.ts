@@ -29,32 +29,21 @@ export function useFavorites() {
     return favoriteSet.value.has(path)
   }
 
-function toggle(path: string) {
-  const set = new Set(paths.value)
-  if (set.has(path)) {
-    set.delete(path)
-    favoriteOrder.value = favoriteOrder.value.filter((p) => p !== path)
-  } else {
-    set.add(path)
-    // Append to the order so newly-favorited tools land at the tail
-    // of "我的收藏" (latest pinned = last). Also seeds the order on
-    // first toggle.
-    if (!favoriteOrder.value.includes(path)) {
-      favoriteOrder.value = [...favoriteOrder.value, path]
+  function toggle(path: string) {
+    const set = new Set(paths.value)
+    if (set.has(path)) {
+      set.delete(path)
+      favoriteOrder.value = favoriteOrder.value.filter((p) => p !== path)
+    } else {
+      set.add(path)
+      // Append to the order so newly-favorited tools land at the tail
+      // of "我的收藏" (latest pinned = last). Also seeds the order on
+      // first toggle.
+      if (!favoriteOrder.value.includes(path)) {
+        favoriteOrder.value = [...favoriteOrder.value, path]
+      }
     }
-  }
-  paths.value = Array.from(set)
-}
-
-  function remove(path: string) {
-    if (!paths.value.includes(path)) return
-    paths.value = paths.value.filter((p) => p !== path)
-    favoriteOrder.value = favoriteOrder.value.filter((p) => p !== path)
-  }
-
-  function clear() {
-    paths.value = []
-    favoriteOrder.value = []
+    paths.value = Array.from(set)
   }
 
   // Bulk-write from vuedraggable's v-model on drag end. Filter to
@@ -92,14 +81,9 @@ function toggle(path: string) {
   })
 
   return {
-    favoritePaths: paths,
-    favoriteSet,
-    favoriteOrder,
     favoriteTools,
     isFavorite,
     toggle,
-    remove,
-    clear,
     setFavoriteOrder,
   }
 }

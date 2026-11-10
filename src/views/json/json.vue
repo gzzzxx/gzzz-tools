@@ -20,9 +20,9 @@
         <div class="json-card__body">
           <JsonEditorVue
             id="json-editor-result"
+            ref="editorRef"
             :class="editorClass"
             :mode="Mode.text"
-            v-model="text"
             :mainMenuBar="true"
             :navigationBar="true"
             :statusBar="true"
@@ -35,20 +35,44 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import JsonEditorVue from 'json-editor-vue'
 import { Mode } from 'vanilla-jsoneditor'
 import 'vanilla-jsoneditor/themes/jse-theme-dark.css'
 import { useT } from '~/composables/useT'
 import { useIsDark } from '~/composables/useIsDark'
 
+/** 左侧文本，唯一数据源 */
 const text = ref('')
+const editorRef = ref<InstanceType<typeof JsonEditorVue>>()
+
 const { t } = useT()
 const isDark = useIsDark()
 
 const editorClass = computed(() =>
   isDark.value ? 'my-json-editor jse-theme-dark' : 'my-json-editor',
 )
+
+/** json-editor-vue 暴露出来的 vanilla-jsoneditor 实例 */
+interface EditorInstance {
+  update(content: { text: string }): Promise<void>
+}
+
+function getEditor(): EditorInstance | undefined {
+  const exposed = editorRef.value as unknown as
+    | { jsonEditor?: EditorInstance }
+    | undefined
+  return exposed?.jsonEditor
+}
+
+// 左侧输入 → 右侧预览。
+//
+// 这里刻意不把编辑器的值绑回左侧：编辑器的 v-model 在 tree/table 模式下
+// 回传的是**解析后的对象**，共用一个 ref 会让左侧直接显示 [object Object]。
+// 左侧只做输入源，右侧是它的实时预览。
+watch(text, (value) => {
+  void getEditor()?.update({ text: value })
+})
 </script>
 
 <style lang="scss" scoped>

@@ -1,8 +1,6 @@
 // 设计 tokens
 
 $it-radius:        8px;
-$it-card-padding:  16px;
-$it-grid-gap:      12px;
 $it-page-padding:  26px;
 
 $it-radius-sm:     4px;
@@ -13,7 +11,6 @@ $it-radius-lg:     12px;
   --brand-primary-deep:   #1e3a8a;
   --brand-primary-light:  #60a5fa;
   --brand-primary-strong: #1e40af;
-  --brand-primary-glow:   rgba(37, 99, 235, 0.67);
   --brand-primary-soft:   rgba(37, 99, 235, 0.08);
   --brand-primary-softer: rgba(37, 99, 235, 0.12);
   --brand-tint:           rgba(125, 211, 252, 0.12);
@@ -21,9 +18,6 @@ $it-radius-lg:     12px;
 
   --gradient-sponsor:     linear-gradient(135deg,
                             var(--brand-primary),
-                            var(--brand-primary-light));
-  --gradient-sider-bar:   linear-gradient(135deg,
-                            var(--brand-primary-deep),
                             var(--brand-primary-light));
   --gradient-follow:      linear-gradient(48deg,
                             var(--brand-primary-deep)  0%,
@@ -39,9 +33,6 @@ $it-radius-lg:     12px;
   --it-text-tertiary:    #94a3b8;
 
   --it-border:           #dbe4f0;
-  --it-card-shadow:        0 1px 2px 0 rgb(15 23 42 / 0.05);
-  --it-card-shadow-hover:  0 4px 6px -1px rgb(15 23 42 / 0.1),
-                           0 2px 4px -2px rgb(15 23 42 / 0.1);
 
   --it-sider-bg:        #ffffff;
   --it-sider-text:      #0f172a;
@@ -49,11 +40,7 @@ $it-radius-lg:     12px;
   --it-sider-hover:     rgba(15, 23, 42, 0.06);
   --it-sider-border:    #dbe4f0;
 
-  --it-follow-banner-bg: var(--gradient-follow);
-
   --it-radius:        #{$it-radius};
-  --it-card-padding:  #{$it-card-padding};
-  --it-grid-gap:      #{$it-grid-gap};
   --it-page-padding:  #{$it-page-padding};
 
   --it-favorite:        var(--brand-primary);
@@ -84,7 +71,6 @@ html.dark {
   --brand-primary-deep:   #1e3a8a;
   --brand-primary-light:  #93c5fd;
   --brand-primary-strong: #60a5fa;
-  --brand-primary-glow:   rgba(59, 130, 246, 0.67);
   --brand-primary-soft:   rgba(59, 130, 246, 0.12);
   --brand-primary-softer: rgba(59, 130, 246, 0.18);
   --brand-tint:           rgba(125, 211, 252, 0.16);
@@ -98,14 +84,10 @@ html.dark {
   --it-text-tertiary:    #71717a;
 
   --it-border:           #2a2a30;
-  --it-card-shadow:        0 1px 2px 0 rgb(0 0 0 / 0.6);
-  --it-card-shadow-hover:  0 10px 12px rgb(0 0 0 / 0.7);
 
   --it-sider-bg:        #17171a;
   --it-sider-text:      #e4e4e7;
   --it-sider-text-mute: rgba(228, 228, 231, 0.55);
   --it-sider-hover:     rgba(255, 255, 255, 0.05);
   --it-sider-border:    rgba(255, 255, 255, 0.06);
-
-  --it-follow-banner-bg: var(--gradient-follow);
 }

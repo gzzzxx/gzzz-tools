@@ -266,12 +266,3 @@
     grid-template-columns: 1fr;
   }
 }
-
-
-// ====================== 统一错误文本 ======================
-.tool-error {
-  color: var(--ep-color-danger);
-  font-size: 13px;
-  text-align: center;
-  margin-top: 8px;
-}

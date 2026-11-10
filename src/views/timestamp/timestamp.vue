@@ -67,9 +67,15 @@
 import { ref } from 'vue'
 import { Calendar, Clock } from '@element-plus/icons-vue'
 import { useT } from '~/composables/useT'
-import { formatDateTime } from '~/utils/datetime'
+import { pad } from '~/utils/datetime'
 
 const { t } = useT()
+
+// 'YYYY-MM-DD HH:mm:ss' —— 只在本文件用得到，按 datetime.ts 自己的
+// 抽取原则（≥2 个文件才抽）留在本地。
+function formatDateTime(date: Date): string {
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
+}
 
 const timestamp = ref('');
 const dateString = ref('');

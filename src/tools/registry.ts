@@ -31,8 +31,6 @@ export interface ToolDefinition {
   category: ToolCategory
   /** Show the "NEW" badge on the home card. */
   isNew?: boolean
-  /** Optional vue-router `props` — passed to the component as props. */
-  props?: Record<string, unknown>
 }
 
 export const tools: readonly ToolDefinition[] = [

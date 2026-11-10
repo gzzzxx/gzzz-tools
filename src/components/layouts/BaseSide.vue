@@ -168,7 +168,6 @@ withDefaults(
 )
 
 const emit = defineEmits<{
-  (e: 'update:isCollapsed', value: boolean): void
   (e: 'navigate', path: string): void
 }>()
 

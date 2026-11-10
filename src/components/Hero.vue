@@ -70,8 +70,6 @@ const emit = defineEmits<{
 
 const { t } = useT()
 
-const totalCount = computed(() => props.tools.length)
-
 // ----------------------------------------------------------------
 // Animated count-up for the total tools number. useTransition (not
 // useSpring — the project has VueUse, not framer-motion) drives a

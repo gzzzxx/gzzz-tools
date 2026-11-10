@@ -202,19 +202,6 @@ export const toolIconRegistry: Record<string, IconRender> = {
  * the same file so all icon decisions live in one place.
  */
 export const uiIconRegistry: Record<string, IconRender> = {
-  // "Follow us on GitHub" — filled 5-point star. Reads as the
-  // GitHub "Star this repo" / "watch" affordance and pairs with
-  // the inline GitHub / Gitee links below the title. We considered
-  // the GitHub octocat mark here too, but the star carries a
-  // warmer "shining / endorsing" feel that suits a call-out
-  // banner better than a brand logo would.
-  star: () => h('path', {
-    d: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z',
-    fill: 'currentColor',
-    stroke: 'currentColor',
-    'stroke-width': '0.5',
-  }),
-
   // "Sponsor / 打赏" — gift box (box + lid + ribbon + bow).
   // Reads unambiguously as "support / 赞助" — fits the zh-CN
   // 打赏 mental model and the GitHub-Sponsor button convention.

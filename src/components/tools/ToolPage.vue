@@ -1,11 +1,7 @@
 <!-- 工具页面的标准外壳组件 -->
 
 <template>
-  <section
-    v-bind="forwardedAttrs"
-    :class="['tool-page', $attrs.class]"
-    :style="[presetStyle, $attrs.style]"
-  >
+  <section class="tool-page" :style="presetStyle">
     <h2 class="tool-page__title">{{ title }}</h2>
     <div v-if="subtitle" class="tool-page__subtitle">{{ subtitle }}</div>
     <slot />
@@ -13,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useAttrs } from 'vue'
+import { computed } from 'vue'
 
 export type ToolPagePreset =
   | 'wide-editor'
@@ -40,13 +36,5 @@ const props = withDefaults(defineProps<{
   preset: 'wide-editor',
 })
 
-const attrs = useAttrs()
-const forwardedAttrs = computed(() => {
-  const { class: _class, style: _style, ...rest } = attrs
-  return rest
-})
-
 const presetStyle = computed(() => presetVars[props.preset])
-
-defineOptions({ inheritAttrs: false })
 </script>

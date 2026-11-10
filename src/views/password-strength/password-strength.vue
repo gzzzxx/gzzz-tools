@@ -49,38 +49,30 @@
       </div>
 
       <!-- Stats grid -->
-      <el-row :gutter="16" class="pwd-stat-row">
-        <el-col :xs="12" :sm="6">
-          <div class="pwd-stat">
-            <div class="pwd-stat__label">{{ t('passwordStrengthPage.stats.length') }}</div>
-            <div class="pwd-stat__value">
-              {{ stats.length }}
-              <span class="pwd-stat__unit">/ 12+</span>
-            </div>
+      <div class="pwd-stat-row">
+        <div class="pwd-stat">
+          <div class="pwd-stat__label">{{ t('passwordStrengthPage.stats.length') }}</div>
+          <div class="pwd-stat__value">
+            {{ stats.length }}
+            <span class="pwd-stat__unit">/ 12+</span>
           </div>
-        </el-col>
-        <el-col :xs="12" :sm="6">
-          <div class="pwd-stat">
-            <div class="pwd-stat__label">{{ t('passwordStrengthPage.stats.entropy') }}</div>
-            <div class="pwd-stat__value">
-              {{ stats.entropy.toFixed(1) }}
-              <span class="pwd-stat__unit">bits</span>
-            </div>
+        </div>
+        <div class="pwd-stat">
+          <div class="pwd-stat__label">{{ t('passwordStrengthPage.stats.entropy') }}</div>
+          <div class="pwd-stat__value">
+            {{ stats.entropy.toFixed(1) }}
+            <span class="pwd-stat__unit">bits</span>
           </div>
-        </el-col>
-        <el-col :xs="12" :sm="6">
-          <div class="pwd-stat">
-            <div class="pwd-stat__label">{{ t('passwordStrengthPage.stats.crackTime') }}</div>
-            <div class="pwd-stat__value pwd-stat__value--small">{{ crackTime }}</div>
-          </div>
-        </el-col>
-        <el-col :xs="12" :sm="6">
-          <div class="pwd-stat">
-            <div class="pwd-stat__label">{{ t('passwordStrengthPage.stats.charset') }}</div>
-            <div class="pwd-stat__value pwd-stat__value--small">{{ charsetSummary }}</div>
-          </div>
-        </el-col>
-      </el-row>
+        </div>
+        <div class="pwd-stat">
+          <div class="pwd-stat__label">{{ t('passwordStrengthPage.stats.crackTime') }}</div>
+          <div class="pwd-stat__value pwd-stat__value--small">{{ crackTime }}</div>
+        </div>
+        <div class="pwd-stat">
+          <div class="pwd-stat__label">{{ t('passwordStrengthPage.stats.charset') }}</div>
+          <div class="pwd-stat__value pwd-stat__value--small">{{ charsetSummary }}</div>
+        </div>
+      </div>
 
       <div class="tool-divider" />
 
@@ -293,8 +285,19 @@ const rules = computed<Rule[]>(() => {
   transition: color var(--it-transition-smooth);
 }
 
+// 原来用 <el-row>/<el-col> 排这四格，但 EP 的栅格样式（5 个断点 × 24 列）
+// 单个 chunk 就有 40KB。CSS grid 排出来的盒子与 EP 的 gutter=16 完全一致：
+// 首尾两格贴容器边缘、格间距 16px。
 .pwd-stat-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 16px;
   margin-top: 4px;
+}
+@media (min-width: 768px) {
+  .pwd-stat-row {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 .pwd-stat {
   padding: 8px 0;

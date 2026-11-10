@@ -394,8 +394,7 @@
       "clear": "清空"
     },
     "error": {
-      "empty": "请输入要格式化的 XML",
-      "copyEmpty": "暂无可复制的内容,请先格式化"
+      "empty": "请输入要格式化的 XML"
     }
   },
   "sqlPage": {
@@ -416,8 +415,7 @@
       "clear": "清空"
     },
     "error": {
-      "empty": "请输入要格式化的 SQL",
-      "copyEmpty": "暂无可复制的内容,请先格式化"
+      "empty": "请输入要格式化的 SQL"
     }
   },
   "jsonPage": {

@@ -394,8 +394,7 @@
       "clear": "Clear"
     },
     "error": {
-      "empty": "Please enter XML to format",
-      "copyEmpty": "Nothing to copy, please format first"
+      "empty": "Please enter XML to format"
     }
   },
   "sqlPage": {
@@ -416,8 +415,7 @@
       "clear": "Clear"
     },
     "error": {
-      "empty": "Please enter SQL to format",
-      "copyEmpty": "Nothing to copy, please format first"
+      "empty": "Please enter SQL to format"
     }
   },
   "jsonPage": {

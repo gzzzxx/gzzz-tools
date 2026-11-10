@@ -12,7 +12,6 @@
       >
         <BaseSide
           :is-collapsed="isSiderCollapsed"
-          @update:is-collapsed="isSiderCollapsed = $event"
           @navigate="onNavigate"
         />
       </aside>

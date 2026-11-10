@@ -17,7 +17,6 @@ import { tools } from '~/tools/registry'
 const toolRoutes: RouteRecordRaw[] = tools.map(tool => ({
   path: tool.path,
   component: tool.component,
-  ...(tool.props ? { props: tool.props } : {}),
 }))
 
 export const routes: RouteRecordRaw[] = [
