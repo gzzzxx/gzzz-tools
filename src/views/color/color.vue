@@ -96,6 +96,7 @@ const DEFAULT_COLOR = 'F5F7FA';
 const DEFAULT_COLOR_DARK = '#004035';
 
 import { parseSearchParams } from './utils'
+import { DEFAULT_IS_DARK } from '~/composables/useIsDark'
 const pickers = ['chrome', 'sketch', 'photoshop', 'compact', 'grayscale', 'material', 'slider', 'twitter', 'swatches', 'hue', 'sliders'] as const;
 const searchParams = parseSearchParams(
   typeof location !== 'undefined' ? location.search : '',
@@ -114,7 +115,11 @@ function invertColor({ r, g, b, a}: { r: number; g: number; b: number, a: number
 }
 
 const hasInitialColor = !!searchParams.hex;
-const isDarkInitial = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
+// 服务端没有 document，只能按应用默认主题（深色）渲染 —— 与客户端首帧保持
+// 一致，否则预渲染 HTML 里是浅色默认值，水合后会跳变。
+const isDarkInitial = typeof document === 'undefined'
+  ? DEFAULT_IS_DARK
+  : document.documentElement.classList.contains('dark');
 // 注意括号: `??` 优先级高于 `?:`. 不加括号会解析成
 // `(searchParams.hex ?? isDarkInitial) ? DARK : DEFAULT` —— 只要传了
 // hex 就恒返回深色默认值, URL 参数彻底失效.

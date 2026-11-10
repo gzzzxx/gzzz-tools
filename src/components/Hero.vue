@@ -10,14 +10,14 @@
   <section class="hero">
     <h1 class="hero__title">gzzz-tools</h1>
     <p class="hero__tagline">
-      <i18n-t keypath="home.hero.tagline" tag="span">
+      <i18n-t keypath="home.hero.tagline" tag="span" scope="global">
         <template #count>
           <strong class="hero__count">{{ Math.round(animatedCount) }}</strong>
         </template>
       </i18n-t>
     </p>
     <p class="hero__support-note">
-      <i18n-t keypath="home.hero.supportNote" tag="span">
+      <i18n-t keypath="home.hero.supportNote" tag="span" scope="global">
         <template #github>
           <a class="hero__support-link" :href="GITHUB_REPO_URL" target="_blank" rel="noopener">GitHub</a>
         </template>

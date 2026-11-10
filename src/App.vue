@@ -111,6 +111,20 @@ function onToggleTheme(payload: { clientX: number; clientY: number }) {
   .app-root__main { width: 100%; }
 }
 
+// 移动端断点。服务端预渲染时不知道视口宽度，只能按桌面布局输出 HTML，
+// 客户端水合之后才补上 .is-mobile —— 只靠那个 class 的话，窄屏用户会先看到
+// 一帧桌面布局（侧边栏占掉 240px），水合时再跳一次。
+// 这里用媒体查询把同一套规则直接写给窄屏，预渲染产物在水合前后保持一致。
+@media (max-width: 1023.98px) {
+  .app-root {
+    flex-direction: column;
+
+    .app-root__main { width: 100%; }
+  }
+
+  .app-root__sider { display: none; }
+}
+
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;

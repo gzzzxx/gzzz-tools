@@ -13,16 +13,9 @@ function needViewTransitionDprFix() {
   return false
 }
 
-export function initTheme(): void {
-  if (typeof document === 'undefined') return
-  const root = document.documentElement
-  const stored = typeof localStorage !== 'undefined'
-    ? localStorage.getItem(STORAGE_KEY)
-    : null
-  const next = stored === 'light' ? 'light' : 'dark'
-  root.classList.remove('light', 'dark')
-  root.classList.add(next)
-}
+// 初始主题（首屏套用 localStorage 里保存的 light/dark）由 index.html 里的
+// 内联脚本在绘制前完成 —— 它必须赶在 Vue 应用挂载之前跑，所以不放这里。
+// 这里只负责用户主动切换主题。
 
 export function useTheme() {
   const isDarkRef = useIsDark()

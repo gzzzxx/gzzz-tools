@@ -1,10 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" href="src/images/logo.svg"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>gzzz-tools</title>
+    <script>
+      // 在首屏绘制前同步套用用户保存的主题。
+      // 预渲染出来的 HTML 是静态的，<html> 上还没有 light/dark class，
+      // 而 :root 的默认变量是浅色 —— 深色用户会先看到一帧浅色再被 JS 纠正。
+      // 这段脚本必须留在 head 里且不能是 module（module 是 defer 的，来不及）。
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          var root = document.documentElement
+          root.classList.remove('light', 'dark')
+          root.classList.add(stored === 'light' ? 'light' : 'dark')
+        } catch (e) {
+          // localStorage 不可用（隐私模式等）时保持默认样式
+        }
+      })()
+    </script>
+    <!--
+      百度统计。已知问题：hm.js 内部会注册 unload 监听（用于上报停留时长），
+      而 Chrome 115+ 默认阻止这个废弃 API，控制台会出现
+        [Violation] Permissions policy violation: unload is not allowed in this document.
+      告警来自第三方脚本本身，不是本站代码的问题，不影响页面功能 —— 已知并保留。
+    -->
     <script>
       var _hmt = _hmt || [];
       (function() {
