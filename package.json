@@ -18,7 +18,7 @@
     "dayjs": "^1.11.20",
     "element-plus": "^2.3.12",
     "js-base64": "^3.7.5",
-    "json-editor-vue": "^0.17.3",
+    "json-editor-vue": "^0.19.2",
     "qrcode": "^1.5.4",
     "sm-crypto": "^0.4.0",
     "sql-formatter": "^15.8.2",
