@@ -32,9 +32,22 @@ import '~/styles/index.scss'
 
 // ElMessage 的样式。ElementPlusResolver 只处理模板里用到的组件，
 // ElMessage 是命令式 API，不走模板，因此要单独引样式。
-// 注意：这里引的是编译后的 css 而非 src/*.scss —— 裸 scss 在 Node
-// 侧的 SSR 构建中无法被加载（ERR_UNKNOWN_FILE_EXTENSION）。
-import 'element-plus/theme-chalk/el-message.css'
+//
+// 必须引 SCSS **源码**（src/message.scss），不能引预编译的
+// theme-chalk/el-message.css：
+//   - 本项目把 element-plus 命名空间改成了 `ep-`（styles/element/index.scss），
+//     预编译 css 里的选择器/变量全是 `el-` 前缀，与运行时输出的
+//     `ep-message` class 对不上 → 样式全部落空，toast 变成无样式的裸文本
+//     （position/padding/背景色全丢），还会因 position:static 挤动页面布局。
+//   - 走 SCSS 源码后，vite 的 scss additionalData 会注入
+//     `@use "~/styles/element/index.scss"`，从而继承 `ep-` 命名空间，
+//     产出的选择器与运行时 class 一致。
+//
+// 早前这里用预编译 css 是为了绕开「裸 scss 在 Node 侧 SSR 构建报
+// ERR_UNKNOWN_FILE_EXTENSION」——那个问题只发生在被 ssr.externalize 的
+// 依赖上；element-plus 已在 vite.config.ts 的 ssr.noExternal 里，
+// 自身的 SCSS 由 Vite 打包，不会走 Node 原生 require。
+import 'element-plus/theme-chalk/src/message.scss'
 
 export const createApp = ViteSSG(
   App,
