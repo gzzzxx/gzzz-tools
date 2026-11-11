@@ -32,29 +32,41 @@
 
 ## 🧰 工具清单
 
-<table width="100%">
-<thead>
-<tr><th align="left" width="15%">分类</th><th align="left" width="100%">工具</th></tr>
-</thead>
-<tbody>
-<tr><td rowspan="4" valign="top" width="15%">🔐 加密 / 哈希</td><td width="100%"><a href="https://gzzz.pro/encryption/SM4">SM4 加密/解密</a></td></tr>
-<tr><td width="100%"><a href="https://gzzz.pro/encryption/AES">AES 加密/解密</a></td></tr>
-<tr><td width="100%"><a href="https://gzzz.pro/hash">Hash 计算</a></td></tr>
-<tr><td width="100%"><a href="https://gzzz.pro/password-strength">密码强度分析</a></td></tr>
-<tr><td rowspan="6" valign="top" width="15%">💻 开发辅助</td><td width="100%"><a href="https://gzzz.pro/json">JSON 格式化</a></td></tr>
-<tr><td width="100%"><a href="https://gzzz.pro/sql">SQL 格式化</a></td></tr>
-<tr><td width="100%"><a href="https://gzzz.pro/xml">XML 格式化</a></td></tr>
-<tr><td width="100%"><a href="https://gzzz.pro/contrast">代码对比</a></td></tr>
-<tr><td width="100%"><a href="https://gzzz.pro/text-stats">文本统计</a></td></tr>
-<tr><td width="100%"><a href="https://gzzz.pro/crontab">Crontab 表达式</a></td></tr>
-<tr><td rowspan="4" valign="top" width="15%">🔄 转换工具</td><td width="100%"><a href="https://gzzz.pro/base64">Base64 转换</a></td></tr>
-<tr><td width="100%"><a href="https://gzzz.pro/timestamp">时间戳转换</a></td></tr>
-<tr><td width="100%"><a href="https://gzzz.pro/color">颜色转换</a></td></tr>
-<tr><td width="100%"><a href="https://gzzz.pro/qrcode">二维码生成</a></td></tr>
-<tr><td rowspan="2" valign="top" width="15%">📅 时间工具</td><td width="100%"><a href="https://gzzz.pro/calendar">日历</a></td></tr>
-<tr><td width="100%"><a href="https://gzzz.pro/timer">计时器</a></td></tr>
-</tbody>
-</table>
+### 🔐 加密 / 哈希
+
+日常的加解密与摘要计算，数据全程留在本地。
+
+- [SM4 加密/解密](https://gzzz.pro/encryption/SM4)
+- [AES 加密/解密](https://gzzz.pro/encryption/AES)
+- [Hash 计算](https://gzzz.pro/hash)
+- [密码强度分析](https://gzzz.pro/password-strength)
+
+### 💻 开发辅助
+
+处理日常遇到的 JSON、SQL、XML 等文本格式，格式化、校验、对比一次搞定。
+
+- [JSON 格式化](https://gzzz.pro/json)
+- [SQL 格式化](https://gzzz.pro/sql)
+- [XML 格式化](https://gzzz.pro/xml)
+- [代码对比](https://gzzz.pro/contrast)
+- [文本统计](https://gzzz.pro/text-stats)
+- [Crontab 表达式](https://gzzz.pro/crontab)
+
+### 🔄 转换工具
+
+各种编码、格式与数值之间的互相转换。
+
+- [Base64 转换](https://gzzz.pro/base64)
+- [时间戳转换](https://gzzz.pro/timestamp)
+- [颜色转换](https://gzzz.pro/color)
+- [二维码生成](https://gzzz.pro/qrcode)
+
+### 📅 时间工具
+
+和日期、时间相关的小工具。
+
+- [日历](https://gzzz.pro/calendar)
+- [计时器](https://gzzz.pro/timer)
 
 ## 🚀 快速开始
 
