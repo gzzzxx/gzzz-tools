@@ -160,7 +160,7 @@ import { ArrowDown } from '@element-plus/icons-vue'
 import { useT } from '~/composables/useT'
 import { useLocalizedTools } from '~/composables/useTools'
 import { useFavorites } from '~/composables/useFavorites'
-import { getToolIcon } from '~/components/cards/toolIconRegistry'
+import { getToolIcon } from '~/tools/toolIconRegistry'
 
 withDefaults(
   defineProps<{ isCollapsed?: boolean }>(),

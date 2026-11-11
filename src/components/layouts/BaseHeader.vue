@@ -187,7 +187,7 @@ import SearchPalette from './SearchPalette.vue'
 import { type Tool } from '~/composables/useTools'
 import type { AppLocale } from '~/locales'
 import { GITHUB_REPO_URL } from '~/config/repos'
-import { getUiIcon } from '~/components/cards/toolIconRegistry'
+import { getUiIcon } from '~/tools/toolIconRegistry'
 
 const props = defineProps<{ isSiderCollapsed?: boolean }>()
 

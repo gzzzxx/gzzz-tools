@@ -73,7 +73,7 @@ import { computed } from 'vue'
 import { useT } from '~/composables/useT'
 import { type Tool } from '~/composables/useTools'
 import { useFavorites } from '~/composables/useFavorites'
-import { getToolIcon } from '~/components/cards/toolIconRegistry'
+import { getToolIcon } from '~/tools/toolIconRegistry'
 
 const props = defineProps<{ tool: Tool }>()
 

@@ -20,7 +20,7 @@ const toolRoutes: RouteRecordRaw[] = tools.map(tool => ({
 }))
 
 export const routes: RouteRecordRaw[] = [
-  { path: '/', name: 'index', component: () => import('~/components/index.vue') },
+  { path: '/', name: 'index', component: () => import('~/views/home/home.vue') },
   { path: '/about', name: 'about', component: () => import('~/views/about/about.vue') },
   // 静态托管的 404 兜底页。GitHub Pages 之类遇到未知路径时只会去找根目录的
   // 404.html —— SSG 会预渲染出 /404/index.html，构建结束后再复制一份到根目录。

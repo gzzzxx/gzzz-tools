@@ -1,10 +1,11 @@
 /*
   toolIconRegistry.ts — shared SVG render functions for tool icons.
 
-  Single source of truth for both the home grid (ToolCard.vue) and
-  the sidebar (BaseSide.vue). Every icon is keyed by a lowercase
-  string id; adding a new tool / icon is a one-line change here
-  + the matching `tool.icon = '<key>'` in src/composables/useTools.ts.
+  Single source of truth for the home grid (ToolCard.vue), the sidebar
+  (BaseSide.vue), the header and the search palette. Every icon is
+  keyed by a lowercase string id; adding a new tool / icon is a
+  one-line change here + the matching `icon = '<key>'` field in
+  src/tools/registry.ts.
 
   Visual style:
   - 24x24 viewBox, 1.5 stroke width, stroke-linecap/linejoin: round

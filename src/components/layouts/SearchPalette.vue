@@ -81,7 +81,7 @@ import { computed, nextTick, ref, watch, type ComponentPublicInstance } from 'vu
 import { Search, Right } from '@element-plus/icons-vue'
 import { useT } from '~/composables/useT'
 import { useLocalizedTools, type Tool } from '~/composables/useTools'
-import { getToolIcon } from '~/components/cards/toolIconRegistry'
+import { getToolIcon } from '~/tools/toolIconRegistry'
 
 const props = defineProps<{
   query: string
