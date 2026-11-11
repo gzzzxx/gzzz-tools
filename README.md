@@ -32,27 +32,27 @@
 
 ## 🧰 工具清单
 
-<table>
+<table width="100%">
 <thead>
-<tr><th>分类</th><th>工具</th></tr>
+<tr><th align="left" width="15%">分类</th><th align="left" width="100%">工具</th></tr>
 </thead>
 <tbody>
-<tr><td rowspan="4">🔐 加密 / 哈希</td><td><a href="https://gzzz.pro/encryption/SM4">SM4 加密/解密</a></td></tr>
-<tr><td><a href="https://gzzz.pro/encryption/AES">AES 加密/解密</a></td></tr>
-<tr><td><a href="https://gzzz.pro/hash">Hash 计算</a></td></tr>
-<tr><td><a href="https://gzzz.pro/password-strength">密码强度分析</a></td></tr>
-<tr><td rowspan="6">💻 开发辅助</td><td><a href="https://gzzz.pro/json">JSON 格式化</a></td></tr>
-<tr><td><a href="https://gzzz.pro/sql">SQL 格式化</a></td></tr>
-<tr><td><a href="https://gzzz.pro/xml">XML 格式化</a></td></tr>
-<tr><td><a href="https://gzzz.pro/contrast">代码对比</a></td></tr>
-<tr><td><a href="https://gzzz.pro/text-stats">文本统计</a></td></tr>
-<tr><td><a href="https://gzzz.pro/crontab">Crontab 表达式</a></td></tr>
-<tr><td rowspan="4">🔄 转换工具</td><td><a href="https://gzzz.pro/base64">Base64 转换</a></td></tr>
-<tr><td><a href="https://gzzz.pro/timestamp">时间戳转换</a></td></tr>
-<tr><td><a href="https://gzzz.pro/color">颜色转换</a></td></tr>
-<tr><td><a href="https://gzzz.pro/qrcode">二维码生成</a></td></tr>
-<tr><td rowspan="2">📅 时间工具</td><td><a href="https://gzzz.pro/calendar">日历</a></td></tr>
-<tr><td><a href="https://gzzz.pro/timer">计时器</a></td></tr>
+<tr><td rowspan="4" valign="top" width="15%">🔐 加密 / 哈希</td><td width="100%"><a href="https://gzzz.pro/encryption/SM4">SM4 加密/解密</a></td></tr>
+<tr><td width="100%"><a href="https://gzzz.pro/encryption/AES">AES 加密/解密</a></td></tr>
+<tr><td width="100%"><a href="https://gzzz.pro/hash">Hash 计算</a></td></tr>
+<tr><td width="100%"><a href="https://gzzz.pro/password-strength">密码强度分析</a></td></tr>
+<tr><td rowspan="6" valign="top" width="15%">💻 开发辅助</td><td width="100%"><a href="https://gzzz.pro/json">JSON 格式化</a></td></tr>
+<tr><td width="100%"><a href="https://gzzz.pro/sql">SQL 格式化</a></td></tr>
+<tr><td width="100%"><a href="https://gzzz.pro/xml">XML 格式化</a></td></tr>
+<tr><td width="100%"><a href="https://gzzz.pro/contrast">代码对比</a></td></tr>
+<tr><td width="100%"><a href="https://gzzz.pro/text-stats">文本统计</a></td></tr>
+<tr><td width="100%"><a href="https://gzzz.pro/crontab">Crontab 表达式</a></td></tr>
+<tr><td rowspan="4" valign="top" width="15%">🔄 转换工具</td><td width="100%"><a href="https://gzzz.pro/base64">Base64 转换</a></td></tr>
+<tr><td width="100%"><a href="https://gzzz.pro/timestamp">时间戳转换</a></td></tr>
+<tr><td width="100%"><a href="https://gzzz.pro/color">颜色转换</a></td></tr>
+<tr><td width="100%"><a href="https://gzzz.pro/qrcode">二维码生成</a></td></tr>
+<tr><td rowspan="2" valign="top" width="15%">📅 时间工具</td><td width="100%"><a href="https://gzzz.pro/calendar">日历</a></td></tr>
+<tr><td width="100%"><a href="https://gzzz.pro/timer">计时器</a></td></tr>
 </tbody>
 </table>
 
